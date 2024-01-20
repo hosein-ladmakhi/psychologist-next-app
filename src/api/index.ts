@@ -9,13 +9,16 @@ const api = (
   const initialHeaders = new Headers(options?.headers || {});
   const initialOptions: RequestInit = options;
   if (!initialHeaders.get('Content-Type')) {
-    initialHeaders.set('Content-Tyoe', 'application/json');
+    initialHeaders.set('Content-Type', 'application/json');
   }
 
   return fetch(url, {
     ...initialOptions,
     headers: initialHeaders,
     method,
+    body: initialOptions?.body
+      ? JSON.stringify(initialOptions.body)
+      : undefined,
     next: {
       tags,
     },

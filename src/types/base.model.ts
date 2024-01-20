@@ -17,3 +17,11 @@ export interface INextPage<IParams, ISearchParams = {}> {
   params: IParams;
   searchParams: ISearchParams;
 }
+
+export type TAction<T> = { payload: T };
+
+export type TAdditionalTableAction = {
+  text: string;
+  color: string;
+  onClick: (data: Record<string, any>) => void;
+};

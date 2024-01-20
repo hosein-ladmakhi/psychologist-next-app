@@ -35,6 +35,8 @@ const Table: FC<ITableProps> = ({
   deleteConfirmationDescription: DeleteConfirmationDescription,
   deleteConfirmationTitle,
   deleteOkConfirmationBtnText,
+  handleResetFilter,
+  additionalActions = [],
 }) => {
   const confirm = useConfirm();
   const onHandleDelete = (data: any) => {
@@ -66,14 +68,13 @@ const Table: FC<ITableProps> = ({
         <Typography variant="h6" component="h1" my="10px">
           {title}
         </Typography>
-        <ButtonGroup>
+        <ButtonGroup variant="contained" color="secondary">
+          <Button onClick={handleResetFilter}>Reset Filter</Button>
           <Button onClick={handleFilter}>Filter Table</Button>
-          <Button onClick={handleCreate} variant="contained">
-            {createButtonLabel}
-          </Button>
+          <Button onClick={handleCreate}>{createButtonLabel}</Button>
         </ButtonGroup>
       </Box>
-      <Box minHeight={800}>
+      <Box minHeight={500}>
         <MuiTable>
           <TableHead>
             <TableRow>
@@ -118,6 +119,16 @@ const Table: FC<ITableProps> = ({
                     >
                       Edit
                     </Button>
+                    {additionalActions &&
+                      additionalActions.map((action) => (
+                        <Button
+                          key={action.text}
+                          color={action.color as any}
+                          onClick={action.onClick.bind(null, row)}
+                        >
+                          {action.text}
+                        </Button>
+                      ))}
                   </Box>
                 </TableCell>
               </TableRow>

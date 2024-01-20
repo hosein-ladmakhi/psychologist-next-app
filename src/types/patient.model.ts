@@ -5,4 +5,9 @@ export interface IPatient extends IBaseEntity, IBaseUser {
   orders: IOrder[];
 }
 
-export type IPatientPageRes = IDatasourcePageRes<IPatient>;
+export type TPatientPageRes = IDatasourcePageRes<IPatient>;
+
+export type TCreateOrEditPatientBody = Pick<
+  IPatient,
+  'firstName' | 'lastName' | 'phone'
+>;

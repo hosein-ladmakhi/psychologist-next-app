@@ -1,0 +1,1 @@
+export const VIEW_ORDERS_DIALOG = 'VIEW_ORDERS_DIALOG';

@@ -1,3 +1,4 @@
+import { TAdditionalTableAction } from '@/types/base.model';
 import { FC, ReactNode } from 'react';
 
 export interface ITableColumn {
@@ -24,4 +25,6 @@ export interface ITableProps {
   deleteConfirmationTitle?: string;
   deleteConfirmationDescription?: FC<any>;
   loading?: boolean;
+  handleResetFilter: () => void;
+  additionalActions?: TAdditionalTableAction[];
 }
