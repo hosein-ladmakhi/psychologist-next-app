@@ -14,6 +14,8 @@ import { FILTER_THERAPIST_SUBJECT } from './components/FilterTherapistDialog/ind
 import ViewTherapistDialog from './components/ViewTherapistDialog';
 import { VIEW_THERAPIST_SUBJECT } from './components/ViewTherapistDialog/index.constant';
 import { ITherapist } from '@/types/therapist.model';
+import ScheduleTherapistDialog from './components/ScheduleTherapistDialog';
+import { SCHEDULE_THERAPIST_DIALOG_SUBJECT } from './components/ScheduleTherapistDialog/index.constant';
 
 const TherapistsScreen: FC<ITherapistsScreenProps> = ({
   data,
@@ -54,11 +56,21 @@ const TherapistsScreen: FC<ITherapistsScreenProps> = ({
     setSelectedTherapist(data as any);
   };
 
+  const handleScheduleTherapistDialog = (data: Object) => {
+    dispatch(openModal(SCHEDULE_THERAPIST_DIALOG_SUBJECT));
+    setSelectedTherapist(data as any);
+  };
+
   const additionalActions: TAdditionalTableAction[] = [
     {
       color: 'secondary',
       onClick: handleViewTherapist,
       text: 'View',
+    },
+    {
+      color: 'success',
+      onClick: handleScheduleTherapistDialog,
+      text: 'Plan',
     },
   ];
 
@@ -69,6 +81,7 @@ const TherapistsScreen: FC<ITherapistsScreenProps> = ({
         onChangeFilters={onChangeFilters}
         onClose={onCloseFilterTherapistDialog}
       />
+      <ScheduleTherapistDialog selectedTherapist={selectedTherapist} />
       <Table
         additionalActions={additionalActions}
         handleResetFilter={handleResetFilter}

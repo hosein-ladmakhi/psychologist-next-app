@@ -23,6 +23,13 @@ export enum EGender {
 
 export type TTherapistsPageRes = IDatasourcePageRes<ITherapist>;
 
+export type TTherapistSchedulesPageRes =
+  IDatasourcePageRes<ITherapistSchedules>;
+
+export type TTherapistSchedulesResPerDay = {
+  day: number;
+  items: ITherapistSchedules[];
+};
 export interface ITherapist extends IBaseEntity, IBaseUser {
   phone2: string;
   bio: string;

@@ -27,7 +27,7 @@ const Table: FC<ITableProps> = ({
   handleDelete,
   handleEdit,
   handleCreate,
-  handleChangePage,
+  handleChangePage = () => {},
   currentPage,
   totalPage,
   loading,
@@ -40,21 +40,23 @@ const Table: FC<ITableProps> = ({
 }) => {
   const confirm = useConfirm();
   const onHandleDelete = (data: any) => {
-    confirm({
-      title: deleteConfirmationTitle || 'Are You Sure To Delete This Item',
-      cancellationButtonProps: { color: 'error' },
-      cancellationText:
-        deleteCancelConfirmationBtnText || 'Cancel Deleting ...',
-      confirmationText:
-        deleteOkConfirmationBtnText || 'Yes, Im sure Delete Please',
-      description: DeleteConfirmationDescription ? (
-        <DeleteConfirmationDescription {...data} />
-      ) : undefined,
-    })
-      .then(() => {
-        handleDelete(data);
+    if (handleDelete) {
+      confirm({
+        title: deleteConfirmationTitle || 'Are You Sure To Delete This Item',
+        cancellationButtonProps: { color: 'error' },
+        cancellationText:
+          deleteCancelConfirmationBtnText || 'Cancel Deleting ...',
+        confirmationText:
+          deleteOkConfirmationBtnText || 'Yes, Im sure Delete Please',
+        description: DeleteConfirmationDescription ? (
+          <DeleteConfirmationDescription {...data} />
+        ) : undefined,
       })
-      .catch(() => {});
+        .then(() => {
+          handleDelete(data);
+        })
+        .catch(() => {});
+    }
   };
 
   return (
@@ -66,12 +68,16 @@ const Table: FC<ITableProps> = ({
         alignItems="center"
       >
         <Typography variant="h6" component="h1" my="10px">
-          {title}
+          {title || ''}
         </Typography>
         <ButtonGroup variant="contained" color="secondary">
-          <Button onClick={handleResetFilter}>Reset Filter</Button>
-          <Button onClick={handleFilter}>Filter Table</Button>
-          <Button onClick={handleCreate}>{createButtonLabel}</Button>
+          {handleResetFilter && (
+            <Button onClick={handleResetFilter}>Reset Filter</Button>
+          )}
+          {handleFilter && <Button onClick={handleFilter}>Filter Table</Button>}
+          {handleCreate && (
+            <Button onClick={handleCreate}>{createButtonLabel}</Button>
+          )}
         </ButtonGroup>
       </Box>
       <Box minHeight={500}>
@@ -107,18 +113,22 @@ const Table: FC<ITableProps> = ({
                     alignItems="center"
                     gap="20px"
                   >
-                    <Button
-                      color="error"
-                      onClick={onHandleDelete.bind(null, row)}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      color="primary"
-                      onClick={handleEdit.bind(null, row)}
-                    >
-                      Edit
-                    </Button>
+                    {handleDelete && (
+                      <Button
+                        color="error"
+                        onClick={onHandleDelete.bind(null, row)}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                    {handleEdit && (
+                      <Button
+                        color="primary"
+                        onClick={handleEdit.bind(null, row)}
+                      >
+                        Edit
+                      </Button>
+                    )}
                     {additionalActions &&
                       additionalActions.map((action) => (
                         <Button
@@ -138,20 +148,22 @@ const Table: FC<ITableProps> = ({
 
         {loading && <LinearProgress />}
       </Box>
-      <Box
-        mt="30px"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Pagination
-          color="secondary"
-          page={currentPage}
-          count={totalPage}
-          onChange={(_, page: number) => handleChangePage(page)}
-        />
-      </Box>
+      {typeof currentPage !== typeof undefined && (
+        <Box
+          mt="30px"
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Pagination
+            color="secondary"
+            page={currentPage}
+            count={totalPage}
+            onChange={(_, page: number) => handleChangePage(page)}
+          />
+        </Box>
+      )}
     </>
   );
 };
