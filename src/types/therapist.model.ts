@@ -30,6 +30,10 @@ export type TTherapistSchedulesResPerDay = {
   day: number;
   items: ITherapistSchedules[];
 };
+
+export interface ITherapistUploadRes {
+  filePath: string;
+}
 export interface ITherapist extends IBaseEntity, IBaseUser {
   phone2: string;
   bio: string;
@@ -60,4 +64,14 @@ export interface ITherapistSchedulesOff extends IBaseEntity {
 export interface ITherapistSchedulesOffBasedOnTherapist {
   user: ITherapist;
   items: ITherapistSchedulesOff[];
+}
+
+export interface ICreateOrEditTherapistReqBody {
+  phone2: string;
+  bio: string;
+  address: string;
+  degreeOfEducation: EDegtreeOfEducation;
+  gender: EGender;
+  image: string;
+  workingFields: number[];
 }

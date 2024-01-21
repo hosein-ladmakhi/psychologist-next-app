@@ -18,6 +18,7 @@ import { DATES } from '@/constants';
 
 const ScheduleTherapistDialog: FC<IScheduleTherapistDialogProps> = ({
   selectedTherapist,
+  onClose,
 }) => {
   const [schedules, setSchedules] = useState<TTherapistSchedulesResPerDay[]>(
     [],
@@ -26,6 +27,7 @@ const ScheduleTherapistDialog: FC<IScheduleTherapistDialogProps> = ({
   const [schedulesLoading, setSchedulesLoading] = useState<boolean>(false);
   const onSelectDay = (day: number) => {
     router.push(`/admin/therapists/schedules/${selectedTherapist?.id}/${day}`);
+    onClose();
   };
 
   useEffect(() => {

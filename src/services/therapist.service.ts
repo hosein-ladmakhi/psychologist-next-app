@@ -1,7 +1,9 @@
-import { httpGet } from '@/api';
+import { httpDelete, httpGet, httpPatch, httpPost } from '@/api';
 import { API_URL } from '@/constants';
 import {
+  ICreateOrEditTherapistReqBody,
   ITherapist,
+  ITherapistUploadRes,
   TTherapistSchedulesPageRes,
   TTherapistSchedulesResPerDay,
   TTherapistsPageRes,
@@ -11,6 +13,8 @@ import { prepareQueryParams } from '@/utils/prepareQueryParams';
 export const getTherapists = (filterObject: Object) =>
   httpGet<TTherapistsPageRes>(
     `${API_URL}/therapist${prepareQueryParams(filterObject)}`,
+    undefined,
+    ['therapists'],
   );
 
 export const getSchedulesTherapist = (therapistId: number) =>
@@ -33,3 +37,24 @@ export const getSchedulesBasedOnTherapistAndDay = (
 
 export const getTherapistById = (id: number) =>
   httpGet<ITherapist>(`${API_URL}/therapist/${id}`);
+
+export const uploadTherapistProfile = (data: FormData) =>
+  httpPost<FormData, ITherapistUploadRes>(`${API_URL}/therapist/profile`, data);
+
+export const createTherapist = (data: ICreateOrEditTherapistReqBody) =>
+  httpPost<ICreateOrEditTherapistReqBody, ITherapist>(
+    `${API_URL}/therapist`,
+    data,
+  );
+
+export const editTherapist = (
+  id: number,
+  data: ICreateOrEditTherapistReqBody,
+) =>
+  httpPatch<ICreateOrEditTherapistReqBody, ITherapist>(
+    `${API_URL}/therapist/${id}`,
+    data,
+  );
+
+export const deleteTherapist = (id: number) =>
+  httpDelete<ITherapist>(`${API_URL}/therapist/${id}`);

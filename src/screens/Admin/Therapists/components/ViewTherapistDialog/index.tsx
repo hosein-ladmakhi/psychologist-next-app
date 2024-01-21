@@ -17,9 +17,15 @@ import {
 
 const ViewTherapistDialog: FC<IViewTherapistDialogProps> = ({
   selectedTherapist,
+  onClose,
 }) => {
   return (
-    <Modal subject={VIEW_THERAPIST_SUBJECT} title="View Therapist" size="lg">
+    <Modal
+      handleClose={onClose}
+      subject={VIEW_THERAPIST_SUBJECT}
+      title="View Therapist"
+      size="lg"
+    >
       <Box
         width="100%"
         display="flex"

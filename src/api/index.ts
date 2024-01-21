@@ -11,20 +11,24 @@ const api = (
   if (!initialHeaders.get('Content-Type')) {
     initialHeaders.set('Content-Type', 'application/json');
   }
+  const isFormData = initialOptions?.body instanceof FormData;
+  if (isFormData) {
+    initialHeaders.delete('Content-Type');
+  } else {
+    initialOptions.body = initialOptions?.body
+      ? JSON.stringify(initialOptions.body)
+      : undefined;
+  }
 
   return fetch(url, {
     ...initialOptions,
     headers: initialHeaders,
     method,
-    body: initialOptions?.body
-      ? JSON.stringify(initialOptions.body)
-      : undefined,
     next: {
       tags,
     },
   })
     .then((res) => res.json())
-    .then((res) => res)
     .catch((err) => Promise.reject(err));
 };
 

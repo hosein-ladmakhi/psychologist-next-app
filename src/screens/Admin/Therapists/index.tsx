@@ -1,7 +1,7 @@
 'use client';
 
 import Table from '@/components/Table';
-import { FC, useState } from 'react';
+import { FC, useState, useTransition } from 'react';
 import { ITherapistsScreenProps } from './index.type';
 import { therapistsColumns } from './index.constant';
 import { TAdditionalTableAction } from '@/types/base.model';
@@ -16,6 +16,10 @@ import { VIEW_THERAPIST_SUBJECT } from './components/ViewTherapistDialog/index.c
 import { ITherapist } from '@/types/therapist.model';
 import ScheduleTherapistDialog from './components/ScheduleTherapistDialog';
 import { SCHEDULE_THERAPIST_DIALOG_SUBJECT } from './components/ScheduleTherapistDialog/index.constant';
+import CreateOrEditTherapistDialog from './components/CreateOrEditTherapistDialog';
+import { UPSERT_THERAPIST_DIALOG_SUBJECT } from './components/CreateOrEditTherapistDialog/index.constant';
+import { deleteTherapistAction } from '@/app/(admin)/admin/therapists/actions';
+import toast from 'react-hot-toast';
 
 const TherapistsScreen: FC<ITherapistsScreenProps> = ({
   data,
@@ -26,6 +30,7 @@ const TherapistsScreen: FC<ITherapistsScreenProps> = ({
     useSearchParams();
   const dispatch = useStoreDispatch();
   const [selectedTherapist, setSelectedTherapist] = useState<ITherapist>();
+  const [pending, handleTransition] = useTransition();
 
   const handleChangePage = (page: number) => {
     onChangeSearchParams('page', page.toString());
@@ -74,14 +79,56 @@ const TherapistsScreen: FC<ITherapistsScreenProps> = ({
     },
   ];
 
+  const onCloseScheduleTherapistDialog = () => {
+    dispatch(closeModal());
+  };
+
+  const handleCreate = () => {
+    dispatch(openModal(UPSERT_THERAPIST_DIALOG_SUBJECT));
+  };
+
+  const handleEdit = (data: any) => {
+    dispatch(openModal(UPSERT_THERAPIST_DIALOG_SUBJECT));
+    setSelectedTherapist(data);
+  };
+
+  const onCloseCreateOrEditTherapistDialog = () => {
+    dispatch(closeModal());
+  };
+
+  const onCloseViewTherapistDialog = () => {
+    setSelectedTherapist(undefined);
+  };
+
+  const handleDelete = (therapist: any) => {
+    handleTransition(async () => {
+      const res = await deleteTherapistAction(therapist.id);
+      if (res) {
+        toast.success('Deleted Successfully ...');
+      } else {
+        toast.error('Delete Process Failed ...');
+      }
+    });
+  };
+
   return (
     <>
-      <ViewTherapistDialog selectedTherapist={selectedTherapist} />
+      <CreateOrEditTherapistDialog
+        selectedTherapist={selectedTherapist}
+        onClose={onCloseCreateOrEditTherapistDialog}
+      />
+      <ViewTherapistDialog
+        onClose={onCloseViewTherapistDialog}
+        selectedTherapist={selectedTherapist}
+      />
       <FilterTherapistDialog
         onChangeFilters={onChangeFilters}
         onClose={onCloseFilterTherapistDialog}
       />
-      <ScheduleTherapistDialog selectedTherapist={selectedTherapist} />
+      <ScheduleTherapistDialog
+        onClose={onCloseScheduleTherapistDialog}
+        selectedTherapist={selectedTherapist}
+      />
       <Table
         additionalActions={additionalActions}
         handleResetFilter={handleResetFilter}
@@ -90,9 +137,9 @@ const TherapistsScreen: FC<ITherapistsScreenProps> = ({
         columns={therapistsColumns}
         dataKey="id"
         rows={data}
-        handleDelete={() => {}}
-        handleEdit={() => {}}
-        handleCreate={() => {}}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        handleCreate={handleCreate}
         handleChangePage={handleChangePage}
         handleFilter={handleFilter}
         currentPage={page}

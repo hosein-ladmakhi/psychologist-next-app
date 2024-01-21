@@ -14,14 +14,23 @@ import { useStoreSelector } from '@/hooks/useStoreSelector';
 import { useStoreDispatch } from '@/hooks/useStoreDispatch';
 import { closeModal } from '@/store/slices/modalSlices';
 
-const Modal: FC<IModalProps> = ({ subject, children, size = 'xs', title }) => {
+const Modal: FC<IModalProps> = ({
+  subject,
+  children,
+  size = 'xs',
+  title,
+  handleClose = () => {},
+}) => {
   const dispatch = useStoreDispatch();
   const currentModalSubject = useStoreSelector(
     (store) => store.modalReducers.currentSubject,
   );
 
   const opened = subject === currentModalSubject;
-  const onClose = () => dispatch(closeModal());
+  const onClose = () => {
+    dispatch(closeModal());
+    handleClose();
+  };
   const onPreventModalClose = (event: MouseEvent) => event.stopPropagation();
 
   return (

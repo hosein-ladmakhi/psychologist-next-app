@@ -5,6 +5,8 @@ import { calculateTotalPageTable } from '@/utils/calculateTotalPageTable';
 import { FC } from 'react';
 import { ITherapistsPageSearchParams } from './page.type';
 
+export const dynamic = 'force-dynamic';
+
 const prepareQueryParam = (data: ITherapistsPageSearchParams) => {
   const result: Record<string, any> = {};
   if (data.firstName) result['firstName.startWith'] = data.firstName;

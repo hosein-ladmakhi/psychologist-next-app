@@ -5,4 +5,5 @@ export interface IModalProps extends PropsWithChildren {
   subject: string;
   size?: keyof typeof modalWidthSize;
   title: string;
+  handleClose?: () => void;
 }
