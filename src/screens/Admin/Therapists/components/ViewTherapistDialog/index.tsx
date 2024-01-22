@@ -1,7 +1,7 @@
 import Modal from "@/components/Modal";
 import { FC, PropsWithChildren, ReactNode } from "react";
 import { VIEW_THERAPIST_SUBJECT } from "./index.constant";
-import { IViewTherapistDialogProps } from "./index.type";
+import { IViewTherapistDialogProps, TViewTherapistDialogFC } from "./index.type";
 import { Avatar, Box, Chip, Typography } from "@mui/material";
 import { API_URL } from "@/constants";
 import Image from "next/image";
@@ -30,7 +30,7 @@ const ContentText = ({ children }: PropsWithChildren) => {
   );
 };
 
-const ViewTherapistDialog: FC<IViewTherapistDialogProps> = ({ selectedTherapist, onClose }) => {
+const ViewTherapistDialog: TViewTherapistDialogFC = ({ selectedTherapist, onClose }) => {
   return (
     <Modal handleClose={onClose} subject={VIEW_THERAPIST_SUBJECT} title="View Therapist" size="lg">
       <FlexBox width="100%">

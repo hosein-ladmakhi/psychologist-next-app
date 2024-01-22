@@ -1,8 +1,8 @@
 import Modal from "@/components/Modal";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SCHEDULE_THERAPIST_DIALOG_SUBJECT } from "./index.constant";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import { IScheduleTherapistDialogProps } from "./index.type";
+import { TScheduleTherapistDialogFC } from "./index.type";
 import { TTherapistSchedulesResPerDay } from "@/types/therapist.model";
 import { getSchedulesTherapistPerDay } from "@/services/therapist.service";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ import { DATES } from "@/constants";
 import LoadingText from "@/components/LoadingText";
 import Button from "@/components/Button";
 
-const ScheduleTherapistDialog: FC<IScheduleTherapistDialogProps> = ({ selectedTherapist, onClose }) => {
+const ScheduleTherapistDialog: TScheduleTherapistDialogFC = ({ selectedTherapist, onClose }) => {
   const [schedules, setSchedules] = useState<TTherapistSchedulesResPerDay[]>([]);
   const router = useRouter();
   const [schedulesLoading, setSchedulesLoading] = useState<boolean>(false);
@@ -33,7 +33,7 @@ const ScheduleTherapistDialog: FC<IScheduleTherapistDialogProps> = ({ selectedTh
   }, [selectedTherapist?.id]);
 
   return (
-    <Modal size="xxxl" subject={SCHEDULE_THERAPIST_DIALOG_SUBJECT} title="Schedules Of Therapist">
+    <Modal size="xxxl" subject={SCHEDULE_THERAPIST_DIALOG_SUBJECT} handleClose={onClose} title="Schedules Of Therapist">
       <LoadingText loading={schedulesLoading} loadingText="Loading Schedules" loadingTextVariant="body1" spinnerSize="30px" />
       <Grid container spacing={1}>
         {Object.keys(DATES).map((dateKey) => {

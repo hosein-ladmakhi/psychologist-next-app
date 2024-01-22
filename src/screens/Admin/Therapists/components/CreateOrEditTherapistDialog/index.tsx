@@ -94,7 +94,7 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
   const modalTitle = selectedTherapist ? "Edit Therapist" : "Create New Therapist";
 
   return (
-    <Modal subject={UPSERT_THERAPIST_DIALOG_SUBJECT} title={modalTitle} size="xl">
+    <Modal subject={UPSERT_THERAPIST_DIALOG_SUBJECT} handleClose={onClose} title={modalTitle} size="xl">
       <form onSubmit={onSubmit}>
         <Grid container spacing={2}>
           <Grid item lg={12}>

@@ -37,7 +37,7 @@ const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, se
   const modalTitle = selectedCategory ? "Edit Category" : "Create New Category";
 
   return (
-    <Modal title={modalTitle} size="lg" subject={UPSERT_CATEGORY_SUBJECT}>
+    <Modal title={modalTitle} size="lg" subject={UPSERT_CATEGORY_SUBJECT} handleClose={onClose}>
       <form onSubmit={onCreateOrEditCategory}>
         <TextInput name="faName" label="Farsi Name" control={control} />
         <TextInput name="enName" label="English Name" control={control} />

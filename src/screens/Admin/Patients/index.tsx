@@ -6,7 +6,6 @@ import { cloneElement, useMemo, useState, useTransition } from "react";
 import DeletePatientConfirmation from "./components/DeletePatientConfirmation";
 import { deletePatientAction } from "@/app/(admin)/admin/patients/actions";
 import { TPatientsScreenFC } from "./index.type";
-import toast from "react-hot-toast";
 import { UPSERT_PATIENT_SUBJECT } from "./components/CreateOrEditPatientDialog/index.constant";
 import FilterPatientDialog from "./components/FilterPatientDialog";
 import { FILTER_PATIENT_SUBJECT } from "./components/FilterPatientDialog/index.constant";
