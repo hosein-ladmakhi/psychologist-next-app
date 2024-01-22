@@ -25,3 +25,5 @@ export type TAdditionalTableAction = {
   color: string;
   onClick: (data: Record<string, any>) => void;
 };
+
+export type TSelectOptions = { key: string; value: string | number };

@@ -1,117 +1,41 @@
-import {
-  FC,
-  MutableRefObject,
-  useEffect,
-  useRef,
-  useState,
-  useTransition,
-} from 'react';
-import {
-  ICreateOrEditTherapistDialogProps,
-  TCreateOrEditTherapistFormValidation,
-} from './index.type';
-import Modal from '@/components/Modal';
-import {
-  UPSERT_THERAPIST_DIALOG_SUBJECT,
-  createOrEditTherapistFormValidation,
-} from './index.constant';
-import ImagePicker from '@/components/ImagePicker';
-import {
-  Box,
-  Button,
-  Checkbox,
-  CircularProgress,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  EDegtreeOfEducation,
-  EGender,
-  ICreateOrEditTherapistReqBody,
-} from '@/types/therapist.model';
-import { ICategory } from '@/types/category.model';
-import { getCategories } from '@/services/category.service';
-import toast from 'react-hot-toast';
-import { uploadTherapistProfile } from '@/services/therapist.service';
-import {
-  createTherapistAction,
-  editTherapistAction,
-} from '@/app/(admin)/admin/therapists/actions';
-import { API_URL } from '@/constants';
+import { useRef, useTransition } from "react";
+import { TCreateOrEditTherapistDialogFC, TCreateOrEditTherapistFormValidation } from "./index.type";
+import Modal from "@/components/Modal";
+import { UPSERT_THERAPIST_DIALOG_SUBJECT } from "./index.constant";
+import ImagePicker from "@/components/ImagePicker";
+import { Box, Grid } from "@mui/material";
+import { EDegtreeOfEducation, EGender, ICreateOrEditTherapistReqBody } from "@/types/therapist.model";
+import toast from "react-hot-toast";
+import { uploadTherapistProfile } from "@/services/therapist.service";
+import { createTherapistAction, editTherapistAction } from "@/app/(admin)/admin/therapists/actions";
+import { API_URL } from "@/constants";
+import { useCategories } from "@/hooks/useCategories";
+import { useCreateOrEditTherapistForm } from "./useForm";
+import TextInput from "@/components/TextInput";
+import Select from "@/components/Select";
+import CheckBox from "@/components/CheckBox";
+import Button from "@/components/Button";
 
-const CreateOrEditTherapistDialog: FC<ICreateOrEditTherapistDialogProps> = ({
-  onClose,
-  selectedTherapist,
-}) => {
+const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, selectedTherapist }) => {
+  const { categories, categoriesLoading } = useCategories();
   const [createOrEditLoading, handleCreateOrEditTransition] = useTransition();
-  const [workingFields, setWorkingFields] = useState<ICategory[]>([]);
   const imageRef = useRef<File>(null);
-  const [workingFieldsLoading, setWorkingFieldsLoading] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    setWorkingFieldsLoading(true);
-    getCategories({ limit: 10000 })
-      .then((res) => setWorkingFields(res.content))
-      .finally(() => {
-        setWorkingFieldsLoading(false);
-      });
-  }, []);
-
-  const { register, formState, handleSubmit, setValue, reset } =
-    useForm<TCreateOrEditTherapistFormValidation>({
-      resolver: zodResolver(createOrEditTherapistFormValidation),
-    });
-
-  useEffect(() => {
-    if (selectedTherapist) {
-      setValue('firstName', selectedTherapist?.firstName);
-      setValue('lastName', selectedTherapist?.lastName);
-      setValue('phone', selectedTherapist?.phone);
-      setValue('phone2', selectedTherapist?.phone2);
-      setValue('bio', selectedTherapist?.bio);
-      setValue('address', selectedTherapist?.address);
-      setValue('degreeOfEducation', selectedTherapist?.degreeOfEducation);
-      setValue(
-        'workingFields',
-        selectedTherapist?.workingFields?.map((e) => e.id),
-      );
-    }
-
-    return () => {
-      reset();
-    };
-  }, [selectedTherapist]);
-
-  const modalTitle = selectedTherapist
-    ? 'Edit Therapist'
-    : 'Create New Therapist';
-
-  const getFormError = (name: keyof TCreateOrEditTherapistFormValidation) =>
-    formState.errors?.[name]?.message;
+  const { handleSubmit, control } = useCreateOrEditTherapistForm(selectedTherapist);
 
   const handleUploadProfile = () => {
     const formdata = new FormData();
-    formdata.append('image', imageRef?.current as any);
+    formdata.append("image", imageRef?.current as any);
     return uploadTherapistProfile(formdata);
   };
 
   const handleCreate = async (data: TCreateOrEditTherapistFormValidation) => {
     if (!imageRef?.current) {
-      toast.error('You Must Select Your Profile Image');
+      toast.error("You Must Select Your Profile Image");
       return;
     }
     const uploadedFile = await handleUploadProfile();
     if (!uploadedFile) {
-      toast.error('Your Profile Image Not Uploaded Try Again');
+      toast.error("Your Profile Image Not Uploaded Try Again");
       return;
     }
 
@@ -123,14 +47,14 @@ const CreateOrEditTherapistDialog: FC<ICreateOrEditTherapistDialogProps> = ({
     })
       .then((res) => {
         if (res) {
-          toast.success('Therapist Created ...');
+          toast.success("Therapist Created ...");
           onClose();
         } else {
           throw new Error();
         }
       })
       .catch(() => {
-        toast.error('Therapist Not Created ...');
+        toast.error("Therapist Not Created ...");
       });
   };
 
@@ -143,27 +67,24 @@ const CreateOrEditTherapistDialog: FC<ICreateOrEditTherapistDialogProps> = ({
     if (imageRef?.current) {
       const uploadedFile = await handleUploadProfile();
       if (!uploadedFile) {
-        toast.error('Your Profile Image Not Uploaded Try Again');
+        toast.error("Your Profile Image Not Uploaded Try Again");
         return;
       } else {
         reqBody.image = uploadedFile?.filePath;
       }
     }
 
-    editTherapistAction(
-      selectedTherapist?.id!,
-      reqBody as ICreateOrEditTherapistReqBody,
-    )
+    editTherapistAction(selectedTherapist?.id!, reqBody as ICreateOrEditTherapistReqBody)
       .then((res) => {
         if (res) {
-          toast.success('Therapist Updated ...');
+          toast.success("Therapist Updated ...");
           onClose();
         } else {
           throw new Error();
         }
       })
       .catch(() => {
-        toast.error('Therapist Not Updated ...');
+        toast.error("Therapist Not Updated ...");
       });
   };
 
@@ -177,22 +98,16 @@ const CreateOrEditTherapistDialog: FC<ICreateOrEditTherapistDialogProps> = ({
     });
   });
 
+  const modalTitle = selectedTherapist ? "Edit Therapist" : "Create New Therapist";
+
   return (
-    <Modal
-      subject={UPSERT_THERAPIST_DIALOG_SUBJECT}
-      title={modalTitle}
-      size="xl"
-    >
+    <Modal subject={UPSERT_THERAPIST_DIALOG_SUBJECT} title={modalTitle} size="xl">
       <form onSubmit={onSubmit}>
         <Grid container spacing={2}>
           <Grid item lg={12}>
             <Box component="center">
               <ImagePicker
-                defaultSrc={
-                  selectedTherapist?.image
-                    ? `${API_URL}${selectedTherapist?.image}`
-                    : undefined
-                }
+                defaultSrc={selectedTherapist?.image ? `${API_URL}${selectedTherapist?.image}` : undefined}
                 ref={imageRef}
                 height={100}
                 width={100}
@@ -200,126 +115,51 @@ const CreateOrEditTherapistDialog: FC<ICreateOrEditTherapistDialogProps> = ({
             </Box>
           </Grid>
           <Grid item lg={6}>
-            <TextField
-              {...register('firstName')}
-              fullWidth
-              label="First Name"
-              error={!!getFormError('firstName')}
-              helperText={getFormError('firstName')}
+            <TextInput label="First Name" name="firstName" control={control} />
+          </Grid>
+          <Grid item lg={6}>
+            <TextInput label="Last Name" name="lastName" control={control} />
+          </Grid>
+          <Grid item lg={6}>
+            <TextInput label="Phone Number 1" name="phone" control={control} />
+          </Grid>
+          <Grid item lg={6}>
+            <TextInput label="Phone Number 2" name="phone2" control={control} />
+          </Grid>
+          <Grid item lg={6}>
+            <Select
+              control={control}
+              name="degreeOfEducation"
+              id="degree-of-education"
+              label="Degree Of Education"
+              options={Object.entries(EDegtreeOfEducation).map(([key, value]) => ({ key, value }))}
+              defaultValue={selectedTherapist?.degreeOfEducation || ""}
             />
           </Grid>
           <Grid item lg={6}>
-            <TextField
-              error={!!getFormError('lastName')}
-              helperText={getFormError('lastName')}
-              {...register('lastName')}
-              fullWidth
-              label="Last Name"
-            />
-          </Grid>
-          <Grid item lg={6}>
-            <TextField
-              error={!!getFormError('phone')}
-              helperText={getFormError('phone')}
-              {...register('phone')}
-              fullWidth
-              label="Phone Number 1"
-            />
-          </Grid>
-          <Grid item lg={6}>
-            <TextField
-              error={!!getFormError('phone2')}
-              helperText={getFormError('phone2')}
-              {...register('phone2')}
-              fullWidth
-              label="Phone Number 2"
-            />
-          </Grid>
-          <Grid item lg={6}>
-            <FormControl fullWidth>
-              <InputLabel id="degree-of-education-label">
-                Degree Of Education
-              </InputLabel>
-              <Select
-                {...register('degreeOfEducation')}
-                labelId="degree-of-education-label"
-                label="Degree Of Education"
-                error={!!getFormError('degreeOfEducation')}
-                defaultValue={selectedTherapist?.degreeOfEducation || ''}
-              >
-                {Object.entries(EDegtreeOfEducation).map(([key, value]) => (
-                  <MenuItem key={key} value={value}>
-                    {key}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>
-                {getFormError('degreeOfEducation')}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item lg={6}>
-            <FormControl fullWidth>
-              <InputLabel id="working-fields-label">Working Fields</InputLabel>
-              <Select
-                {...register('workingFields')}
-                labelId="working-fields-label"
-                label="Working Fields"
-                multiple
-                error={!!getFormError('workingFields')}
-                defaultValue={
-                  selectedTherapist?.workingFields
-                    ? selectedTherapist?.workingFields?.map((e) => e.id)
-                    : []
-                }
-                disabled={workingFieldsLoading}
-                defaultChecked
-              >
-                {workingFields.map((workingField) => (
-                  <MenuItem value={workingField.id}>
-                    {workingField.enName}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>{getFormError('workingFields')}</FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item lg={12}>
-            <TextField
-              {...register('address')}
-              label="Home Address"
-              multiline
-              rows={4}
-              fullWidth
-              error={!!getFormError('address')}
-              helperText={getFormError('address')}
+            <Select
+              control={control}
+              name="workingFields"
+              id="working-fields-label"
+              label="Working Fields"
+              options={categories.map((category) => ({ key: category.enName, value: category.id }))}
+              defaultValue={selectedTherapist?.workingFields ? selectedTherapist?.workingFields?.map((e) => e.id) : []}
+              disabled={categoriesLoading}
+              multiple
             />
           </Grid>
           <Grid item lg={12}>
-            <TextField
-              {...register('bio')}
-              label="Bio"
-              multiline
-              rows={4}
-              fullWidth
-              error={!!getFormError('bio')}
-              helperText={getFormError('bio')}
-            />
+            <TextInput rows={4} label="Home Address" name="address" control={control} multiline />
           </Grid>
           <Grid item lg={12}>
-            <FormControlLabel
-              {...register('gender')}
-              control={<Checkbox defaultChecked />}
-              label="Are You Female?"
-            />
+            <TextInput rows={4} label="Bio" name="bio" control={control} multiline />
+          </Grid>
+          <Grid item lg={12}>
+            <CheckBox control={control} name="gender" label="Are You Female ?" defaultChecked />
           </Grid>
           <Grid item lg={3}>
-            <Button type="submit" fullWidth>
-              {createOrEditLoading ? (
-                <CircularProgress color="inherit" size="30px" />
-              ) : (
-                <>Save This Therapist</>
-              )}
+            <Button type="submit" loading={createOrEditLoading} loadingSpinnerSize="30px" fullWidth>
+              Save This Therapist
             </Button>
           </Grid>
         </Grid>

@@ -1,78 +1,44 @@
-'use client';
+"use client";
 
-import Table from '@/components/Table';
-import { ITableColumn } from '@/components/Table/index.type';
-import { IPatient } from '@/types/patient.model';
-import { FC, useMemo, useState, useTransition } from 'react';
-import DeletePatientConfirmation from './components/DeletePatientConfirmation';
-import { deletePatientAction } from '@/app/(admin)/admin/patients/actions';
-import { IPatientsProps } from './index.type';
-import toast from 'react-hot-toast';
-import CreateOrEditPatientDialog from './components/CreateOrEditPatientDialog';
-import { UPSERT_PATIENT_SUBJECT } from './components/CreateOrEditPatientDialog/index.constant';
-import FilterPatientDialog from './components/FilterPatientDialog';
-import { FILTER_PATIENT_SUBJECT } from './components/FilterPatientDialog/index.constant';
-import { useStoreDispatch } from '@/hooks/useStoreDispatch';
-import { closeModal, openModal } from '@/store/slices/modalSlices';
-import { useSearchParams } from '@/hooks/useSearchParams';
-import { TFilterPatientFormValidation } from './components/FilterPatientDialog/index.type';
-import { TAdditionalTableAction } from '@/types/base.model';
-import ViewOrdersDialog from './components/ViewOrdersDialog';
-import { VIEW_ORDERS_DIALOG } from './components/ViewOrdersDialog/index.constant';
+import Table from "@/components/Table";
+import { IPatient } from "@/types/patient.model";
+import { useMemo, useState, useTransition } from "react";
+import DeletePatientConfirmation from "./components/DeletePatientConfirmation";
+import { deletePatientAction } from "@/app/(admin)/admin/patients/actions";
+import { TPatientsScreenFC } from "./index.type";
+import toast from "react-hot-toast";
+import CreateOrEditPatientDialog from "./components/CreateOrEditPatientDialog";
+import { UPSERT_PATIENT_SUBJECT } from "./components/CreateOrEditPatientDialog/index.constant";
+import FilterPatientDialog from "./components/FilterPatientDialog";
+import { FILTER_PATIENT_SUBJECT } from "./components/FilterPatientDialog/index.constant";
+import { useStoreDispatch } from "@/hooks/useStoreDispatch";
+import { closeModal, openModal } from "@/store/slices/modalSlices";
+import { useSearchParams } from "@/hooks/useSearchParams";
+import { TFilterPatientFormValidation } from "./components/FilterPatientDialog/index.type";
+import { TAdditionalTableAction } from "@/types/base.model";
+import ViewOrdersDialog from "./components/ViewOrdersDialog";
+import { VIEW_ORDERS_DIALOG } from "./components/ViewOrdersDialog/index.constant";
+import { patientsColumn } from "./index.constant";
 
-const columns: ITableColumn[] = [
-  {
-    label: 'Id',
-    name: 'id',
-    width: 100,
-  },
-  {
-    label: 'First Name',
-    name: 'firstName',
-    width: 250,
-  },
-  {
-    label: 'Last Name',
-    name: 'lastName',
-    width: 250,
-  },
-  {
-    label: 'Phone',
-    name: 'phone',
-    width: 250,
-  },
-  {
-    label: 'Orders Count',
-    name: 'ordersCount',
-    width: 250,
-  },
-];
-
-const PatientsScreen: FC<IPatientsProps> = ({ data, total, page }) => {
+const PatientsScreen: TPatientsScreenFC = ({ data, total, page }) => {
   const dispatch = useStoreDispatch();
-  const { onChangeSearchParams, onChangeMultipleSearchParams } =
-    useSearchParams();
+  const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedPatient, setSelectedPatient] = useState<IPatient>();
   const [pending, handleTransition] = useTransition();
 
   const handleChangePage = (page: number) => {
-    onChangeSearchParams('page', page.toString());
+    onChangeSearchParams("page", page.toString());
   };
 
   const handleDelete = (patient: Record<string, any>) => {
     handleTransition(() => {
       if (patient.orders.length) {
-        toast.error(
-          'Your Patient have orders, please first delete orders and after that try again',
-        );
+        toast.error("Your Patient have orders, please first delete orders and after that try again");
         return;
       }
       deletePatientAction(patient as IPatient).then((res) => {
-        if (res)
-          toast.success(
-            `The ${patient.firstName} ${patient.lastName} has deleted successfully ...`,
-          );
-        else toast.error('The patient not deleted, try again');
+        if (res) toast.success(`The ${patient.firstName} ${patient.lastName} has deleted successfully ...`);
+        else toast.error("The patient not deleted, try again");
       });
     });
   };
@@ -121,31 +87,25 @@ const PatientsScreen: FC<IPatientsProps> = ({ data, total, page }) => {
 
   const additionalActions: TAdditionalTableAction[] = [
     {
-      color: 'success',
+      color: "success",
       onClick: (data) => {
         setSelectedPatient(data as IPatient);
         dispatch(openModal(VIEW_ORDERS_DIALOG));
       },
-      text: 'Orders',
+      text: "Orders",
     },
   ];
 
   return (
     <>
       <ViewOrdersDialog selectedPatient={selectedPatient} />
-      <CreateOrEditPatientDialog
-        selectedPatient={selectedPatient}
-        onClose={onCloseCreateOrEditPatientDialog}
-      />
-      <FilterPatientDialog
-        onChangeFilters={onChangeFilters}
-        onClose={onCloseFilterPatientDialog}
-      />
+      <CreateOrEditPatientDialog selectedPatient={selectedPatient} onClose={onCloseCreateOrEditPatientDialog} />
+      <FilterPatientDialog onChangeFilters={onChangeFilters} onClose={onCloseFilterPatientDialog} />
       <Table
         handleResetFilter={handleResetFilter}
         createButtonLabel="Create New Patient"
         title="Patients Page"
-        columns={columns}
+        columns={patientsColumn}
         dataKey="id"
         rows={transformedData}
         loading={pending}

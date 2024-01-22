@@ -1,11 +1,7 @@
-'use client';
+"use client";
 
-import {
-  useSearchParams as useNextSearchParams,
-  usePathname,
-  useRouter,
-} from 'next/navigation';
-import { useCallback } from 'react';
+import { useSearchParams as useNextSearchParams, usePathname, useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 export const useSearchParams = () => {
   const searchParams = useNextSearchParams();
@@ -13,13 +9,13 @@ export const useSearchParams = () => {
   const router = useRouter();
 
   const onChangeSearchParams = useCallback(
-    (key: string, value: string | undefined) => {
+    (key: string, value: any) => {
       const urlSearchParams = new URLSearchParams(searchParams);
-      if (value) urlSearchParams.set(key, value);
+      if (value) urlSearchParams.set(key, `${value}`);
       else urlSearchParams.delete(key);
-      router.push(pathname + '?' + urlSearchParams);
+      router.push(pathname + "?" + urlSearchParams);
     },
-    [searchParams],
+    [searchParams]
   );
 
   const onChangeMultipleSearchParams = useCallback(
@@ -29,9 +25,9 @@ export const useSearchParams = () => {
         if (queryValue) urlSearchParams.set(queryKey, queryValue);
         else urlSearchParams.delete(queryKey);
       });
-      router.push(pathname + '?' + urlSearchParams);
+      router.push(pathname + "?" + urlSearchParams);
     },
-    [searchParams],
+    [searchParams]
   );
 
   const getSearchParams = (key: string) => {
@@ -43,10 +39,10 @@ export const useSearchParams = () => {
       if (searchParams.has(key)) {
         const urlSearchParams = new URLSearchParams(searchParams);
         urlSearchParams.delete(key);
-        router.push(pathname + '?' + urlSearchParams);
+        router.push(pathname + "?" + urlSearchParams);
       }
     },
-    [searchParams],
+    [searchParams]
   );
 
   return {
