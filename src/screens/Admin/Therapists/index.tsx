@@ -20,6 +20,7 @@ import CreateOrEditTherapistDialog from "./components/CreateOrEditTherapistDialo
 import { UPSERT_THERAPIST_DIALOG_SUBJECT } from "./components/CreateOrEditTherapistDialog/index.constant";
 import { deleteTherapistAction } from "@/app/(admin)/admin/therapists/actions";
 import toast from "react-hot-toast";
+import { errorNotify, successNotify } from "@/utils/notify";
 
 const TherapistsScreen: FC<ITherapistsScreenProps> = ({ data, total, page }) => {
   const dispatch = useStoreDispatch();
@@ -90,11 +91,8 @@ const TherapistsScreen: FC<ITherapistsScreenProps> = ({ data, total, page }) => 
   const handleDelete = (therapist: any) => {
     handleTransition(async () => {
       const res = await deleteTherapistAction(therapist.id);
-      if (res) {
-        toast.success("Deleted Successfully ...");
-      } else {
-        toast.error("Delete Process Failed ...");
-      }
+      if (res) successNotify("Deleted Successfully ...");
+      else errorNotify("Delete Process Failed ...");
     });
   };
 

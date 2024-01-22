@@ -5,7 +5,6 @@ import { UPSERT_THERAPIST_DIALOG_SUBJECT } from "./index.constant";
 import ImagePicker from "@/components/ImagePicker";
 import { Box, Grid } from "@mui/material";
 import { EDegtreeOfEducation, EGender, ICreateOrEditTherapistReqBody } from "@/types/therapist.model";
-import toast from "react-hot-toast";
 import { uploadTherapistProfile } from "@/services/therapist.service";
 import { createTherapistAction, editTherapistAction } from "@/app/(admin)/admin/therapists/actions";
 import { API_URL } from "@/constants";
@@ -15,6 +14,7 @@ import TextInput from "@/components/TextInput";
 import Select from "@/components/Select";
 import CheckBox from "@/components/CheckBox";
 import Button from "@/components/Button";
+import { errorNotify, successNotify } from "@/utils/notify";
 
 const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, selectedTherapist }) => {
   const { categories, categoriesLoading } = useCategories();
@@ -30,32 +30,29 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
 
   const handleCreate = async (data: TCreateOrEditTherapistFormValidation) => {
     if (!imageRef?.current) {
-      toast.error("You Must Select Your Profile Image");
+      errorNotify("You Must Select Your Profile Image");
       return;
     }
     const uploadedFile = await handleUploadProfile();
     if (!uploadedFile) {
-      toast.error("Your Profile Image Not Uploaded Try Again");
+      errorNotify("Your Profile Image Not Uploaded Try Again");
       return;
     }
 
-    createTherapistAction({
-      ...data,
-      image: uploadedFile?.filePath!,
-      gender: data.gender ? EGender.female : EGender.male,
-      degreeOfEducation: data.degreeOfEducation as EDegtreeOfEducation,
-    })
-      .then((res) => {
-        if (res) {
-          toast.success("Therapist Created ...");
-          onClose();
-        } else {
-          throw new Error();
-        }
-      })
-      .catch(() => {
-        toast.error("Therapist Not Created ...");
+    try {
+      const res = await createTherapistAction({
+        ...data,
+        image: uploadedFile?.filePath!,
+        gender: data.gender ? EGender.female : EGender.male,
+        degreeOfEducation: data.degreeOfEducation as EDegtreeOfEducation,
       });
+      if (res) successNotify("Therapist Created ...");
+      else throw new Error();
+    } catch (error) {
+      errorNotify("Therapist Not Created ...");
+    } finally {
+      onClose();
+    }
   };
 
   const handleEdit = async (data: TCreateOrEditTherapistFormValidation) => {
@@ -67,25 +64,21 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
     if (imageRef?.current) {
       const uploadedFile = await handleUploadProfile();
       if (!uploadedFile) {
-        toast.error("Your Profile Image Not Uploaded Try Again");
+        errorNotify("Your Profile Image Not Uploaded Try Again");
         return;
       } else {
         reqBody.image = uploadedFile?.filePath;
       }
     }
-
-    editTherapistAction(selectedTherapist?.id!, reqBody as ICreateOrEditTherapistReqBody)
-      .then((res) => {
-        if (res) {
-          toast.success("Therapist Updated ...");
-          onClose();
-        } else {
-          throw new Error();
-        }
-      })
-      .catch(() => {
-        toast.error("Therapist Not Updated ...");
-      });
+    try {
+      const res = await editTherapistAction(selectedTherapist?.id!, reqBody as ICreateOrEditTherapistReqBody);
+      if (res) successNotify("Therapist Updated ...");
+      else throw new Error();
+    } catch (error) {
+      errorNotify("Therapist Not Updated ...");
+    } finally {
+      onClose();
+    }
   };
 
   const onSubmit = handleSubmit((data) => {

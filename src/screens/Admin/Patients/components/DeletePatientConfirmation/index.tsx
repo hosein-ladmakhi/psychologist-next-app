@@ -1,12 +1,7 @@
-import { IPatient } from '@/types/patient.model';
-import { Typography } from '@mui/material';
-import { FC } from 'react';
+import { Typography } from "@mui/material";
+import { TDeletePatientConfirmationFC } from "./index.type";
 
-const DeletePatientConfirmation: FC<IPatient> = ({
-  firstName,
-  lastName,
-  phone,
-}) => {
+const DeletePatientConfirmation: TDeletePatientConfirmationFC = ({ firstName, lastName, phone }) => {
   return (
     <>
       <Typography my={1} variant="body1" component="p">

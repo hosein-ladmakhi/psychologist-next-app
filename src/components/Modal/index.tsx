@@ -1,30 +1,16 @@
-import { FC, MouseEvent } from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  IconButton,
-  Modal as MuiModal,
-  Typography,
-} from '@mui/material';
-import { Close } from '@mui/icons-material';
-import { IModalProps } from './index.type';
-import { modalWidthSize } from './index.constant';
-import { useStoreSelector } from '@/hooks/useStoreSelector';
-import { useStoreDispatch } from '@/hooks/useStoreDispatch';
-import { closeModal } from '@/store/slices/modalSlices';
+import { MouseEvent } from "react";
+import { Card, CardContent, IconButton, Modal as MuiModal, Typography } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { TModalFC } from "./index.type";
+import { modalWidthSize } from "./index.constant";
+import { useStoreSelector } from "@/hooks/useStoreSelector";
+import { useStoreDispatch } from "@/hooks/useStoreDispatch";
+import { closeModal } from "@/store/slices/modalSlices";
+import FlexBox from "../FlexBox";
 
-const Modal: FC<IModalProps> = ({
-  subject,
-  children,
-  size = 'xs',
-  title,
-  handleClose = () => {},
-}) => {
+const Modal: TModalFC = ({ subject, children, size = "xs", title, handleClose = () => {} }) => {
   const dispatch = useStoreDispatch();
-  const currentModalSubject = useStoreSelector(
-    (store) => store.modalReducers.currentSubject,
-  );
+  const currentModalSubject = useStoreSelector((store) => store.modalReducers.currentSubject);
 
   const opened = subject === currentModalSubject;
   const onClose = () => {
@@ -35,37 +21,21 @@ const Modal: FC<IModalProps> = ({
 
   return (
     <MuiModal open={opened} onClose={onClose}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        height="100%"
-        width="100%"
-        onClick={onClose}
-      >
-        <Card
-          onClick={onPreventModalClose}
-          style={{ width: modalWidthSize[size] }}
-        >
+      <FlexBox flexDirection="column" height="100%" width="100%" onClick={onClose}>
+        <Card onClick={onPreventModalClose} style={{ width: modalWidthSize[size] }}>
           <CardContent>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={3}
-            >
+            <FlexBox justifyContent="space-between" mb={3}>
               <Typography variant="h6" component="h1">
                 {title}
               </Typography>
               <IconButton onClick={onClose}>
-                <Close />
+                <CloseIcon />
               </IconButton>
-            </Box>
+            </FlexBox>
             {children}
           </CardContent>
         </Card>
-      </Box>
+      </FlexBox>
     </MuiModal>
   );
 };

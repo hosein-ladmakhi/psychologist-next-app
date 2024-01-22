@@ -1,15 +1,6 @@
 import { CircularProgress, Typography } from "@mui/material";
 import FlexBox from "../FlexBox";
-import { FC } from "react";
-
-interface ILoadingTextProps {
-  loading?: boolean;
-  loadingText: string;
-  loadingTextVariant: "body1" | "body2";
-  spinnerSize?: string;
-}
-
-type TLoadingTextFC = FC<ILoadingTextProps>;
+import { TLoadingTextFC } from "./index.type";
 
 const LoadingText: TLoadingTextFC = ({ loading, loadingText, loadingTextVariant = "body1", spinnerSize }) => {
   if (!loading) return <></>;

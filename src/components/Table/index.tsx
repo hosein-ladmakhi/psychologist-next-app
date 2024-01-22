@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import { FC } from 'react';
 import {
   Box,
   Button,
@@ -13,11 +12,11 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import { ITableProps } from './index.type';
-import { useConfirm } from 'material-ui-confirm';
+} from "@mui/material";
+import { TTableFC } from "./index.type";
+import { useConfirm } from "material-ui-confirm";
 
-const Table: FC<ITableProps> = ({
+const Table: TTableFC = ({
   columns,
   rows,
   dataKey,
@@ -42,15 +41,11 @@ const Table: FC<ITableProps> = ({
   const onHandleDelete = (data: any) => {
     if (handleDelete) {
       confirm({
-        title: deleteConfirmationTitle || 'Are You Sure To Delete This Item',
-        cancellationButtonProps: { color: 'error' },
-        cancellationText:
-          deleteCancelConfirmationBtnText || 'Cancel Deleting ...',
-        confirmationText:
-          deleteOkConfirmationBtnText || 'Yes, Im sure Delete Please',
-        description: DeleteConfirmationDescription ? (
-          <DeleteConfirmationDescription {...data} />
-        ) : undefined,
+        title: deleteConfirmationTitle || "Are You Sure To Delete This Item",
+        cancellationButtonProps: { color: "error" },
+        cancellationText: deleteCancelConfirmationBtnText || "Cancel Deleting ...",
+        confirmationText: deleteOkConfirmationBtnText || "Yes, Im sure Delete Please",
+        description: DeleteConfirmationDescription ? <DeleteConfirmationDescription {...data} /> : undefined,
       })
         .then(() => {
           handleDelete(data);
@@ -61,23 +56,14 @@ const Table: FC<ITableProps> = ({
 
   return (
     <>
-      <Box
-        mb={3}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <Box mb={3} display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h6" component="h1" my="10px">
-          {title || ''}
+          {title || ""}
         </Typography>
         <ButtonGroup variant="contained" color="secondary">
-          {handleResetFilter && (
-            <Button onClick={handleResetFilter}>Reset Filter</Button>
-          )}
+          {handleResetFilter && <Button onClick={handleResetFilter}>Reset Filter</Button>}
           {handleFilter && <Button onClick={handleFilter}>Filter Table</Button>}
-          {handleCreate && (
-            <Button onClick={handleCreate}>{createButtonLabel}</Button>
-          )}
+          {handleCreate && <Button onClick={handleCreate}>{createButtonLabel}</Button>}
         </ButtonGroup>
       </Box>
       <Box minHeight={500}>
@@ -85,13 +71,7 @@ const Table: FC<ITableProps> = ({
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
-                  align="center"
-                  component="th"
-                  key={column.name}
-                  width={column.width}
-                  style={{ fontWeight: 'bold' }}
-                >
+                <TableCell align="center" component="th" key={column.name} width={column.width} style={{ fontWeight: "bold" }}>
                   {column.label}
                 </TableCell>
               ))}
@@ -107,35 +87,20 @@ const Table: FC<ITableProps> = ({
                   </TableCell>
                 ))}
                 <TableCell align="center">
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    gap="20px"
-                  >
+                  <Box display="flex" justifyContent="center" alignItems="center" gap="20px">
                     {handleDelete && (
-                      <Button
-                        color="error"
-                        onClick={onHandleDelete.bind(null, row)}
-                      >
+                      <Button color="error" onClick={onHandleDelete.bind(null, row)}>
                         Delete
                       </Button>
                     )}
                     {handleEdit && (
-                      <Button
-                        color="primary"
-                        onClick={handleEdit.bind(null, row)}
-                      >
+                      <Button color="primary" onClick={handleEdit.bind(null, row)}>
                         Edit
                       </Button>
                     )}
                     {additionalActions &&
                       additionalActions.map((action) => (
-                        <Button
-                          key={action.text}
-                          color={action.color as any}
-                          onClick={action.onClick.bind(null, row)}
-                        >
+                        <Button key={action.text} color={action.color as any} onClick={action.onClick.bind(null, row)}>
                           {action.text}
                         </Button>
                       ))}
@@ -149,19 +114,8 @@ const Table: FC<ITableProps> = ({
         {loading && <LinearProgress />}
       </Box>
       {typeof currentPage !== typeof undefined && (
-        <Box
-          mt="30px"
-          width="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Pagination
-            color="secondary"
-            page={currentPage}
-            count={totalPage}
-            onChange={(_, page: number) => handleChangePage(page)}
-          />
+        <Box mt="30px" width="100%" display="flex" justifyContent="center" alignItems="center">
+          <Pagination color="secondary" page={currentPage} count={totalPage} onChange={(_, page: number) => handleChangePage(page)} />
         </Box>
       )}
     </>

@@ -2,12 +2,11 @@
 
 import Table from "@/components/Table";
 import { IPatient } from "@/types/patient.model";
-import { useMemo, useState, useTransition } from "react";
+import { cloneElement, useMemo, useState, useTransition } from "react";
 import DeletePatientConfirmation from "./components/DeletePatientConfirmation";
 import { deletePatientAction } from "@/app/(admin)/admin/patients/actions";
 import { TPatientsScreenFC } from "./index.type";
 import toast from "react-hot-toast";
-import CreateOrEditPatientDialog from "./components/CreateOrEditPatientDialog";
 import { UPSERT_PATIENT_SUBJECT } from "./components/CreateOrEditPatientDialog/index.constant";
 import FilterPatientDialog from "./components/FilterPatientDialog";
 import { FILTER_PATIENT_SUBJECT } from "./components/FilterPatientDialog/index.constant";
@@ -19,53 +18,50 @@ import { TAdditionalTableAction } from "@/types/base.model";
 import ViewOrdersDialog from "./components/ViewOrdersDialog";
 import { VIEW_ORDERS_DIALOG } from "./components/ViewOrdersDialog/index.constant";
 import { patientsColumn } from "./index.constant";
+import { useCreateOrEditDialogLoad } from "./useCreateOrEditDialogLoad";
+import { errorNotify, successNotify } from "@/utils/notify";
 
 const PatientsScreen: TPatientsScreenFC = ({ data, total, page }) => {
   const dispatch = useStoreDispatch();
+  const createOrEditDialog = useCreateOrEditDialogLoad();
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedPatient, setSelectedPatient] = useState<IPatient>();
   const [pending, handleTransition] = useTransition();
 
-  const handleChangePage = (page: number) => {
-    onChangeSearchParams("page", page.toString());
-  };
+  const handleChangePage = (page: number) => onChangeSearchParams("page", page.toString());
 
   const handleDelete = (patient: Record<string, any>) => {
-    handleTransition(() => {
+    handleTransition(async () => {
       if (patient.orders.length) {
-        toast.error("Your Patient have orders, please first delete orders and after that try again");
-        return;
+        errorNotify("Your Patient have orders, please first delete orders and after that try again");
+      } else {
+        const res = await deletePatientAction(patient as IPatient);
+        if (res) successNotify(`The ${patient.firstName} ${patient.lastName} has deleted successfully ...`);
+        else errorNotify("The patient not deleted, try again");
       }
-      deletePatientAction(patient as IPatient).then((res) => {
-        if (res) toast.success(`The ${patient.firstName} ${patient.lastName} has deleted successfully ...`);
-        else toast.error("The patient not deleted, try again");
-      });
+      onCloseDialog();
     });
   };
 
   const handleCreate = () => {
     dispatch(openModal(UPSERT_PATIENT_SUBJECT));
-  };
-
-  const onCloseCreateOrEditPatientDialog = () => {
-    dispatch(closeModal());
+    createOrEditDialog.loadComponent();
   };
 
   const handleEdit = (data: any) => {
     setSelectedPatient(data);
     dispatch(openModal(UPSERT_PATIENT_SUBJECT));
+    createOrEditDialog.loadComponent();
   };
 
-  const handleFilter = () => {
-    dispatch(openModal(FILTER_PATIENT_SUBJECT));
-  };
+  const handleFilter = () => dispatch(openModal(FILTER_PATIENT_SUBJECT));
 
-  const onCloseFilterPatientDialog = () => {
+  const onChangeFilters = (data: TFilterPatientFormValidation) => onChangeMultipleSearchParams(data);
+
+  const onCloseDialog = () => {
     dispatch(closeModal());
-  };
-
-  const onChangeFilters = (data: TFilterPatientFormValidation) => {
-    onChangeMultipleSearchParams(data);
+    setSelectedPatient(undefined);
+    createOrEditDialog.unLoadComponent();
   };
 
   const handleResetFilter = () => {
@@ -99,8 +95,8 @@ const PatientsScreen: TPatientsScreenFC = ({ data, total, page }) => {
   return (
     <>
       <ViewOrdersDialog selectedPatient={selectedPatient} />
-      <CreateOrEditPatientDialog selectedPatient={selectedPatient} onClose={onCloseCreateOrEditPatientDialog} />
-      <FilterPatientDialog onChangeFilters={onChangeFilters} onClose={onCloseFilterPatientDialog} />
+      {createOrEditDialog.Component && <createOrEditDialog.Component selectedPatient={selectedPatient} onClose={onCloseDialog} />}
+      <FilterPatientDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />
       <Table
         handleResetFilter={handleResetFilter}
         createButtonLabel="Create New Patient"

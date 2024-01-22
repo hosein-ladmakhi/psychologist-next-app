@@ -1,18 +1,13 @@
-import Modal from '@/components/Modal';
-import { FC } from 'react';
-import { FILTER_PATIENT_SUBJECT } from './index.constant';
-import { Box, Button, TextField } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import {
-  IFilterPatientDialogProps,
-  TFilterPatientFormValidation,
-} from './index.type';
+import Modal from "@/components/Modal";
+import { FILTER_PATIENT_SUBJECT } from "./index.constant";
+import { Box } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { TFilterPatientDialogFC, TFilterPatientFormValidation } from "./index.type";
+import TextInput from "@/components/TextInput";
+import Button from "@/components/Button";
 
-const FilterPatientDialog: FC<IFilterPatientDialogProps> = ({
-  onClose,
-  onChangeFilters,
-}) => {
-  const { register, handleSubmit } = useForm<TFilterPatientFormValidation>();
+const FilterPatientDialog: TFilterPatientDialogFC = ({ onClose, onChangeFilters }) => {
+  const { control, handleSubmit } = useForm<TFilterPatientFormValidation>();
   const onSubmit = handleSubmit((data) => {
     onClose();
     onChangeFilters(data);
@@ -21,24 +16,9 @@ const FilterPatientDialog: FC<IFilterPatientDialogProps> = ({
   return (
     <Modal size="sm" subject={FILTER_PATIENT_SUBJECT} title="Filter Tables">
       <form onSubmit={onSubmit}>
-        <TextField
-          {...register('firstName')}
-          fullWidth
-          label="First Name"
-          margin="dense"
-        />
-        <TextField
-          {...register('lastName')}
-          fullWidth
-          margin="dense"
-          label="Last Name"
-        />
-        <TextField
-          {...register('phone')}
-          fullWidth
-          margin="dense"
-          label="Phone Number"
-        />
+        <TextInput label="First Name" name="firstName" control={control} />
+        <TextInput label="Last Name" name="lastName" control={control} />
+        <TextInput label="Phone Number" name="phone" control={control} />
         <Box mt={4}>
           <Button type="submit" size="large" fullWidth>
             Search

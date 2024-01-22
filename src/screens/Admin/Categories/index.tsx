@@ -1,30 +1,26 @@
-'use client';
+"use client";
 
-import Table from '@/components/Table';
-import { FC, useState, useTransition } from 'react';
-import { categoriesColumns } from './index.constant';
-import { ICategoriesScreenProps } from './index.type';
-import { useSearchParams } from '@/hooks/useSearchParams';
-import FilterCategoryDialog from './components/FilterCategoryDialog';
-import { useStoreDispatch } from '@/hooks/useStoreDispatch';
-import { closeModal, openModal } from '@/store/slices/modalSlices';
-import { FILTER_CATEGORY_SUBJECT } from './components/FilterCategoryDialog/index.constant';
-import { TFilterCategoryFormValidation } from './components/FilterCategoryDialog/index.type';
-import toast from 'react-hot-toast';
-import { deleteCategoryAction } from '@/app/(admin)/admin/categories/actions';
-import CreateOrEditCategoryDialog from './components/CreateOrEditCategoryDialog';
-import { ICategory } from '@/types/category.model';
-import { UPSERT_CATEGORY_SUBJECT } from './components/CreateOrEditCategoryDialog/index.constant';
+import Table from "@/components/Table";
+import { FC, useState, useTransition } from "react";
+import { categoriesColumns } from "./index.constant";
+import { ICategoriesScreenProps } from "./index.type";
+import { useSearchParams } from "@/hooks/useSearchParams";
+import FilterCategoryDialog from "./components/FilterCategoryDialog";
+import { useStoreDispatch } from "@/hooks/useStoreDispatch";
+import { closeModal, openModal } from "@/store/slices/modalSlices";
+import { FILTER_CATEGORY_SUBJECT } from "./components/FilterCategoryDialog/index.constant";
+import { TFilterCategoryFormValidation } from "./components/FilterCategoryDialog/index.type";
+import toast from "react-hot-toast";
+import { deleteCategoryAction } from "@/app/(admin)/admin/categories/actions";
+import CreateOrEditCategoryDialog from "./components/CreateOrEditCategoryDialog";
+import { ICategory } from "@/types/category.model";
+import { UPSERT_CATEGORY_SUBJECT } from "./components/CreateOrEditCategoryDialog/index.constant";
+import { errorNotify, successNotify } from "@/utils/notify";
 
-const CategoriesScreen: FC<ICategoriesScreenProps> = ({
-  data,
-  total,
-  page,
-}) => {
+const CategoriesScreen: FC<ICategoriesScreenProps> = ({ data, total, page }) => {
   const [pending, handleTransition] = useTransition();
   const dispatch = useStoreDispatch();
-  const { onChangeSearchParams, onChangeMultipleSearchParams } =
-    useSearchParams();
+  const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<ICategory>();
 
   const handleResetFilter = () => {
@@ -36,7 +32,7 @@ const CategoriesScreen: FC<ICategoriesScreenProps> = ({
   };
 
   const handleChangePage = (page: number) => {
-    onChangeSearchParams('page', page.toString());
+    onChangeSearchParams("page", page.toString());
   };
 
   const handleFilter = () => {
@@ -50,9 +46,8 @@ const CategoriesScreen: FC<ICategoriesScreenProps> = ({
   const handleDelete = (category: Record<string, any>) => {
     handleTransition(() => {
       deleteCategoryAction(category.id).then((res) => {
-        if (res)
-          toast.success(`The ${category.enName} has deleted successfully ...`);
-        else toast.error('The category not deleted, try again');
+        if (res) successNotify(`The ${category.enName} has deleted successfully ...`);
+        else errorNotify("The category not deleted, try again");
       });
     });
   };
@@ -76,14 +71,8 @@ const CategoriesScreen: FC<ICategoriesScreenProps> = ({
 
   return (
     <>
-      <FilterCategoryDialog
-        onChangeFilters={onChangeFilters}
-        onClose={onCloseFilterCategoryDialog}
-      />
-      <CreateOrEditCategoryDialog
-        onClose={onCloseCreateOrEditCategoryDialog}
-        selectedCategory={selectedCategory}
-      />
+      <FilterCategoryDialog onChangeFilters={onChangeFilters} onClose={onCloseFilterCategoryDialog} />
+      <CreateOrEditCategoryDialog onClose={onCloseCreateOrEditCategoryDialog} selectedCategory={selectedCategory} />
       <Table
         handleResetFilter={handleResetFilter}
         createButtonLabel="Create New Category"

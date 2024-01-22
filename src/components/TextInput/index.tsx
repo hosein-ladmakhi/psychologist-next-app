@@ -10,7 +10,7 @@ const TextInput: ITextInputFC = ({ control, name, label, rows = 1, multiline = f
       name={name}
       render={({ field, formState }) => {
         const err = getFormError(formState, name);
-        return <TextField multiline={multiline} rows={rows} fullWidth label={label} error={!!err} helperText={err} {...field} />;
+        return <TextField margin="dense" multiline={multiline} rows={rows} fullWidth label={label} error={!!err} helperText={err} {...field} />;
       }}
     />
   );

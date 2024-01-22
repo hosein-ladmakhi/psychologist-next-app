@@ -1,5 +1,5 @@
-import { TAdditionalTableAction } from '@/types/base.model';
-import { FC, ReactNode } from 'react';
+import { TAdditionalTableAction } from "@/types/base.model";
+import { FC, ReactNode } from "react";
 
 export interface ITableColumn {
   width: number;
@@ -28,3 +28,5 @@ export interface ITableProps {
   handleResetFilter?: () => void;
   additionalActions?: TAdditionalTableAction[];
 }
+
+export type TTableFC = FC<ITableProps>;

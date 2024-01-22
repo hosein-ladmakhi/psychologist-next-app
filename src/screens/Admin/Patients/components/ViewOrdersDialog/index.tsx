@@ -1,10 +1,8 @@
-import Modal from '@/components/Modal';
-import { FC } from 'react';
-import { VIEW_ORDERS_DIALOG } from './index.constant';
-import { ViewOrdersDialogProps } from './index.type';
-import { ITableColumn } from '@/components/Table/index.type';
+import Modal from "@/components/Modal";
+import { VIEW_ORDERS_DIALOG } from "./index.constant";
+import { TViewOrdersDialogFC } from "./index.type";
 
-const ViewOrdersDialog: FC<ViewOrdersDialogProps> = ({ selectedPatient }) => {
+const ViewOrdersDialog: TViewOrdersDialogFC = ({ selectedPatient }) => {
   return (
     <Modal size="xl" title="Orders" subject={VIEW_ORDERS_DIALOG}>
       <p>This Section Must Include Orders Table</p>

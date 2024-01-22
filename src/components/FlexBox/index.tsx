@@ -1,9 +1,5 @@
-import { Box, BoxProps } from "@mui/material";
-import { FC, PropsWithChildren } from "react";
-
-export interface IFlexBoxProps extends BoxProps, PropsWithChildren {}
-
-export type TFlexBoxFC = FC<IFlexBoxProps>;
+import { Box } from "@mui/material";
+import { TFlexBoxFC } from "./index.type";
 
 const FlexBox: TFlexBoxFC = ({ justifyContent = "center", alignItems = "center", gap = 0, flexDirection = "row", children, ...props }) => {
   return (
