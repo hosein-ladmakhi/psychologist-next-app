@@ -8,6 +8,10 @@ const menusItem: { label: string; href: string }[] = [
     label: "Patients",
   },
   {
+    href: "/admin/orders",
+    label: "Orders",
+  },
+  {
     href: "/admin/locations",
     label: "Locations",
   },

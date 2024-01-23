@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC } from "react";
 
 const HomePage: FC = async () => {
   return (

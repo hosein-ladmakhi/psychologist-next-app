@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.4",
     "@reduxjs/toolkit": "^2.0.1",
+    "date-fns": "^3.3.1",
     "material-ui-confirm": "^3.0.9",
     "next": "14.0.4",
     "nprogress": "^0.2.0",

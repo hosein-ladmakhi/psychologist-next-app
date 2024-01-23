@@ -1,38 +1,32 @@
-import { IPatient } from './patient.model';
+import { IBaseEntity, IDatasourcePageRes } from "./base.model";
+import { IDocumentation } from "./documentation.model";
+import { IPatient } from "./patient.model";
+import { ETherapistScheduleType, ITherapist } from "./therapist.model";
 
-enum OrderStatus {
-  Done = 'Done',
-  Cancel = 'Cancel',
-  Pending = 'Pending',
+export enum EOrderStatus {
+  Done = "Done",
+  Cancel = "Cancel",
+  Pending = "Pending",
 }
 
-export interface IOrder {
-  documentation: any[];
-  //   documentation: UserDocumentation[];
-
+export interface IOrder extends IBaseEntity {
+  documentation: IDocumentation[];
   patient: IPatient;
-
-  therapist: any;
-  //   therapist: Therapist;
-
+  therapist: ITherapist;
   day: number;
-
   city: string;
-
   address: string;
-
   date: Date;
-
   room: number;
-
   categories: { enName: string; faName: string }[];
-
-  type: any;
-  //   type: TherapistScheduleType;
-
+  type: ETherapistScheduleType;
   startHour: string;
-
   endHour: string;
+  status: EOrderStatus;
+}
 
-  status: OrderStatus;
+export type TOrderPageRes = IDatasourcePageRes<IOrder>;
+
+export interface IOrderChangeStatusReqBody {
+  status: EOrderStatus;
 }
