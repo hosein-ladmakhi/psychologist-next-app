@@ -9,3 +9,14 @@ export interface ILocation {
 }
 
 export type TLocationPageRes = IDatasourcePageRes<ILocation>;
+
+export type ICreateOrEditLocationReqBody = Omit<ILocation, "id" | "therapistSchedules">;
+
+export interface ICity {
+  id: number;
+  title: string;
+  slug: string;
+  province_id: number;
+  latitude: number;
+  longitude: number;
+}
