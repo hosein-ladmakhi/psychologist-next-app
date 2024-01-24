@@ -5,6 +5,7 @@ import { FC } from "react";
 export interface IOrdersScreenProps {
   data: IOrder[];
   count: number;
+  page: number;
 }
 
 export type TOrdersScreenFC = FC<IOrdersScreenProps>;

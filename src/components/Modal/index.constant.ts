@@ -6,6 +6,9 @@ export const modalWidthSize = {
   xl: 750,
   xxl: 850,
   xxxl: 1000,
+  xxxxl: 1200,
+  xxxxxl: 1400,
+  xxxxxxl: 1600,
 };
 
-export const MODAL_SUBJECT = 'MODAL_SUBJECT';
+export const MODAL_SUBJECT = "MODAL_SUBJECT";

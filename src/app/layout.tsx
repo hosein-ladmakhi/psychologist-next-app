@@ -1,3 +1,5 @@
+import "./globals.css";
+
 import { FC, PropsWithChildren } from "react";
 import MuiProvider from "@/core/mui/MuiProvider";
 import { figtreeFont } from "@/core/fonts/figtree-font";

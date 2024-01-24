@@ -12,16 +12,23 @@ import { useConfirm } from "material-ui-confirm";
 import { useDispatch } from "react-redux";
 import { closeModal, openModal } from "@/store/slices/modalSlices";
 import { DONE_ORDER_DIALOG_SUBJECT } from "./components/DoneOrderDialog/index.constant";
-import DoneOrderDialog from "./components/DoneOrderDialog";
-import DocumentationDialog from "./components/DocumentationDialog";
 import { DOCUMENTATION_DIALOG_SUBJECT } from "./components/DocumentationDialog/index.constant";
 import { cancelOrderAction } from "@/app/(admin)/admin/orders/actions";
+import { useDocumentationDialogLoad } from "./useDocumentationDialogLoad";
+import { useDoneOrderDialogLoad } from "./useDoneOrderDialogLoad";
+import { useSearchParams } from "@/hooks/useSearchParams";
+import FilterOrderDialog from "./components/FilterOrderDialog";
+import { FILTER_ORDER_DIALOG_SUBJECT } from "./components/FilterOrderDialog/index.constant";
+import { IFilterOrderFormValidation } from "./components/FilterOrderDialog/index.type";
 
-const OrdersScreen: TOrdersScreenFC = ({ data }) => {
+const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const confirm = useConfirm();
   const dispatch = useDispatch();
   const [pending, handleTransition] = useTransition();
   const [selectedOrder, setSelectedOrder] = useState<IOrder>();
+  const documentationDialog = useDocumentationDialogLoad();
+  const doneOrderDialog = useDoneOrderDialogLoad();
+  const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
 
   const transformedData = useMemo(() => {
     return data.map((order) => ({
@@ -47,7 +54,11 @@ const OrdersScreen: TOrdersScreenFC = ({ data }) => {
   const onCloseDialog = () => {
     dispatch(closeModal());
     setSelectedOrder(undefined);
+    documentationDialog.unLoadComponent();
+    doneOrderDialog.unLoadComponent();
   };
+
+  const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
   const handleCancel = (data: Object) => {
     const order = data as IOrder;
@@ -64,6 +75,10 @@ const OrdersScreen: TOrdersScreenFC = ({ data }) => {
     });
   };
 
+  const handleResetFilter = () => {
+    onChangeMultipleSearchParams({ page: 1, status: undefined });
+  };
+
   const handleDone = (data: Object) => {
     const order = data as IOrder;
     if (order.status !== EOrderStatus.Pending) {
@@ -74,6 +89,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data }) => {
       .then(() => {
         dispatch(openModal(DONE_ORDER_DIALOG_SUBJECT));
         setSelectedOrder(data as IOrder);
+        doneOrderDialog.loadComponent();
       })
       .catch(() => {});
   };
@@ -86,6 +102,13 @@ const OrdersScreen: TOrdersScreenFC = ({ data }) => {
     }
     dispatch(openModal(DOCUMENTATION_DIALOG_SUBJECT));
     setSelectedOrder(order);
+    documentationDialog.loadComponent();
+  };
+
+  const onChangeFilters = (data: IFilterOrderFormValidation) => onChangeMultipleSearchParams({ ...data, page: 1 });
+
+  const handleFilter = () => {
+    dispatch(openModal(FILTER_ORDER_DIALOG_SUBJECT));
   };
 
   const additionalActions: TAdditionalTableAction[] = [
@@ -108,9 +131,22 @@ const OrdersScreen: TOrdersScreenFC = ({ data }) => {
 
   return (
     <>
-      {selectedOrder && <DoneOrderDialog onClose={onCloseDialog} selectedOrder={selectedOrder} />}
-      {selectedOrder && <DocumentationDialog onClose={onCloseDialog} selectedOrder={selectedOrder} />}
-      <Table additionalActions={additionalActions} columns={ordersColumns} title="Orders Page" rows={transformedData} dataKey="id" />
+      <FilterOrderDialog onChangeFilter={onChangeFilters} onClose={onCloseDialog} />
+      {doneOrderDialog?.Component && <doneOrderDialog.Component onClose={onCloseDialog} selectedOrder={selectedOrder!} />}
+      {documentationDialog?.Component && <documentationDialog.Component onClose={onCloseDialog} selectedOrder={selectedOrder!} />}
+      <Table
+        handleFilter={handleFilter}
+        loading={pending}
+        additionalActions={additionalActions}
+        columns={ordersColumns}
+        title="Orders Page"
+        rows={transformedData}
+        dataKey="id"
+        handleChangePage={handleChangePage}
+        currentPage={page}
+        totalPage={count}
+        handleResetFilter={handleResetFilter}
+      />
     </>
   );
 };
