@@ -20,6 +20,7 @@ import { useSearchParams } from "@/hooks/useSearchParams";
 import FilterOrderDialog from "./components/FilterOrderDialog";
 import { FILTER_ORDER_DIALOG_SUBJECT } from "./components/FilterOrderDialog/index.constant";
 import { IFilterOrderFormValidation } from "./components/FilterOrderDialog/index.type";
+import { useFilterDialogLoad } from "./useFilterDialogLoad";
 
 const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const confirm = useConfirm();
@@ -28,6 +29,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const [selectedOrder, setSelectedOrder] = useState<IOrder>();
   const documentationDialog = useDocumentationDialogLoad();
   const doneOrderDialog = useDoneOrderDialogLoad();
+  const filterDialog = useFilterDialogLoad();
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
 
   const transformedData = useMemo(() => {
@@ -56,6 +58,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
     setSelectedOrder(undefined);
     documentationDialog.unLoadComponent();
     doneOrderDialog.unLoadComponent();
+    filterDialog.unLoadComponent();
   };
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
@@ -109,6 +112,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
 
   const handleFilter = () => {
     dispatch(openModal(FILTER_ORDER_DIALOG_SUBJECT));
+    filterDialog.loadComponent();
   };
 
   const additionalActions: TAdditionalTableAction[] = [
@@ -131,7 +135,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
 
   return (
     <>
-      <FilterOrderDialog onChangeFilter={onChangeFilters} onClose={onCloseDialog} />
+      {filterDialog?.Component && <filterDialog.Component onChangeFilter={onChangeFilters} onClose={onCloseDialog} />}
       {doneOrderDialog?.Component && <doneOrderDialog.Component onClose={onCloseDialog} selectedOrder={selectedOrder!} />}
       {documentationDialog?.Component && <documentationDialog.Component onClose={onCloseDialog} selectedOrder={selectedOrder!} />}
       <Table

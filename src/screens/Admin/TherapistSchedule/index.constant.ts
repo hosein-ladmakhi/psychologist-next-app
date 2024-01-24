@@ -1,24 +1,29 @@
-import { ITableColumn } from '@/components/Table/index.type';
+import { ITableColumn } from "@/components/Table/index.type";
 
 export const therapistScheduleColumns: ITableColumn[] = [
   {
-    name: 'startHour',
-    label: 'Start Hour',
+    name: "startHour",
+    label: "Start Hour",
     width: 100,
   },
   {
-    name: 'endHour',
-    label: 'End Hour',
+    name: "endHour",
+    label: "End Hour",
     width: 100,
   },
   {
-    name: 'type',
-    label: 'Session Type',
+    name: "type",
+    label: "Session Type",
     width: 200,
   },
   {
-    name: 'locationAddress',
-    label: 'Location',
+    name: "locationAddress",
+    label: "Location",
     width: 300,
+  },
+  {
+    name: "room",
+    label: "Room",
+    width: 100,
   },
 ];

@@ -1,4 +1,5 @@
-import { ITherapist, ITherapistSchedules } from '@/types/therapist.model';
+import { ITherapist, ITherapistSchedules } from "@/types/therapist.model";
+import { FC } from "react";
 
 export interface ITherapistScheduleByTherapistIdScreenProps {
   schedules: ITherapistSchedules[];
@@ -6,3 +7,5 @@ export interface ITherapistScheduleByTherapistIdScreenProps {
   therapist: ITherapist;
   selectedDay: number;
 }
+
+export type TTherapistScheduleByTherapistIdScreenFC = FC<ITherapistScheduleByTherapistIdScreenProps>;

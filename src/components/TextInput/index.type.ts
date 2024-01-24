@@ -6,6 +6,7 @@ export interface ITextInputProps {
   label: string;
   rows?: number;
   multiline?: boolean;
+  disabled?: boolean;
 }
 
 export type ITextInputFC = FC<ITextInputProps>;

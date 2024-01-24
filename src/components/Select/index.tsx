@@ -10,7 +10,7 @@ const Select: TSelectFC = ({ control, name, defaultValue, label, id, options, mu
       control={control}
       render={({ field, formState }) => {
         return (
-          <FormControl fullWidth>
+          <FormControl margin="dense" fullWidth>
             <InputLabel id={id}>{label}</InputLabel>
             <MuiSelect
               defaultChecked
