@@ -1,7 +1,7 @@
-import { createTheme } from '@mui/material/styles';
-import { muiColorPalette } from './color';
-import { figtreeFont } from '../fonts/figtree-font';
-import { vazirFont } from '../fonts/vazir-font';
+import { createTheme } from "@mui/material/styles";
+import { muiColorPalette } from "./color";
+import { figtreeFont } from "../fonts/figtree-font";
+import { vazirFont } from "../fonts/vazir-font";
 
 export const muiTheme = createTheme({
   typography: {
@@ -16,11 +16,11 @@ export const muiTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'capitalize',
+          textTransform: "capitalize",
         },
       },
       defaultProps: {
-        variant: 'contained',
+        variant: "contained",
       },
     },
   },

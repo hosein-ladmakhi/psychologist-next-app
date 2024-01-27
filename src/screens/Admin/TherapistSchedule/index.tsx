@@ -6,16 +6,20 @@ import Table from "@/components/Table";
 import { therapistScheduleColumns } from "./index.constant";
 import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 import { DATES } from "@/constants";
-import { useMemo } from "react";
+import { useMemo, useTransition } from "react";
 import CreateNewSchedule from "./components/CreateNewSchedule";
 import { useDispatch } from "react-redux";
-import { openModal } from "@/store/slices/modalSlices";
+import { closeModal, openModal } from "@/store/slices/modalSlices";
 import { CREATE_NEW_SCHEDULE_SUBJECT } from "./components/CreateNewSchedule/index.constant";
+import { deleteScheduleByIdAction } from "@/app/(admin)/admin/therapists/schedules/[therapistId]/[day]/actions";
+import { errorNotify, successNotify } from "@/utils/notify";
 
 const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScreenFC = ({ schedules, schedulesCount, therapist, selectedDay }) => {
   const dispatch = useDispatch();
+  const [pending, handleTransition] = useTransition();
 
   const selectedDayText = (DATES as any)[selectedDay!];
+
   const transformedSchedule = useMemo(() => {
     return schedulesCount === 0
       ? []
@@ -29,16 +33,31 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
     dispatch(openModal(CREATE_NEW_SCHEDULE_SUBJECT));
   };
 
+  const onClose = () => {
+    dispatch(closeModal());
+  };
+
+  const handleDelete = (selectedSchedule: any) => {
+    handleTransition(async () => {
+      const res = await deleteScheduleByIdAction(selectedSchedule?.id);
+      if (res) successNotify("This schedule deleted successfully ...");
+      else errorNotify("This schedule delete process has failed ...");
+      onClose();
+    });
+  };
+
   return (
     <div>
       {schedulesCount === 0 && (
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography>No Schedule Exist</Typography>
-          <Button color="secondary">Create New Schedule</Button>
+          <Button onClick={handleCreate} color="secondary">
+            Create New Schedule
+          </Button>
         </Box>
       )}
 
-      <CreateNewSchedule therapist={therapist} day={selectedDay} dayText={selectedDayText} />
+      <CreateNewSchedule onClose={onClose} therapist={therapist} day={selectedDay} dayText={selectedDayText} />
 
       {schedulesCount > 0 && (
         <Table
@@ -48,7 +67,7 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
           title={`${therapist?.firstName} ${therapist?.lastName} - ${selectedDayText}`}
           currentPage={1}
           totalPage={calculateTotalPageTable(schedulesCount)}
-          handleDelete={() => {}}
+          handleDelete={handleDelete}
           handleCreate={handleCreate}
           createButtonLabel="Create New Schedule"
         />

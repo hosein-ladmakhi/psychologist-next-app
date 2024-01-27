@@ -7,19 +7,19 @@ import { vazirFont } from "@/core/fonts/vazir-font";
 import { Toaster } from "react-hot-toast";
 import ReduxProvider from "@/providers/ReduxProvider";
 import RouteLoadingProvider from "@/providers/RouteLoadingProvider";
-import MuiDatePickerProvider from "@/providers/MuiDatePickerProvider";
+import LocalizationPickerProvider from "@/providers/LocalizationPickerProvider";
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html>
       <body className={`${figtreeFont.className} ${vazirFont.className}`}>
         <ReduxProvider>
-          <MuiDatePickerProvider>
-            <RouteLoadingProvider>
+          <RouteLoadingProvider>
+            <LocalizationPickerProvider>
               <Toaster />
               <MuiProvider>{children}</MuiProvider>
-            </RouteLoadingProvider>
-          </MuiDatePickerProvider>
+            </LocalizationPickerProvider>
+          </RouteLoadingProvider>
         </ReduxProvider>
       </body>
     </html>

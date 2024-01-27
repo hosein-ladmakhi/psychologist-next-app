@@ -1,30 +1,29 @@
-import { IBaseEntity, IBaseUser, IDatasourcePageRes } from './base.model';
-import { ICategory } from './category.model';
-import { ILocation } from './location.model';
+import { IBaseEntity, IBaseUser, IDatasourcePageRes } from "./base.model";
+import { ICategory } from "./category.model";
+import { ILocation } from "./location.model";
 
 export enum EDegtreeOfEducation {
-  diploma = 'diploma',
-  associate = 'associate',
-  bachelor = 'bachelor',
-  master = 'master',
-  doctorate = 'doctorate',
+  diploma = "diploma",
+  associate = "associate",
+  bachelor = "bachelor",
+  master = "master",
+  doctorate = "doctorate",
 }
 
 export enum ETherapistScheduleType {
-  online = 'online',
-  onsite = 'onsite',
-  both = 'both',
+  online = "online",
+  onsite = "onsite",
+  both = "both",
 }
 
 export enum EGender {
-  male = 'male',
-  female = 'female',
+  male = "male",
+  female = "female",
 }
 
 export type TTherapistsPageRes = IDatasourcePageRes<ITherapist>;
 
-export type TTherapistSchedulesPageRes =
-  IDatasourcePageRes<ITherapistSchedules>;
+export type TTherapistSchedulesPageRes = IDatasourcePageRes<ITherapistSchedules>;
 
 export type TTherapistSchedulesResPerDay = {
   day: number;
@@ -74,4 +73,14 @@ export interface ICreateOrEditTherapistReqBody {
   gender: EGender;
   image: string;
   workingFields: number[];
+}
+
+export interface IAddNewScheduleToTherapistReqBody {
+  day: number;
+  therapist: number;
+  type: ETherapistScheduleType;
+  room: number;
+  location: number;
+  endTime: string;
+  startTime: string;
 }
