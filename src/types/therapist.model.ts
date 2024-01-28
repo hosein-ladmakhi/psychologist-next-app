@@ -25,6 +25,8 @@ export type TTherapistsPageRes = IDatasourcePageRes<ITherapist>;
 
 export type TTherapistSchedulesPageRes = IDatasourcePageRes<ITherapistSchedules>;
 
+export type TTherapistSchedulesDayOffPageRes = IDatasourcePageRes<ITherapistSchedulesOff>;
+
 export type TTherapistSchedulesResPerDay = {
   day: number;
   items: ITherapistSchedules[];
@@ -83,4 +85,9 @@ export interface IAddNewScheduleToTherapistReqBody {
   location: number;
   endTime: string;
   startTime: string;
+}
+
+export interface IAddNewOffDayReqBody {
+  date: string;
+  schedule: number;
 }

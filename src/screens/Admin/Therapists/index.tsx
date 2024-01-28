@@ -1,7 +1,7 @@
 "use client";
 
 import Table from "@/components/Table";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { TTherapistsScreenFC } from "./index.type";
 import { therapistsColumns } from "./index.constant";
 import { TAdditionalTableAction } from "@/types/base.model";
@@ -20,13 +20,14 @@ import { useFilterDialogLoad } from "./useFilterDialogLoad";
 import { useCreateOrEditDialogLoad } from "./useCreateOrEditDialogLoad";
 import { useViewDialogLoad } from "./useViewDialogLoad";
 import { useScheduleDialogLoad } from "./useScheduleDialogLoad";
+import { useRouter } from "next/navigation";
 
 const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
   const dispatch = useStoreDispatch();
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedTherapist, setSelectedTherapist] = useState<ITherapist>();
   const [pending, handleTransition] = useTransition();
-
+  const router = useRouter();
   const filterDialog = useFilterDialogLoad();
   const createOrEditDialog = useCreateOrEditDialogLoad();
   const viewDialog = useViewDialogLoad();
@@ -70,6 +71,11 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
     scheduleDialog.loadComponent();
   };
 
+  const handleScheduleTherapistOffDay = (data: Object) => {
+    const therapist = data as ITherapist;
+    router.push(`/admin/therapists/off-day/${therapist.id}`);
+  };
+
   const additionalActions: TAdditionalTableAction[] = [
     {
       color: "secondary",
@@ -80,6 +86,11 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
       color: "success",
       onClick: handleScheduleTherapistDialog,
       text: "Plan",
+    },
+    {
+      color: "warning",
+      onClick: handleScheduleTherapistOffDay,
+      text: "Off Day",
     },
   ];
 
@@ -102,6 +113,10 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
     });
   };
 
+  const tranformedData = useMemo(() => {
+    return data.map((therapist) => ({ ...therapist, fullName: therapist.firstName + " " + therapist.lastName }));
+  }, [data]);
+
   return (
     <>
       {createOrEditDialog.Component && <createOrEditDialog.Component selectedTherapist={selectedTherapist} onClose={onCloseDialog} />}
@@ -116,7 +131,7 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
         title="Therapists Page"
         columns={therapistsColumns}
         dataKey="id"
-        rows={data}
+        rows={tranformedData}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         handleCreate={handleCreate}

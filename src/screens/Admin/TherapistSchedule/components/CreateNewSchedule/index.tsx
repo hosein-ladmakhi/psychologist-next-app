@@ -102,7 +102,7 @@ const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onCl
             <RadioGroup control={control} label="Select Your Schedule Type" id="schedule-label" name="type" radios={SCHEDULE_TYPE_OPTIONS} />
           </Grid>
           <Grid item md={12}>
-            <Button type="submit" fullWidth>
+            <Button loading={pending} type="submit" fullWidth>
               Submit
             </Button>
           </Grid>

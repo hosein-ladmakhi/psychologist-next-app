@@ -1,39 +1,29 @@
-import { ITableColumn } from '@/components/Table/index.type';
+import { ITableColumn } from "@/components/Table/index.type";
 
 export const therapistsColumns: ITableColumn[] = [
   {
-    label: 'Id',
-    name: 'id',
+    label: "Id",
+    name: "id",
+    width: 50,
+  },
+  {
+    label: "Full Name",
+    name: "fullName",
+    width: 250,
+  },
+  {
+    label: "Phone 1",
+    name: "phone",
+    width: 200,
+  },
+  {
+    label: "Phone 2",
+    name: "phone2",
+    width: 200,
+  },
+  {
+    label: "Gender",
+    name: "gender",
     width: 100,
-  },
-  {
-    label: 'First Name',
-    name: 'firstName',
-    width: 250,
-  },
-  {
-    label: 'Last Name',
-    name: 'lastName',
-    width: 250,
-  },
-  {
-    label: 'Phone Number 1',
-    name: 'phone',
-    width: 250,
-  },
-  {
-    label: 'Phone Number 2',
-    name: 'phone2',
-    width: 250,
-  },
-  {
-    label: 'Gender',
-    name: 'gender',
-    width: 250,
-  },
-  {
-    label: 'Degree',
-    name: 'degreeOfEducation',
-    width: 250,
   },
 ];

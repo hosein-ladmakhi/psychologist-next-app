@@ -51,7 +51,7 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
       {schedulesCount === 0 && (
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography>No Schedule Exist</Typography>
-          <Button onClick={handleCreate} color="secondary">
+          <Button disabled={pending} onClick={handleCreate} color="secondary">
             Create New Schedule
           </Button>
         </Box>
@@ -70,6 +70,7 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
           handleDelete={handleDelete}
           handleCreate={handleCreate}
           createButtonLabel="Create New Schedule"
+          loading={pending}
         />
       )}
     </div>

@@ -41,7 +41,7 @@ const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
           </List>
         </Toolbar>
       </AppBar>
-      <Container>{children}</Container>
+      <Container maxWidth="xl">{children}</Container>
     </>
   );
 };
