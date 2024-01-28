@@ -44,8 +44,10 @@ export const addNewSchedule = (data: IAddNewScheduleToTherapistReqBody) =>
 
 export const deleteScheduleById = (id: number) => httpDelete<ITherapistSchedules>(`${API_URL}/therapist-schedules/${id}`);
 
-export const getTherapistScheduleDayOff = (id: number) =>
-  httpGet<TTherapistSchedulesDayOffPageRes>(`${API_URL}/therapist-schedules-day-off/therapists/${id}`, undefined, ["therapist-schedule-days-off"]);
+export const getTherapistScheduleDayOff = (id: number, filterObject: Object = {}) =>
+  httpGet<TTherapistSchedulesDayOffPageRes>(`${API_URL}/therapist-schedules-day-off/therapists/${id}${prepareQueryParams(filterObject)}`, undefined, [
+    "therapist-schedule-days-off",
+  ]);
 
 export const deleteTherapistDaysOff = (id: number) => httpDelete<ITherapistSchedulesOff>(`${API_URL}/therapist-schedules-day-off/${id}`);
 

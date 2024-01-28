@@ -12,9 +12,11 @@ import AddNewOffDayDialog from "./components/AddNewOffDayDialog";
 import { useDispatch } from "react-redux";
 import { closeModal, openModal } from "@/store/slices/modalSlices";
 import { ADD_NEW_OFF_DAY_DIALOG_SUBJECT } from "./components/AddNewOffDayDialog/index.constant";
+import { useSearchParams } from "@/hooks/useSearchParams";
 
-const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ content, therapist }) => {
+const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ content, therapist, count, page }) => {
   const [pending, handleTransition] = useTransition();
+  const { onChangeSearchParams } = useSearchParams();
   const dispatch = useDispatch();
 
   const handleCreate = () => {
@@ -28,6 +30,8 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
       else errorNotify("Unable To Delete ...");
     });
   };
+
+  const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
   const onCloseDialog = () => {
     dispatch(closeModal());
@@ -46,6 +50,7 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
   }, [content]);
 
   const therapistFullName = therapist?.firstName + " " + therapist?.lastName;
+
   return (
     <>
       <AddNewOffDayDialog onClose={onCloseDialog} therapist={therapist} />
@@ -57,6 +62,9 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
         rows={transformedData}
         title={`${therapistFullName} Days Off`}
         dataKey="id"
+        currentPage={page}
+        totalPage={count}
+        handleChangePage={handleChangePage}
         loading={pending}
       />
     </>
