@@ -3,8 +3,9 @@ import { FC } from "react";
 
 export interface IPatientsProps {
   data: IPatient[];
-  total: number;
+  totalPage: number;
   page: number;
+  count: number;
 }
 
 export type TPatientsScreenFC = FC<IPatientsProps>;

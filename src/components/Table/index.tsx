@@ -113,7 +113,7 @@ const Table: TTableFC = ({
 
         {loading && <LinearProgress />}
       </Box>
-      {typeof currentPage !== typeof undefined && (
+      {typeof currentPage !== typeof undefined && totalPage > 1 && (
         <Box mt="30px" width="100%" display="flex" justifyContent="center" alignItems="center">
           <Pagination color="secondary" page={currentPage} count={totalPage} onChange={(_, page: number) => handleChangePage(page)} />
         </Box>

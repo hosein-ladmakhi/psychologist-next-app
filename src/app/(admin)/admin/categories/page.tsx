@@ -3,6 +3,13 @@ import { getCategories } from "@/services/category.service";
 import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 import { TCategoriesPageFC } from "./page.type";
 import { prepareCategoriesPageQueryParam } from "./prepare-query";
+import { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Categories",
+};
 
 const CategoriesPage: TCategoriesPageFC = async ({ searchParams }) => {
   const currentPage = +(searchParams.page || "1");

@@ -2,6 +2,13 @@ import OrdersScreen from "@/screens/Admin/Orders";
 import { TOrdersPageFC } from "./page.type";
 import { getOrders } from "@/services/order.service";
 import { prepareOrdersPageQueryParam } from "./prepare-query";
+import { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Orders",
+};
 
 const OrdersPage: TOrdersPageFC = async ({ searchParams }) => {
   const currentPage = +(searchParams.page || "1");

@@ -13,6 +13,7 @@ import { closeModal, openModal } from "@/store/slices/modalSlices";
 import { CREATE_NEW_SCHEDULE_SUBJECT } from "./components/CreateNewSchedule/index.constant";
 import { deleteScheduleByIdAction } from "@/app/(admin)/admin/therapists/schedules/[therapistId]/[day]/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
+import FlexBox from "@/components/FlexBox";
 
 const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScreenFC = ({ schedules, schedulesCount, therapist, selectedDay }) => {
   const dispatch = useDispatch();
@@ -49,12 +50,14 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
   return (
     <div>
       {schedulesCount === 0 && (
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography>No Schedule Exist</Typography>
+        <FlexBox justifyContent="space-between">
+          <Typography variant="body1" component="h1" fontWeight="bold">
+            No Schedule Exist
+          </Typography>
           <Button disabled={pending} onClick={handleCreate} color="secondary">
             Create New Schedule
           </Button>
-        </Box>
+        </FlexBox>
       )}
 
       <CreateNewSchedule onClose={onClose} therapist={therapist} day={selectedDay} dayText={selectedDayText} />

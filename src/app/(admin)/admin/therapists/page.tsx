@@ -3,8 +3,13 @@ import { getTherapists } from "@/services/therapist.service";
 import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 import { ITherapistsPageFC } from "./page.type";
 import { prepareTherapistsPageQueryParam } from "./prepare-query";
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Therapists",
+};
 
 const TherapistsPage: ITherapistsPageFC = async ({ searchParams }) => {
   const currentPage = +(searchParams.page || "1");

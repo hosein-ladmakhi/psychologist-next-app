@@ -1,9 +1,15 @@
 import TherapistScheduleByTherapistIdScreen from "@/screens/Admin/TherapistSchedule";
-import { FC } from "react";
-import { ITherapistScheduleByTherapistIdPageProps } from "./page.type";
+import { TNextPage, TTherapistScheduleByTherapistIdPageFC } from "./page.type";
 import { getSchedulesBasedOnTherapistAndDay, getTherapistById } from "@/services/therapist.service";
+import { Metadata } from "next";
 
-const TherapistScheduleByTherapistIdPage: FC<ITherapistScheduleByTherapistIdPageProps> = async ({ params }) => {
+export const generateMetadata = async ({ params }: TNextPage): Promise<Metadata> => {
+  const therapistId = +params.therapistId;
+  const therapist = await getTherapistById(therapistId);
+  return { title: `${therapist.firstName} ${therapist.lastName}` };
+};
+
+const TherapistScheduleByTherapistIdPage: TTherapistScheduleByTherapistIdPageFC = async ({ params }) => {
   const schedules = await getSchedulesBasedOnTherapistAndDay(params.therapistId, params.day);
   const therapist = await getTherapistById(params.therapistId);
 

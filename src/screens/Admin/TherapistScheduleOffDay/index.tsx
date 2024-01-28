@@ -13,6 +13,9 @@ import { useDispatch } from "react-redux";
 import { closeModal, openModal } from "@/store/slices/modalSlices";
 import { ADD_NEW_OFF_DAY_DIALOG_SUBJECT } from "./components/AddNewOffDayDialog/index.constant";
 import { useSearchParams } from "@/hooks/useSearchParams";
+import FlexBox from "@/components/FlexBox";
+import { Typography } from "@mui/material";
+import Button from "@/components/Button";
 
 const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ content, therapist, count, page }) => {
   const [pending, handleTransition] = useTransition();
@@ -54,19 +57,32 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
   return (
     <>
       <AddNewOffDayDialog onClose={onCloseDialog} therapist={therapist} />
-      <Table
-        createButtonLabel="Add New Days Off"
-        handleCreate={handleCreate}
-        handleDelete={handleDelete}
-        columns={therapistScheduleOffDayColumns}
-        rows={transformedData}
-        title={`${therapistFullName} Days Off`}
-        dataKey="id"
-        currentPage={page}
-        totalPage={count}
-        handleChangePage={handleChangePage}
-        loading={pending}
-      />
+      {count === 0 && (
+        <FlexBox justifyContent="space-between">
+          <Typography variant="body1" component="h1" fontWeight="bold">
+            No Days Off Schedule Exist
+          </Typography>
+          <Button disabled={pending} onClick={handleCreate} color="secondary">
+            Create New Days Off
+          </Button>
+        </FlexBox>
+      )}
+
+      {count > 0 && (
+        <Table
+          createButtonLabel="Add New Days Off"
+          handleCreate={handleCreate}
+          handleDelete={handleDelete}
+          columns={therapistScheduleOffDayColumns}
+          rows={transformedData}
+          title={`${therapistFullName} Days Off`}
+          dataKey="id"
+          currentPage={page}
+          totalPage={count}
+          handleChangePage={handleChangePage}
+          loading={pending}
+        />
+      )}
     </>
   );
 };

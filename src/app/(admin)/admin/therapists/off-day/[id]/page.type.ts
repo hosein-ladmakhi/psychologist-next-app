@@ -9,6 +9,8 @@ export interface ITherapistsOffDayParams {
   id: number;
 }
 
-export interface ITherapistsOffDayPageProps extends INextPage<ITherapistsOffDayParams, ITherapistsOffDaySearchParams> {}
+export type TNextPage = INextPage<ITherapistsOffDayParams, ITherapistsOffDaySearchParams>;
+
+export interface ITherapistsOffDayPageProps extends TNextPage {}
 
 export type TTherapistsOffDayPageFC = FC<ITherapistsOffDayPageProps>;

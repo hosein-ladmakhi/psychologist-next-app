@@ -1,6 +1,14 @@
 import { AppBar, Container, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
+import { Metadata } from "next";
 import Link from "next/link";
 import { FC, PropsWithChildren } from "react";
+
+export const metadata: Metadata = {
+  title: {
+    template: "Psychologist | %s Page",
+    default: "Main",
+  },
+};
 
 const menusItem: { label: string; href: string }[] = [
   {
