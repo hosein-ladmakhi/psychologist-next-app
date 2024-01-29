@@ -9,3 +9,5 @@ export const getOrders = (filterObject: Object) =>
 
 export const changeOrderStatus = (id: number, data: IOrderChangeStatusReqBody) =>
   httpPatch<IOrderChangeStatusReqBody, IOrder>(`${API_URL}/orders/change-status/${id}`, data);
+
+export const getOwnOrders = (filterObject: Object = {}) => httpGet<TOrdersPageRes>(`${API_URL}/orders/own/page${prepareQueryParams(filterObject)}`);
