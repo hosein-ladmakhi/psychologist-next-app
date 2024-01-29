@@ -1,3 +1,4 @@
+import AppHeader from "@/components/AppHeader";
 import { AppBar, Container, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-const menusItem: { label: string; href: string }[] = [
+const menuItems: { label: string; href: string }[] = [
   {
     href: "/admin/patients",
     label: "Patients",
@@ -36,19 +37,7 @@ const menusItem: { label: string; href: string }[] = [
 const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <AppBar sx={{ marginBottom: "40px" }} position="static">
-        <Toolbar>
-          <List sx={{ display: "flex" }}>
-            {menusItem.map((item) => (
-              <ListItem key={item.label}>
-                <ListItemButton href={item.href} LinkComponent={Link}>
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Toolbar>
-      </AppBar>
+      <AppHeader menuItems={menuItems} />
       <Container maxWidth="xl">{children}</Container>
     </>
   );

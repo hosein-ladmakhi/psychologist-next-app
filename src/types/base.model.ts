@@ -27,3 +27,5 @@ export type TAdditionalTableAction = {
 };
 
 export type TSelectOptions = { key: string; value: string | number };
+
+export type THeaderItem = { href: string; label: string };
