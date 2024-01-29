@@ -3,27 +3,27 @@
 import Table from "@/components/Table";
 import { TTherapistScheduleOffDayScreenFC } from "./index.type";
 import { therapistScheduleOffDayColumns } from "./index.constant";
-import { useMemo, useTransition } from "react";
-import { DATES } from "@/constants";
+import { Suspense, useMemo, useState, useTransition } from "react";
 import moment from "moment";
 import { deleteDaysOffAction } from "@/app/(admin)/admin/therapists/off-day/[id]/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
-import AddNewOffDayDialog from "./components/AddNewOffDayDialog";
-import { useDispatch } from "react-redux";
-import { closeModal, openModal } from "@/store/slices/modalSlices";
-import { ADD_NEW_OFF_DAY_DIALOG_SUBJECT } from "./components/AddNewOffDayDialog/index.constant";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import FlexBox from "@/components/FlexBox";
 import { Typography } from "@mui/material";
 import Button from "@/components/Button";
+import dynamic from "next/dynamic";
+import { getDate } from "@/utils/getDate";
+import { APP_DATE_FORMAT } from "@/constants";
+
+const AddNewOffDayDialog = dynamic(() => import("./components/AddNewOffDayDialog"));
 
 const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ content, therapist, count, page }) => {
   const [pending, handleTransition] = useTransition();
   const { onChangeSearchParams } = useSearchParams();
-  const dispatch = useDispatch();
+  const [isShowAddOffDayDialog, setShowAddOffDayDialogStatus] = useState<boolean>(false);
 
   const handleCreate = () => {
-    dispatch(openModal(ADD_NEW_OFF_DAY_DIALOG_SUBJECT));
+    setShowAddOffDayDialogStatus(true);
   };
 
   const handleDelete = (data: any) => {
@@ -37,18 +37,18 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
   const onCloseDialog = () => {
-    dispatch(closeModal());
+    setShowAddOffDayDialogStatus(false);
   };
 
   const transformedData = useMemo(() => {
     return content.map((data) => ({
       ...data,
-      day: (DATES as any)[data.schedule.day],
+      day: getDate(data.schedule.day),
       time: `${data.schedule.startHour}_${data.schedule.endHour}`,
       type: data.schedule.type,
       location: `${data.schedule.location.city} - ${data.schedule.location.address}`,
       room: data.schedule.room,
-      date: moment(data.date).format("YYYY-MM-DD"),
+      date: moment(data.date).format(APP_DATE_FORMAT),
     }));
   }, [content]);
 
@@ -56,7 +56,11 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
 
   return (
     <>
-      <AddNewOffDayDialog onClose={onCloseDialog} therapist={therapist} />
+      {isShowAddOffDayDialog && (
+        <Suspense fallback={<></>}>
+          <AddNewOffDayDialog onClose={onCloseDialog} therapist={therapist} />
+        </Suspense>
+      )}
       {count === 0 && (
         <FlexBox justifyContent="space-between">
           <Typography variant="body1" component="h1" fontWeight="bold">

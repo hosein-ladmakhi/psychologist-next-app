@@ -1,5 +1,4 @@
 import Modal from "@/components/Modal";
-import { FILTER_THERAPIST_SUBJECT } from "./index.constant";
 import { Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { TFilterTherapistDialogFC, TFilterTherapistFormValidation } from "./index.type";
@@ -15,7 +14,7 @@ const FilterTherapistDialog: TFilterTherapistDialogFC = ({ onClose, onChangeFilt
   });
 
   return (
-    <Modal size="sm" subject={FILTER_THERAPIST_SUBJECT} handleClose={onClose} title="Filter Tables">
+    <Modal size="sm" opened handleClose={onClose} title="Filter Tables">
       <form onSubmit={onSubmit}>
         <TextInput name="firstName" label="First Name" control={control} />
         <TextInput name="lastName" label="Last Name" control={control} />

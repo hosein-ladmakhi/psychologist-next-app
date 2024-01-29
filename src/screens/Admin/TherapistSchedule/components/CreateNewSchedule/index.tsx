@@ -1,11 +1,9 @@
 import Modal from "@/components/Modal";
 import { TCreateNewScheduleFC, TCreateNewScheduleFormValidation } from "./index.type";
-import { CREATE_NEW_SCHEDULE_SUBJECT, SCHEDULE_TYPE_OPTIONS, createNewScheduleFormValidation } from "./index.constant";
+import { SCHEDULE_TYPE_OPTIONS, createNewScheduleFormValidation } from "./index.constant";
 import TextInput from "@/components/TextInput";
 import { useForm } from "react-hook-form";
-import { useEffect, useState, useTransition } from "react";
-import { TSelectOptions } from "@/types/base.model";
-import { getLocations } from "@/services/location.service";
+import { useEffect, useTransition } from "react";
 import Select from "@/components/Select";
 import TimePicker from "@/components/TimePicker";
 import RadioGroup from "@/components/RadioGroup";
@@ -16,10 +14,9 @@ import moment from "moment";
 import { addNewScheduleAction } from "@/app/(admin)/admin/therapists/schedules/[therapistId]/[day]/actions";
 import { IAddNewScheduleToTherapistReqBody } from "@/types/therapist.model";
 import { errorNotify, successNotify } from "@/utils/notify";
+import useLocations from "@/hooks/api/useLocations";
 
 const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onClose }) => {
-  const [locationsOption, setLocationsOption] = useState<TSelectOptions[]>([]);
-  const [locationsOptionLoading, setLocationsOptionLoading] = useState<boolean>(false);
   const [pending, handleTransition] = useTransition();
   const { control, setValue, handleSubmit, setError, reset } = useForm<TCreateNewScheduleFormValidation>({
     resolver: zodResolver(createNewScheduleFormValidation),
@@ -27,17 +24,8 @@ const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onCl
     mode: "all",
     reValidateMode: "onBlur",
   });
-
-  useEffect(() => {
-    setLocationsOptionLoading(true);
-    getLocations({ limit: 100000 })
-      .then((data) => {
-        setLocationsOption(data.content.map((location) => ({ value: location.id, key: `${location.city} - ${location.address}` })));
-      })
-      .finally(() => {
-        setLocationsOptionLoading(false);
-      });
-  }, []);
+  const { locations, locationsLoading } = useLocations(100000);
+  const locationsOption = locations.map((location) => ({ value: location.id, key: `${location.city} - ${location.address}` }));
 
   useEffect(() => {
     setValue("day", dayText);
@@ -70,7 +58,7 @@ const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onCl
   });
 
   return (
-    <Modal size="xl" subject={CREATE_NEW_SCHEDULE_SUBJECT} title="Create Schedule">
+    <Modal size="xl" opened title="Create Schedule">
       <form onSubmit={onSubmit}>
         <Grid container spacing={3}>
           <Grid item md={6}>
@@ -80,14 +68,7 @@ const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onCl
             <TextInput disabled name="therapist" control={control} label="Therapist" />
           </Grid>
           <Grid item md={6}>
-            <Select
-              control={control}
-              id="location-label"
-              label="Location"
-              name="location"
-              options={locationsOption}
-              disabled={locationsOptionLoading}
-            />
+            <Select control={control} id="location-label" label="Location" name="location" options={locationsOption} disabled={locationsLoading} />
           </Grid>
           <Grid item md={6}>
             <TextInput name="room" control={control} label="Room" />

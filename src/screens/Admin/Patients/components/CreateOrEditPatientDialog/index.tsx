@@ -3,7 +3,6 @@ import { TCreateOrEditPatientDialogFC, TCreateOrEditPatientFormValidation } from
 import { createNewPatientAction, editPatientAction } from "@/app/(admin)/admin/patients/actions";
 import Modal from "@/components/Modal";
 import { Box } from "@mui/material";
-import { UPSERT_PATIENT_SUBJECT } from "./index.constant";
 import TextInput from "@/components/TextInput";
 import { useCreateOrEditPatientForm } from "./useForm";
 import Button from "@/components/Button";
@@ -37,7 +36,7 @@ const CreateOrEditPatientDialog: TCreateOrEditPatientDialogFC = ({ onClose, sele
   const modalTitle = selectedPatient ? "Edit Patient" : "Create New Patient";
 
   return (
-    <Modal title={modalTitle} size="lg" handleClose={onClose} subject={UPSERT_PATIENT_SUBJECT}>
+    <Modal title={modalTitle} size="lg" handleClose={onClose} opened>
       <form onSubmit={onCreateOrEditPatient}>
         <TextInput label="First Name" name="firstName" control={control} />
         <TextInput label="Last Name" name="lastName" control={control} />

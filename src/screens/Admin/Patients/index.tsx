@@ -2,32 +2,29 @@
 
 import Table from "@/components/Table";
 import { IPatient } from "@/types/patient.model";
-import { useMemo, useState, useTransition } from "react";
+import { Suspense, useMemo, useState, useTransition } from "react";
 import DeletePatientConfirmation from "./components/DeletePatientConfirmation";
 import { deletePatientAction } from "@/app/(admin)/admin/patients/actions";
 import { TPatientsScreenFC } from "./index.type";
-import { UPSERT_PATIENT_SUBJECT } from "./components/CreateOrEditPatientDialog/index.constant";
-import { FILTER_PATIENT_SUBJECT } from "./components/FilterPatientDialog/index.constant";
-import { useStoreDispatch } from "@/hooks/useStoreDispatch";
-import { closeModal, openModal } from "@/store/slices/modalSlices";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { TFilterPatientDialogFC, TFilterPatientFormValidation } from "./components/FilterPatientDialog/index.type";
+import { TFilterPatientFormValidation } from "./components/FilterPatientDialog/index.type";
 import { TAdditionalTableAction } from "@/types/base.model";
-import { VIEW_ORDERS_DIALOG } from "./components/ViewOrdersDialog/index.constant";
 import { patientsColumn } from "./index.constant";
 import { errorNotify, successNotify } from "@/utils/notify";
-import { useLazyComponent } from "@/hooks/useLazyComponent";
-import { TCreateOrEditPatientDialogFC } from "./components/CreateOrEditPatientDialog/index.type";
-import { TViewOrdersDialogFC } from "./components/ViewOrdersDialog/index.type";
+import dynamic from "next/dynamic";
+
+const CreateOrEditPatientDialog = dynamic(() => import("./components/CreateOrEditPatientDialog"));
+const ViewOrdersDialog = dynamic(() => import("./components/ViewOrdersDialog"));
+const FilterPatientDialog = dynamic(() => import("./components/FilterPatientDialog"));
 
 const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => {
-  const dispatch = useStoreDispatch();
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedPatient, setSelectedPatient] = useState<IPatient>();
   const [pending, handleTransition] = useTransition();
-  const createOrEditDialog = useLazyComponent<TCreateOrEditPatientDialogFC>(import("./components/CreateOrEditPatientDialog"));
-  const viewDialog = useLazyComponent<TViewOrdersDialogFC>(import("./components/ViewOrdersDialog"));
-  const filterDialog = useLazyComponent<TFilterPatientDialogFC>(import("./components/FilterPatientDialog"));
+
+  const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
+  const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
+  const [isShowViewDialog, setShowViewDialogStatus] = useState<boolean>(false);
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page.toString());
 
@@ -45,29 +42,25 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
   };
 
   const handleCreate = () => {
-    dispatch(openModal(UPSERT_PATIENT_SUBJECT));
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   const handleEdit = (data: any) => {
     setSelectedPatient(data);
-    dispatch(openModal(UPSERT_PATIENT_SUBJECT));
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   const handleFilter = () => {
-    dispatch(openModal(FILTER_PATIENT_SUBJECT));
-    filterDialog.loadComponent();
+    setShowFilterDialogStatus(true);
   };
 
   const onChangeFilters = (data: TFilterPatientFormValidation) => onChangeMultipleSearchParams(data);
 
   const onCloseDialog = () => {
-    dispatch(closeModal());
     setSelectedPatient(undefined);
-    createOrEditDialog.unLoadComponent();
-    viewDialog.unLoadComponent();
-    filterDialog.unLoadComponent();
+    setShowCreateOrEditDialogStatus(false);
+    setShowFilterDialogStatus(false);
+    setShowViewDialogStatus(false);
   };
 
   const handleResetFilter = () => {
@@ -80,8 +73,7 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
 
   const handleViewPatient = (data: Object) => {
     setSelectedPatient(data as IPatient);
-    dispatch(openModal(VIEW_ORDERS_DIALOG));
-    viewDialog.loadComponent();
+    setShowViewDialogStatus(true);
   };
 
   const transformedData = useMemo(() => {
@@ -103,9 +95,21 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
 
   return (
     <>
-      {viewDialog.Component && <viewDialog.Component selectedPatient={selectedPatient} />}
-      {createOrEditDialog.Component && <createOrEditDialog.Component selectedPatient={selectedPatient} onClose={onCloseDialog} />}
-      {filterDialog.Component && <filterDialog.Component onChangeFilters={onChangeFilters} onClose={onCloseDialog} />}
+      {isShowViewDialog && (
+        <Suspense fallback={<></>}>
+          <ViewOrdersDialog selectedPatient={selectedPatient} />
+        </Suspense>
+      )}
+      {isShowCreateOrEditDialog && (
+        <Suspense fallback={<></>}>
+          <CreateOrEditPatientDialog selectedPatient={selectedPatient} onClose={onCloseDialog} />
+        </Suspense>
+      )}
+      {isShowFilterDialog && (
+        <Suspense fallback={<></>}>
+          <FilterPatientDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />
+        </Suspense>
+      )}
       <Table
         handleResetFilter={handleResetFilter}
         createButtonLabel="Create Patient"

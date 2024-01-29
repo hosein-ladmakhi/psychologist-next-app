@@ -1,5 +1,4 @@
 import * as zod from "zod";
-export const ADD_NEW_OFF_DAY_DIALOG_SUBJECT = "ADD_NEW_OFF_DAY_DIALOG_SUBJECT";
 
 export const addNewOffDayFormValidation = zod.object({
   date: zod.any(),

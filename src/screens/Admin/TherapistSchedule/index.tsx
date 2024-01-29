@@ -1,25 +1,24 @@
 "use client";
 
 import { TTherapistScheduleByTherapistIdScreenFC } from "./index.type";
-import { Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Table from "@/components/Table";
 import { therapistScheduleColumns } from "./index.constant";
 import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
-import { DATES } from "@/constants";
-import { useMemo, useTransition } from "react";
-import CreateNewSchedule from "./components/CreateNewSchedule";
-import { useDispatch } from "react-redux";
-import { closeModal, openModal } from "@/store/slices/modalSlices";
-import { CREATE_NEW_SCHEDULE_SUBJECT } from "./components/CreateNewSchedule/index.constant";
+import { Suspense, useMemo, useState, useTransition } from "react";
 import { deleteScheduleByIdAction } from "@/app/(admin)/admin/therapists/schedules/[therapistId]/[day]/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import FlexBox from "@/components/FlexBox";
+import dynamic from "next/dynamic";
+import { getDate } from "@/utils/getDate";
+
+const CreateNewSchedule = dynamic(() => import("./components/CreateNewSchedule"));
 
 const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScreenFC = ({ schedules, schedulesCount, therapist, selectedDay }) => {
-  const dispatch = useDispatch();
   const [pending, handleTransition] = useTransition();
+  const [isShowCreateScheduleDialog, setShowCreateScheduleDialogStatus] = useState<boolean>(false);
 
-  const selectedDayText = (DATES as any)[selectedDay!];
+  const selectedDayText = getDate(selectedDay!);
 
   const transformedSchedule = useMemo(() => {
     return schedulesCount === 0
@@ -31,11 +30,11 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
   }, [schedules, schedulesCount]);
 
   const handleCreate = () => {
-    dispatch(openModal(CREATE_NEW_SCHEDULE_SUBJECT));
+    setShowCreateScheduleDialogStatus(true);
   };
 
   const onClose = () => {
-    dispatch(closeModal());
+    setShowCreateScheduleDialogStatus(false);
   };
 
   const handleDelete = (selectedSchedule: any) => {
@@ -60,7 +59,11 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
         </FlexBox>
       )}
 
-      <CreateNewSchedule onClose={onClose} therapist={therapist} day={selectedDay} dayText={selectedDayText} />
+      {isShowCreateScheduleDialog && (
+        <Suspense fallback={<></>}>
+          <CreateNewSchedule onClose={onClose} therapist={therapist} day={selectedDay} dayText={selectedDayText} />
+        </Suspense>
+      )}
 
       {schedulesCount > 0 && (
         <Table

@@ -1,14 +1,14 @@
 import Modal from "@/components/Modal";
 import { TDoneOrderDialogFC } from "./index.type";
-import { DONE_ORDER_DIALOG_SUBJECT } from "./index.constant";
 import { Box, Chip, Grid, LinearProgress, Typography } from "@mui/material";
-import { format } from "date-fns";
-import { DATES } from "@/constants";
 import FlexBox from "@/components/FlexBox";
 import Button from "@/components/Button";
 import { useRef, useTransition } from "react";
 import { uploadDocumentationAndDoneOrderAction } from "@/app/(admin)/admin/orders/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
+import { getDate } from "@/utils/getDate";
+import moment from "moment";
+import { APP_DATE_FORMAT } from "@/constants";
 
 const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -39,7 +39,7 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
   };
 
   return (
-    <Modal handleClose={onClose} size="md" subject={DONE_ORDER_DIALOG_SUBJECT} title="Done Order">
+    <Modal handleClose={onClose} size="md" opened title="Done Order">
       <Typography mb={1} fontWeight="bold" variant="h6" component="h1">
         You Must Upload Documentation File For Confirm Done Process Of This Session
       </Typography>
@@ -48,8 +48,8 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
           <LinearProgress />
         </Box>
       )}
-      {printDetail("Date", format(selectedOrder?.date!, "yyyy-MM-dd"))}
-      {printDetail("Day", (DATES as any)[selectedOrder?.day!])}
+      {printDetail("Date", moment(selectedOrder?.date!).format(APP_DATE_FORMAT))}
+      {printDetail("Day", getDate(selectedOrder?.day!))}
       {printDetail("Start", selectedOrder?.startHour)}
       {printDetail("End", selectedOrder?.endHour)}
       {printDetail("Patient", selectedOrder?.patient?.firstName + " " + selectedOrder?.patient?.lastName)}

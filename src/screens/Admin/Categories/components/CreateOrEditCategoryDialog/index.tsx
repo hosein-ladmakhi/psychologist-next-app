@@ -1,6 +1,5 @@
 import { useTransition } from "react";
 import { TCreateOrEditCategoryDialogFC, TCreateOrEditCategoryFormValidation } from "./index.type";
-import { UPSERT_CATEGORY_SUBJECT } from "./index.constant";
 import { createNewCategoryAction, editCategoryAction } from "@/app/(admin)/admin/categories/actions";
 import Modal from "@/components/Modal";
 import { Box } from "@mui/material";
@@ -37,7 +36,7 @@ const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, se
   const modalTitle = selectedCategory ? "Edit Category" : "Create New Category";
 
   return (
-    <Modal title={modalTitle} size="lg" subject={UPSERT_CATEGORY_SUBJECT} handleClose={onClose}>
+    <Modal title={modalTitle} size="lg" opened handleClose={onClose}>
       <form onSubmit={onCreateOrEditCategory}>
         <TextInput name="faName" label="Farsi Name" control={control} />
         <TextInput name="enName" label="English Name" control={control} />

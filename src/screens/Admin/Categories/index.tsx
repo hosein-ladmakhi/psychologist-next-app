@@ -5,22 +5,19 @@ import { useState, useTransition } from "react";
 import { categoriesColumns } from "./index.constant";
 import { TCategoriesScreenFC } from "./index.type";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { useStoreDispatch } from "@/hooks/useStoreDispatch";
-import { closeModal, openModal } from "@/store/slices/modalSlices";
-import { FILTER_CATEGORY_SUBJECT } from "./components/FilterCategoryDialog/index.constant";
 import { TFilterCategoryFormValidation } from "./components/FilterCategoryDialog/index.type";
 import { deleteCategoryAction } from "@/app/(admin)/admin/categories/actions";
 import { ICategory } from "@/types/category.model";
-import { UPSERT_CATEGORY_SUBJECT } from "./components/CreateOrEditCategoryDialog/index.constant";
 import { errorNotify, successNotify } from "@/utils/notify";
-import { useFilterDialogLoad } from "./useFilterDialogLoad";
-import { useCreateOrEditDialogLoad } from "./useCreateOrEditDialogLoad";
+import dynamic from "next/dynamic";
+
+const FilterCategoryDialog = dynamic(() => import("./components/FilterCategoryDialog"));
+const CreateOrEditCategoryDialog = dynamic(() => import("./components/CreateOrEditCategoryDialog"));
 
 const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
   const [pending, handleTransition] = useTransition();
-  const dispatch = useStoreDispatch();
-  const filterDialog = useFilterDialogLoad();
-  const createOrEditDialog = useCreateOrEditDialogLoad();
+  const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
+  const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
 
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<ICategory>();
@@ -36,15 +33,13 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
   const handleFilter = () => {
-    dispatch(openModal(FILTER_CATEGORY_SUBJECT));
-    filterDialog.loadComponent();
+    setShowFilterDialogStatus(true);
   };
 
   const onCloseDialog = () => {
-    dispatch(closeModal());
     setSelectedCategory(undefined);
-    createOrEditDialog.unLoadComponent();
-    filterDialog.unLoadComponent();
+    setShowCreateOrEditDialogStatus(false);
+    setShowFilterDialogStatus(false);
   };
 
   const handleDelete = (category: Record<string, any>) => {
@@ -59,20 +54,18 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
   const onChangeFilters = (data: TFilterCategoryFormValidation) => onChangeMultipleSearchParams({ ...data, page: 1 });
 
   const handleCreate = () => {
-    dispatch(openModal(UPSERT_CATEGORY_SUBJECT));
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   const handleEdit = (data: any) => {
     setSelectedCategory(data);
-    dispatch(openModal(UPSERT_CATEGORY_SUBJECT));
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   return (
     <>
-      {filterDialog.Component && <filterDialog.Component onChangeFilters={onChangeFilters} onClose={onCloseDialog} />}
-      {createOrEditDialog.Component && <createOrEditDialog.Component onClose={onCloseDialog} selectedCategory={selectedCategory} />}
+      {isShowFilterDialog && <FilterCategoryDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />}
+      {isShowCreateOrEditDialog && <CreateOrEditCategoryDialog onClose={onCloseDialog} selectedCategory={selectedCategory} />}
       <Table
         handleResetFilter={handleResetFilter}
         createButtonLabel="Create New Category"

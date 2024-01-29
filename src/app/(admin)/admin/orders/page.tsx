@@ -3,6 +3,7 @@ import { TOrdersPageFC } from "./page.type";
 import { getOrders } from "@/services/order.service";
 import { prepareOrdersPageQueryParam } from "./prepare-query";
 import { Metadata } from "next";
+import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ const OrdersPage: TOrdersPageFC = async ({ searchParams }) => {
   const currentPage = +(searchParams.page || "1");
   const res = await getOrders(prepareOrdersPageQueryParam(searchParams));
 
-  return <OrdersScreen data={res?.content} count={Math.ceil(res?.count / 10)} page={currentPage} />;
+  return <OrdersScreen data={res?.content} count={calculateTotalPageTable(res.count)} page={currentPage} />;
 };
 
 export default OrdersPage;

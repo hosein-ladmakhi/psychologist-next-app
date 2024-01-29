@@ -1,8 +1,7 @@
 import Modal from "@/components/Modal";
-import { FC, PropsWithChildren, ReactNode } from "react";
-import { VIEW_THERAPIST_SUBJECT } from "./index.constant";
-import { IViewTherapistDialogProps, TViewTherapistDialogFC } from "./index.type";
-import { Avatar, Box, Chip, Typography } from "@mui/material";
+import { PropsWithChildren } from "react";
+import { TViewTherapistDialogFC } from "./index.type";
+import { Avatar, Chip, Typography } from "@mui/material";
 import { API_URL } from "@/constants";
 import Image from "next/image";
 import {
@@ -32,7 +31,7 @@ const ContentText = ({ children }: PropsWithChildren) => {
 
 const ViewTherapistDialog: TViewTherapistDialogFC = ({ selectedTherapist, onClose }) => {
   return (
-    <Modal handleClose={onClose} subject={VIEW_THERAPIST_SUBJECT} title="View Therapist" size="lg">
+    <Modal handleClose={onClose} opened title="View Therapist" size="lg">
       <FlexBox width="100%">
         <Avatar sx={{ height: 80, width: 80, marginBottom: "1rem" }}>
           <Image fill alt="profile-img" src={`${API_URL}${selectedTherapist?.image}`} />

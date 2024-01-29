@@ -2,8 +2,6 @@ import { TSelectOptions } from "@/types/base.model";
 import { ETherapistScheduleType } from "@/types/therapist.model";
 import * as zod from "zod";
 
-export const CREATE_NEW_SCHEDULE_SUBJECT = "CREATE_NEW_SCHEDULE_SUBJECT";
-
 export const SCHEDULE_TYPE_OPTIONS: TSelectOptions[] = [
   {
     key: "Both",

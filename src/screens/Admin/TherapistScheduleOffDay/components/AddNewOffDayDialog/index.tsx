@@ -1,42 +1,31 @@
 import Modal from "@/components/Modal";
 import { TAddNewOffDayDialogFC, TAddNewOffDayFormValidation } from "./index.type";
-import { ADD_NEW_OFF_DAY_DIALOG_SUBJECT, addNewOffDayFormValidation } from "./index.constant";
+import { addNewOffDayFormValidation } from "./index.constant";
 import { useForm } from "react-hook-form";
 import TextInput from "@/components/TextInput";
-import { useEffect, useMemo, useState, useTransition } from "react";
-import { getSchedulesTherapist } from "@/services/therapist.service";
-import { DATES } from "@/constants";
+import { useEffect, useMemo, useTransition } from "react";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
 import { Box } from "@mui/material";
 import DatePicker from "@/components/DatePicker";
-import { IAddNewOffDayReqBody, ITherapistSchedules } from "@/types/therapist.model";
+import { IAddNewOffDayReqBody } from "@/types/therapist.model";
 import moment from "moment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useConfirm } from "material-ui-confirm";
 import { addDaysOfAction } from "@/app/(admin)/admin/therapists/off-day/[id]/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
+import { getDate } from "@/utils/getDate";
+import useTherapistSchedule from "@/hooks/api/useTherapistSchedule";
+import { APP_DATE_FORMAT } from "@/constants";
 
 const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
   const confirmation = useConfirm();
   const [pending, handleTransition] = useTransition();
-  const [therapistSchedules, setTherapistSchedules] = useState<ITherapistSchedules[]>([]);
-  const [therapistSchedulesLoading, setTherapistSchedulesLoading] = useState<boolean>(false);
+  const { therapistSchedules, therapistSchedulesLoading } = useTherapistSchedule(therapist.id, 1000000);
   const { control, setValue, watch, handleSubmit, setError } = useForm<TAddNewOffDayFormValidation>({
     resolver: zodResolver(addNewOffDayFormValidation),
     defaultValues: { date: moment() },
   });
-
-  useEffect(() => {
-    setTherapistSchedulesLoading(true);
-    getSchedulesTherapist(therapist.id, { limit: 100000 })
-      .then(({ content }) => {
-        setTherapistSchedules(content);
-      })
-      .finally(() => {
-        setTherapistSchedulesLoading(false);
-      });
-  }, [therapist.id]);
 
   useEffect(() => {
     setValue("therapist", `${therapist?.firstName} ${therapist?.lastName}`);
@@ -45,7 +34,7 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
   useEffect(() => {
     const date = watch("date");
     if (moment(date).isValid()) {
-      setValue("day", (DATES as any)[moment(date).isoWeekday().toString()]);
+      setValue("day", getDate(moment(date).isoWeekday()));
     } else {
       setValue("day", "Unknown Day");
     }
@@ -59,9 +48,9 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
       data = data.filter((element) => element.day === dayNumber);
     }
     return data.map((schedule) => ({
-      key: `${schedule.location.city} ${schedule.location.address} Room ${schedule.room} - ( ${(DATES as any)[schedule.day]} ${
-        schedule.startHour
-      } - ${schedule.endHour} ) - ${schedule.type}`,
+      key: `${schedule.location.city} ${schedule.location.address} Room ${schedule.room} - ( ${getDate(schedule.day)} ${schedule.startHour} - ${
+        schedule.endHour
+      } ) - ${schedule.type}`,
       value: schedule.id,
     }));
   }, [watch("date"), therapistSchedules]);
@@ -72,7 +61,7 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
       return;
     }
     const reqBody: IAddNewOffDayReqBody = {
-      date: moment(data.date).format("YYYY-MM-DD"),
+      date: moment(data.date).format(APP_DATE_FORMAT),
       schedule: data.schedule,
     };
     confirmation({ title: `Are You Sure To Save Your Day Off In ${reqBody.date}` }).then(() => {
@@ -86,7 +75,7 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
   });
 
   return (
-    <Modal size="xl" subject={ADD_NEW_OFF_DAY_DIALOG_SUBJECT} title="Add New Off Day">
+    <Modal size="xl" opened title="Add New Off Day">
       <form onSubmit={onSubmit}>
         <TextInput control={control} label="Therapist" name="therapist" disabled />
         <DatePicker control={control} label="Date" name="date" />
@@ -100,7 +89,7 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
           disabled={therapistSchedulesLoading}
         />
         <Box mt={2}>
-          <Button type="submit" loading={therapistSchedulesLoading} fullWidth>
+          <Button type="submit" loading={therapistSchedulesLoading || pending} fullWidth>
             Submit
           </Button>
         </Box>

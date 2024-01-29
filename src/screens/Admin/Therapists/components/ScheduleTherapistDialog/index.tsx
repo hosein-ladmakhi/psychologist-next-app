@@ -1,39 +1,23 @@
 import Modal from "@/components/Modal";
-import { useEffect, useState } from "react";
-import { SCHEDULE_THERAPIST_DIALOG_SUBJECT } from "./index.constant";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { TScheduleTherapistDialogFC } from "./index.type";
-import { TTherapistSchedulesResPerDay } from "@/types/therapist.model";
-import { getSchedulesTherapistPerDay } from "@/services/therapist.service";
 import { useRouter } from "next/navigation";
 import { DATES } from "@/constants";
 import LoadingText from "@/components/LoadingText";
 import Button from "@/components/Button";
+import { getDate } from "@/utils/getDate";
+import useTherapistSchedulePerday from "@/hooks/api/useTherapistSchedulePerday";
 
 const ScheduleTherapistDialog: TScheduleTherapistDialogFC = ({ selectedTherapist, onClose }) => {
-  const [schedules, setSchedules] = useState<TTherapistSchedulesResPerDay[]>([]);
+  const { schedules, schedulesLoading } = useTherapistSchedulePerday(selectedTherapist?.id!);
   const router = useRouter();
-  const [schedulesLoading, setSchedulesLoading] = useState<boolean>(false);
   const onSelectDay = (day: number) => {
     router.push(`/admin/therapists/schedules/${selectedTherapist?.id}/${day}`);
     onClose();
   };
 
-  useEffect(() => {
-    if (selectedTherapist?.id) {
-      setSchedulesLoading(true);
-      getSchedulesTherapistPerDay(selectedTherapist?.id)
-        .then((data) => {
-          setSchedules(data);
-        })
-        .finally(() => {
-          setSchedulesLoading(false);
-        });
-    }
-  }, [selectedTherapist?.id]);
-
   return (
-    <Modal size="xxxl" subject={SCHEDULE_THERAPIST_DIALOG_SUBJECT} handleClose={onClose} title="Schedules Of Therapist">
+    <Modal size="xxxl" opened handleClose={onClose} title="Schedules Of Therapist">
       <LoadingText loading={schedulesLoading} loadingText="Loading Schedules" loadingTextVariant="body1" spinnerSize="30px" />
       <Grid container spacing={1}>
         {Object.keys(DATES).map((dateKey) => {
@@ -43,7 +27,7 @@ const ScheduleTherapistDialog: TScheduleTherapistDialogFC = ({ selectedTherapist
               <Card variant="outlined">
                 <CardContent>
                   <Typography variant="h6" component="h1">
-                    {(DATES as any)[dateKey]}
+                    {getDate(dateKey)}
                   </Typography>
                   <Typography variant="body1">Schedules Count : {transformedSchedule?.items?.length || 0}</Typography>
                   <Box mt={4}>

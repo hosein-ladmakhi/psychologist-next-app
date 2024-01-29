@@ -3,6 +3,7 @@ import { TNextPage, TTherapistsOffDayPageFC } from "./page.type";
 import TherapistScheduleOffDayScreen from "@/screens/Admin/TherapistScheduleOffDay";
 import { prepareTherapistOffDayPageQueryParam } from "./prepare-query";
 import { Metadata } from "next";
+import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ const TherapistsOffDayPage: TTherapistsOffDayPageFC = async ({ searchParams, par
   const res = await getTherapistScheduleDayOff(params.id, prepareTherapistOffDayPageQueryParam(searchParams));
   const currentPage = +(searchParams.page || "1");
 
-  return <TherapistScheduleOffDayScreen page={currentPage} therapist={therapist} content={res.content} count={Math.ceil(res.count / 10)} />;
+  return <TherapistScheduleOffDayScreen page={currentPage} therapist={therapist} content={res.content} count={calculateTotalPageTable(res.count)} />;
 };
 
 export default TherapistsOffDayPage;

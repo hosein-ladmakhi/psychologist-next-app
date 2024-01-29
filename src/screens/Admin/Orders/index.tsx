@@ -3,33 +3,30 @@
 import Table from "@/components/Table";
 import { TOrdersScreenFC } from "./index.type";
 import { ordersColumns } from "./index.constant";
-import { useMemo, useState, useTransition } from "react";
-import { format } from "date-fns/format";
+import { Suspense, useMemo, useState, useTransition } from "react";
 import { TAdditionalTableAction } from "@/types/base.model";
 import { EOrderStatus, IOrder } from "@/types/order.model";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { useConfirm } from "material-ui-confirm";
-import { useDispatch } from "react-redux";
-import { closeModal, openModal } from "@/store/slices/modalSlices";
-import { DONE_ORDER_DIALOG_SUBJECT } from "./components/DoneOrderDialog/index.constant";
-import { DOCUMENTATION_DIALOG_SUBJECT } from "./components/DocumentationDialog/index.constant";
 import { cancelOrderAction } from "@/app/(admin)/admin/orders/actions";
-import { useDocumentationDialogLoad } from "./useDocumentationDialogLoad";
-import { useDoneOrderDialogLoad } from "./useDoneOrderDialogLoad";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import FilterOrderDialog from "./components/FilterOrderDialog";
-import { FILTER_ORDER_DIALOG_SUBJECT } from "./components/FilterOrderDialog/index.constant";
 import { IFilterOrderFormValidation } from "./components/FilterOrderDialog/index.type";
-import { useFilterDialogLoad } from "./useFilterDialogLoad";
+import dynamic from "next/dynamic";
+import moment from "moment";
+import { APP_DATE_FORMAT } from "@/constants";
+
+const FilterOrderDialog = dynamic(() => import("./components/FilterOrderDialog"));
+const DoneOrderDialog = dynamic(() => import("./components/DoneOrderDialog"));
+const DocumentationDialog = dynamic(() => import("./components/DocumentationDialog"));
 
 const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const confirm = useConfirm();
-  const dispatch = useDispatch();
   const [pending, handleTransition] = useTransition();
   const [selectedOrder, setSelectedOrder] = useState<IOrder>();
-  const documentationDialog = useDocumentationDialogLoad();
-  const doneOrderDialog = useDoneOrderDialogLoad();
-  const filterDialog = useFilterDialogLoad();
+  const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
+  const [isShowDoneOrderDialog, setShowDoneOrderDialogStatus] = useState<boolean>(false);
+  const [isShowDocumentationDialog, setShowDocumentationDialogStatus] = useState<boolean>(false);
+
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
 
   const transformedData = useMemo(() => {
@@ -38,7 +35,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
       therapistFullName: order?.therapist?.firstName + " " + order?.therapist?.lastName,
       patientFullName: order?.patient?.firstName + " " + order?.patient?.lastName,
       time: order?.startHour + " - " + order?.endHour,
-      orderDate: format(order?.date!, "yyyy-MM-dd"),
+      orderDate: moment(order?.date!).format(APP_DATE_FORMAT),
     }));
   }, [data]);
 
@@ -54,11 +51,10 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   };
 
   const onCloseDialog = () => {
-    dispatch(closeModal());
     setSelectedOrder(undefined);
-    documentationDialog.unLoadComponent();
-    doneOrderDialog.unLoadComponent();
-    filterDialog.unLoadComponent();
+    setShowDocumentationDialogStatus(false);
+    setShowDoneOrderDialogStatus(false);
+    setShowFilterDialogStatus(false);
   };
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
@@ -90,9 +86,8 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
     }
     handleConfirmation("Done The Order", "Are You Sure To Done This Order ???")
       .then(() => {
-        dispatch(openModal(DONE_ORDER_DIALOG_SUBJECT));
         setSelectedOrder(data as IOrder);
-        doneOrderDialog.loadComponent();
+        setShowDoneOrderDialogStatus(true);
       })
       .catch(() => {});
   };
@@ -103,16 +98,14 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
       errorNotify("When The Order Is Done, It Can Be Contain Documentation");
       return;
     }
-    dispatch(openModal(DOCUMENTATION_DIALOG_SUBJECT));
     setSelectedOrder(order);
-    documentationDialog.loadComponent();
+    setShowDocumentationDialogStatus(true);
   };
 
   const onChangeFilters = (data: IFilterOrderFormValidation) => onChangeMultipleSearchParams({ ...data, page: 1 });
 
   const handleFilter = () => {
-    dispatch(openModal(FILTER_ORDER_DIALOG_SUBJECT));
-    filterDialog.loadComponent();
+    setShowFilterDialogStatus(true);
   };
 
   const additionalActions: TAdditionalTableAction[] = [
@@ -135,9 +128,21 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
 
   return (
     <>
-      {filterDialog?.Component && <filterDialog.Component onChangeFilter={onChangeFilters} onClose={onCloseDialog} />}
-      {doneOrderDialog?.Component && <doneOrderDialog.Component onClose={onCloseDialog} selectedOrder={selectedOrder!} />}
-      {documentationDialog?.Component && <documentationDialog.Component onClose={onCloseDialog} selectedOrder={selectedOrder!} />}
+      {isShowFilterDialog && (
+        <Suspense fallback={<></>}>
+          <FilterOrderDialog onChangeFilter={onChangeFilters} onClose={onCloseDialog} />
+        </Suspense>
+      )}
+      {isShowDoneOrderDialog && (
+        <Suspense fallback={<></>}>
+          <DoneOrderDialog onClose={onCloseDialog} selectedOrder={selectedOrder!} />
+        </Suspense>
+      )}
+      {isShowDocumentationDialog && (
+        <Suspense fallback={<></>}>
+          <DocumentationDialog onClose={onCloseDialog} selectedOrder={selectedOrder!} />
+        </Suspense>
+      )}
       <Table
         handleFilter={handleFilter}
         loading={pending}

@@ -1,8 +1,6 @@
 import { EDegtreeOfEducation } from "@/types/therapist.model";
 import * as zod from "zod";
 
-export const UPSERT_THERAPIST_DIALOG_SUBJECT = "UPSERT_THERAPIST_DIALOG_SUBJECT";
-
 export const createOrEditTherapistFormValidation = zod.object({
   firstName: zod.string({ required_error: "You Must Provide Your First Name" }).min(3, "Your First Name Must Include 3 Character"),
   lastName: zod.string({ required_error: "You Must Provide Your Last Name" }).min(3, "Your First Name Must Include 3 Character"),

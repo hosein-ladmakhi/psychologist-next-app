@@ -1,52 +1,46 @@
 "use client";
 
 import Table from "@/components/Table";
-import { useMemo, useState, useTransition } from "react";
+import { Suspense, useMemo, useState, useTransition } from "react";
 import { TTherapistsScreenFC } from "./index.type";
 import { therapistsColumns } from "./index.constant";
 import { TAdditionalTableAction } from "@/types/base.model";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { useStoreDispatch } from "@/hooks/useStoreDispatch";
-import { closeModal, openModal } from "@/store/slices/modalSlices";
 import { TFilterTherapistFormValidation } from "./components/FilterTherapistDialog/index.type";
-import { FILTER_THERAPIST_SUBJECT } from "./components/FilterTherapistDialog/index.constant";
-import { VIEW_THERAPIST_SUBJECT } from "./components/ViewTherapistDialog/index.constant";
 import { ITherapist } from "@/types/therapist.model";
-import { SCHEDULE_THERAPIST_DIALOG_SUBJECT } from "./components/ScheduleTherapistDialog/index.constant";
-import { UPSERT_THERAPIST_DIALOG_SUBJECT } from "./components/CreateOrEditTherapistDialog/index.constant";
 import { deleteTherapistAction } from "@/app/(admin)/admin/therapists/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
-import { useFilterDialogLoad } from "./useFilterDialogLoad";
-import { useCreateOrEditDialogLoad } from "./useCreateOrEditDialogLoad";
-import { useViewDialogLoad } from "./useViewDialogLoad";
-import { useScheduleDialogLoad } from "./useScheduleDialogLoad";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+import FilterTherapistDialog from "./components/FilterTherapistDialog";
+import CreateOrEditTherapistDialog from "./components/CreateOrEditTherapistDialog";
+
+const ViewTherapistDialog = dynamic(() => import("./components/ViewTherapistDialog"));
+const ScheduleTherapistDialog = dynamic(() => import("./components/ScheduleTherapistDialog"));
 
 const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
-  const dispatch = useStoreDispatch();
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedTherapist, setSelectedTherapist] = useState<ITherapist>();
   const [pending, handleTransition] = useTransition();
   const router = useRouter();
-  const filterDialog = useFilterDialogLoad();
-  const createOrEditDialog = useCreateOrEditDialogLoad();
-  const viewDialog = useViewDialogLoad();
-  const scheduleDialog = useScheduleDialogLoad();
+
+  const [isShowViewDialog, setShowViewDialogStatus] = useState<boolean>(false);
+  const [isShowScheduleDialog, setShowScheduleDialogStatus] = useState<boolean>(false);
+  const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
+  const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
   const handleFilter = () => {
-    dispatch(openModal(FILTER_THERAPIST_SUBJECT));
-    filterDialog.loadComponent();
+    setShowFilterDialogStatus(true);
   };
 
   const onCloseDialog = () => {
     setSelectedTherapist(undefined);
-    dispatch(closeModal());
-    filterDialog.unLoadComponent();
-    viewDialog.unLoadComponent();
-    createOrEditDialog.unLoadComponent();
-    scheduleDialog.unLoadComponent();
+    setShowFilterDialogStatus(false);
+    setShowViewDialogStatus(false);
+    setShowScheduleDialogStatus(false);
+    setShowCreateOrEditDialogStatus(false);
   };
 
   const onChangeFilters = (data: TFilterTherapistFormValidation) => onChangeMultipleSearchParams({ ...data, page: 1 });
@@ -60,15 +54,13 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
   };
 
   const handleViewTherapist = (data: Object) => {
-    dispatch(openModal(VIEW_THERAPIST_SUBJECT));
     setSelectedTherapist(data as any);
-    viewDialog.loadComponent();
+    setShowViewDialogStatus(true);
   };
 
   const handleScheduleTherapistDialog = (data: Object) => {
-    dispatch(openModal(SCHEDULE_THERAPIST_DIALOG_SUBJECT));
     setSelectedTherapist(data as any);
-    scheduleDialog.loadComponent();
+    setShowScheduleDialogStatus(true);
   };
 
   const handleScheduleTherapistOffDay = (data: Object) => {
@@ -95,14 +87,12 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
   ];
 
   const handleCreate = () => {
-    dispatch(openModal(UPSERT_THERAPIST_DIALOG_SUBJECT));
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   const handleEdit = (data: any) => {
-    dispatch(openModal(UPSERT_THERAPIST_DIALOG_SUBJECT));
     setSelectedTherapist(data);
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   const handleDelete = (therapist: any) => {
@@ -119,10 +109,26 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
 
   return (
     <>
-      {createOrEditDialog.Component && <createOrEditDialog.Component selectedTherapist={selectedTherapist} onClose={onCloseDialog} />}
-      {viewDialog.Component && <viewDialog.Component onClose={onCloseDialog} selectedTherapist={selectedTherapist} />}
-      {filterDialog.Component && <filterDialog.Component onChangeFilters={onChangeFilters} onClose={onCloseDialog} />}
-      {scheduleDialog.Component && <scheduleDialog.Component onClose={onCloseDialog} selectedTherapist={selectedTherapist} />}
+      {isShowCreateOrEditDialog && (
+        <Suspense fallback={<></>}>
+          <CreateOrEditTherapistDialog selectedTherapist={selectedTherapist} onClose={onCloseDialog} />
+        </Suspense>
+      )}
+      {isShowViewDialog && (
+        <Suspense fallback={<></>}>
+          <ViewTherapistDialog onClose={onCloseDialog} selectedTherapist={selectedTherapist} />
+        </Suspense>
+      )}
+      {isShowScheduleDialog && (
+        <Suspense fallback={<></>}>
+          <ScheduleTherapistDialog onClose={onCloseDialog} selectedTherapist={selectedTherapist} />
+        </Suspense>
+      )}
+      {isShowFilterDialog && (
+        <Suspense fallback={<></>}>
+          <FilterTherapistDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />
+        </Suspense>
+      )}
 
       <Table
         additionalActions={additionalActions}

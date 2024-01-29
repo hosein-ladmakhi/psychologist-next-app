@@ -3,33 +3,27 @@
 import Table from "@/components/Table";
 import { TLocationsScreenFC } from "./index.type";
 import { locationsColumns } from "./index.constant";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { ILocation } from "@/types/location.model";
-import { useDispatch } from "react-redux";
-import { closeModal, openModal } from "@/store/slices/modalSlices";
-import { FILTER_LOCATION_DIALOG_SUBJECT } from "./components/FilterLocationDialog/index.constant";
-import { UPSERT_LOCATION_DIALOG_SUBJECT } from "./components/CreateOrEditLocationDialog/index.constant";
 import { deleteLocationAction } from "@/app/(admin)/admin/locations/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
-import CreateOrEditLocationDialog from "./components/CreateOrEditLocationDialog";
-import FilterLocationDialog from "./components/FilterLocationDialog";
 import { useSearchParams } from "@/hooks/useSearchParams";
-import { useFilterDialogLoad } from "./useFilterDialogLoad";
-import { useCreateOrEditDialogLoad } from "./useCreateOrEditDialogLoad";
+import dynamic from "next/dynamic";
+
+const CreateOrEditLocationDialog = dynamic(() => import("./components/CreateOrEditLocationDialog"));
+const FilterLocationDialog = dynamic(() => import("./components/FilterLocationDialog"));
 
 const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
-  const dispatch = useDispatch();
-  const filterDialog = useFilterDialogLoad();
-  const createOrEditDialog = useCreateOrEditDialogLoad();
+  const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
+  const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
   const [selectedLocation, setSelectedLocation] = useState<ILocation>();
   const { onChangeSearchParams } = useSearchParams();
   const [pending, handleTransition] = useTransition();
 
   const onCloseDialog = () => {
-    dispatch(closeModal());
     setSelectedLocation(undefined);
-    filterDialog.unLoadComponent();
-    createOrEditDialog.unLoadComponent();
+    setShowFilterDialogStatus(false);
+    setShowCreateOrEditDialogStatus(false);
   };
 
   const handleDelete = (data: any) => {
@@ -41,27 +35,32 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
   };
 
   const handleEdit = (data: any) => {
-    dispatch(openModal(UPSERT_LOCATION_DIALOG_SUBJECT));
     setSelectedLocation(data);
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   const handleCreate = () => {
-    dispatch(openModal(UPSERT_LOCATION_DIALOG_SUBJECT));
-    createOrEditDialog.loadComponent();
+    setShowCreateOrEditDialogStatus(true);
   };
 
   const handleFilter = () => {
-    dispatch(openModal(FILTER_LOCATION_DIALOG_SUBJECT));
-    filterDialog.loadComponent();
+    setShowFilterDialogStatus(true);
   };
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
   return (
     <>
-      {createOrEditDialog.Component && <createOrEditDialog.Component selectedLocation={selectedLocation} onClose={onCloseDialog} />}
-      {filterDialog.Component && <filterDialog.Component onClose={onCloseDialog} />}
+      {isShowCreateOrEditDialog && (
+        <Suspense fallback={<></>}>
+          <CreateOrEditLocationDialog selectedLocation={selectedLocation} onClose={onCloseDialog} />
+        </Suspense>
+      )}
+      {isShowFilterDialog && (
+        <Suspense fallback={<></>}>
+          <FilterLocationDialog onClose={onCloseDialog} />
+        </Suspense>
+      )}
       <Table
         handleChangePage={handleChangePage}
         loading={pending}

@@ -1,14 +1,13 @@
 import { useRef, useTransition } from "react";
 import { TCreateOrEditTherapistDialogFC, TCreateOrEditTherapistFormValidation } from "./index.type";
 import Modal from "@/components/Modal";
-import { UPSERT_THERAPIST_DIALOG_SUBJECT } from "./index.constant";
 import ImagePicker from "@/components/ImagePicker";
 import { Box, Grid } from "@mui/material";
 import { EDegtreeOfEducation, EGender, ICreateOrEditTherapistReqBody } from "@/types/therapist.model";
 import { uploadTherapistProfile } from "@/services/therapist.service";
 import { createTherapistAction, editTherapistAction } from "@/app/(admin)/admin/therapists/actions";
 import { API_URL } from "@/constants";
-import { useCategories } from "@/hooks/useCategories";
+import { useCategories } from "@/hooks/api/useCategories";
 import { useCreateOrEditTherapistForm } from "./useForm";
 import TextInput from "@/components/TextInput";
 import Select from "@/components/Select";
@@ -94,7 +93,7 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
   const modalTitle = selectedTherapist ? "Edit Therapist" : "Create New Therapist";
 
   return (
-    <Modal subject={UPSERT_THERAPIST_DIALOG_SUBJECT} handleClose={onClose} title={modalTitle} size="xl">
+    <Modal opened handleClose={onClose} title={modalTitle} size="xl">
       <form onSubmit={onSubmit}>
         <Grid container spacing={2}>
           <Grid item lg={12}>

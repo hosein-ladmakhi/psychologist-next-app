@@ -3,18 +3,10 @@ import { Card, CardContent, IconButton, Modal as MuiModal, Typography } from "@m
 import { Close as CloseIcon } from "@mui/icons-material";
 import { TModalFC } from "./index.type";
 import { modalWidthSize } from "./index.constant";
-import { useStoreSelector } from "@/hooks/useStoreSelector";
-import { useStoreDispatch } from "@/hooks/useStoreDispatch";
-import { closeModal } from "@/store/slices/modalSlices";
 import FlexBox from "../FlexBox";
 
-const Modal: TModalFC = ({ subject, children, size = "xs", title, handleClose = () => {} }) => {
-  const dispatch = useStoreDispatch();
-  const currentModalSubject = useStoreSelector((store) => store.modalReducers.currentSubject);
-
-  const opened = subject === currentModalSubject;
+const Modal: TModalFC = ({ children, size = "xs", title, handleClose = () => {}, opened = false }) => {
   const onClose = () => {
-    dispatch(closeModal());
     handleClose();
   };
   const onPreventModalClose = (event: MouseEvent) => event.stopPropagation();

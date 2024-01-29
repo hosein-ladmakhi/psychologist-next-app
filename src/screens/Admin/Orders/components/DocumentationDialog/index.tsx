@@ -1,7 +1,6 @@
 "use client";
 
 import { Grid, List, ListItem, ListItemButton, Typography } from "@mui/material";
-import { DOCUMENTATION_DIALOG_SUBJECT } from "./index.constant";
 import { TDocumentationDialogFC } from "./index.type";
 import Modal from "@/components/Modal";
 import { useState } from "react";
@@ -14,7 +13,7 @@ const DocumentationDialog: TDocumentationDialogFC = ({ onClose, selectedOrder })
   const handleSelectedDocument = (document: IDocumentation) => setSelectedDocument(document);
 
   return (
-    <Modal handleClose={onClose} size="xxxxl" subject={DOCUMENTATION_DIALOG_SUBJECT} title="Docuemtation Of Order">
+    <Modal handleClose={onClose} size="xxxxl" opened title="Docuemtation Of Order">
       <Grid container spacing={2}>
         <Grid lg={5} item>
           <Typography mb={2} fontWeight="bold" variant="body1" component="h1">
