@@ -1,4 +1,5 @@
 import { IBaseEntity, IDatasourcePageRes } from "./base.model";
+import { ICategory } from "./category.model";
 import { IDocumentation } from "./documentation.model";
 import { IPatient } from "./patient.model";
 import { ETherapistScheduleType, ITherapist } from "./therapist.model";
@@ -29,4 +30,11 @@ export type TOrderPageRes = IDatasourcePageRes<IOrder>;
 
 export interface IOrderChangeStatusReqBody {
   status: EOrderStatus;
+}
+
+export interface IOrderDetailBasedOnTherapist {
+  locations: string[];
+  times: string[];
+  patients: IPatient[];
+  categories: ICategory[];
 }

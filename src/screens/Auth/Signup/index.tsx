@@ -15,6 +15,7 @@ import { useTransition } from "react";
 import { signupAction } from "@/app/(auth)/auth/signup/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const SignupScreen: TSignupScreenFC = () => {
   const { control, handleSubmit } = useForm<TSignupFormValidation>({ resolver: zodResolver(signupFormValidation) });
@@ -26,6 +27,7 @@ const SignupScreen: TSignupScreenFC = () => {
       const token = await signupAction(data);
       if (token) {
         successNotify("Your Account Created Successfully ...");
+        Cookies.set("token", token);
         route.push("/");
       } else errorNotify("Your Account Unable To Create Try Again");
     });

@@ -3,8 +3,7 @@ import { FC } from "react";
 
 interface IOrdersScreenProps {
   data: IOrder[];
-  count: number;
-  totalPageCount: number;
+  todayOrders: IOrder[];
 }
 
 export type TOrdersScreenFC = FC<IOrdersScreenProps>;

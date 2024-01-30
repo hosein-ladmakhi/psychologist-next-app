@@ -9,28 +9,40 @@ import FlexBox from "@/components/FlexBox";
 import Button from "@/components/Button";
 import dynamic from "next/dynamic";
 import { Suspense, useState } from "react";
+import { useSearchParams } from "@/hooks/useSearchParams";
+import { useRouter } from "next/navigation";
 
 const FilterOrderForm = dynamic(() => import("./components/FilterOrderForm"));
 
-const OrdersScreen: TOrdersScreenFC = ({ count, data, totalPageCount }) => {
+const OrdersScreen: TOrdersScreenFC = ({ data, todayOrders }) => {
   const [isShowFilterOrderForm, setShowFilterOrderForm] = useState<boolean>(false);
   const handleFilterOrderForm = () => setShowFilterOrderForm((prev) => !prev);
+  const { onChangeSearchParams, getSearchParams } = useSearchParams();
+  const router = useRouter();
+  const content = getSearchParams("mode") === "today" ? todayOrders : data;
+  const handleChangeMode = (mode: "all" | "today") => onChangeSearchParams("mode", mode);
+
+  const handleViewOrder = (id: number) => router.push(`/therapist/orders/${id}`);
 
   return (
     <>
       <FlexBox justifyContent="space-between">
         <Typography fontWeight="bold" variant="h5" component="h1">
-          Welcome To Orders Section, Today You Have 3 Therapy Session
+          Welcome To Orders Section, Today You Have {todayOrders.length} Therapy Session
         </Typography>
-        <Button onClick={handleFilterOrderForm}>{isShowFilterOrderForm ? "Close" : "Open"} Filter</Button>
+        <FlexBox gap={0.5}>
+          <Button onClick={handleFilterOrderForm}>{isShowFilterOrderForm ? "Close" : "Open"} Filter</Button>
+          <Button onClick={handleChangeMode.bind(null, "today")}>Show Today Therapy Session</Button>
+          <Button onClick={handleChangeMode.bind(null, "all")}>Show All Therpy Session</Button>
+        </FlexBox>
       </FlexBox>
       {isShowFilterOrderForm && (
         <Suspense fallback={<></>}>
-          <FilterOrderForm />
+          <FilterOrderForm therapistId={1} />
         </Suspense>
       )}
       <Grid my={4} container spacing={3}>
-        {data.map((order) => (
+        {content.map((order) => (
           <Grid key={order.id} item lg={3}>
             <Card>
               <CardContent>
@@ -49,7 +61,7 @@ const OrdersScreen: TOrdersScreenFC = ({ count, data, totalPageCount }) => {
                     <Chip size="small" label={category.enName} key={category.enName} />
                   ))}
                 </FlexBox>
-                <Button fullWidth color="secondary" size="large">
+                <Button onClick={handleViewOrder.bind(null, order.id)} fullWidth color="secondary" size="large">
                   View Detail
                 </Button>
               </CardContent>
