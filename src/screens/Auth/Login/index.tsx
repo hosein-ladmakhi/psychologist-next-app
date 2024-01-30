@@ -15,7 +15,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormValidation } from "./index.constant";
 import { loginAction } from "@/app/(auth)/auth/login/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
-import Cookies from "js-cookie";
 
 const LoginScreen: TLoginScreenFC = () => {
   const { control, handleSubmit } = useForm<TLoginFormValidation>({ resolver: zodResolver(loginFormValidation) });
@@ -27,7 +26,6 @@ const LoginScreen: TLoginScreenFC = () => {
       const token = await loginAction(data);
       if (token) {
         successNotify("Login Successfully ...");
-        Cookies.set("token", token);
         route.push("/");
       } else errorNotify("Unable To Login ....");
     });
