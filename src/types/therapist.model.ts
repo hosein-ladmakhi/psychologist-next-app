@@ -19,6 +19,7 @@ export enum ETherapistScheduleType {
 export enum EGender {
   male = "male",
   female = "female",
+  unknown = "unknown",
 }
 
 export type TTherapistsPageRes = IDatasourcePageRes<ITherapist>;

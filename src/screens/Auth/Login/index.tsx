@@ -23,8 +23,8 @@ const LoginScreen: TLoginScreenFC = () => {
 
   const onSubmit = handleSubmit((data) => {
     handleTransition(async () => {
-      const token = await loginAction(data);
-      if (token) {
+      const isOk = await loginAction(data);
+      if (isOk) {
         successNotify("Login Successfully ...");
         route.push("/");
       } else errorNotify("Unable To Login ....");

@@ -53,3 +53,6 @@ export const deleteTherapistDaysOff = (id: number) => httpDelete<ITherapistSched
 
 export const addTherapistDaysOff = (body: IAddNewOffDayReqBody) =>
   httpPost<IAddNewOffDayReqBody, ITherapistSchedulesOff>(`${API_URL}/therapist-schedules-day-off`, body);
+
+export const updateOwnTherapistProfile = (data: ICreateOrEditTherapistReqBody) =>
+  httpPatch<ICreateOrEditTherapistReqBody, ITherapist>(`${API_URL}/therapist/own`, data);

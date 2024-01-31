@@ -8,14 +8,17 @@ import { Toaster } from "react-hot-toast";
 import RouteLoadingProvider from "@/providers/RouteLoadingProvider";
 import LocalizationPickerProvider from "@/providers/LocalizationPickerProvider";
 import NextAuthProvider from "@/providers/NextAuthProvider";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/authOptions";
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
+  const session = await getServerSession(authOptions);
   return (
     <html>
       <body className={`${figtreeFont.className} ${vazirFont.className}`}>
         <RouteLoadingProvider>
           <LocalizationPickerProvider>
-            <NextAuthProvider>
+            <NextAuthProvider session={session}>
               <Toaster />
               <MuiProvider>{children}</MuiProvider>
             </NextAuthProvider>

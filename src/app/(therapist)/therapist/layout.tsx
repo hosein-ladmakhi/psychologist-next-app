@@ -1,5 +1,8 @@
 import AppHeader from "@/components/AppHeader";
+import { getProfile } from "@/services/auth.service";
+import { ITherapist } from "@/types/therapist.model";
 import { Container } from "@mui/material";
+import { redirect } from "next/navigation";
 import { FC, PropsWithChildren } from "react";
 
 const menuItems: { label: string; href: string }[] = [
@@ -25,10 +28,11 @@ const menuItems: { label: string; href: string }[] = [
   },
 ];
 
-const TherapistLayout: FC<PropsWithChildren> = ({ children }) => {
+const TherapistLayout: FC<PropsWithChildren> = async ({ children }) => {
+  const user = await getProfile<ITherapist>();
   return (
     <>
-      <AppHeader menuItems={menuItems} />
+      <AppHeader user={user} menuItems={menuItems} />
       <Container maxWidth="xl">{children}</Container>
     </>
   );
