@@ -15,7 +15,7 @@ const Button: TButtonFC = ({
   return (
     <MuiButton variant={variant} size={size} {...attributeProps} fullWidth={fullWidth} color={color} disabled={attributeProps.disabled || loading}>
       {loading && loadingText && <>{loadingText}</>}
-      {loading && !loadingText && <CircularProgress size={loadingSpinnerSize} color="inherit" />}
+      {loading && !loadingText && <CircularProgress sx={{ marginInlineEnd: "8px" }} size={loadingSpinnerSize} color="inherit" />}
       {children}
     </MuiButton>
   );

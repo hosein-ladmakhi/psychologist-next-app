@@ -67,7 +67,7 @@ const LoginScreen: TLoginScreenFC = () => {
             />
           </Grid>
           <Grid item md={12}>
-            <Button loading={pending} type="submit" size="large" fullWidth>
+            <Button loadingSpinnerSize="1.5rem" loading={pending} type="submit" size="large" fullWidth>
               Submit
             </Button>
           </Grid>

@@ -3,10 +3,10 @@ import { FC } from "react";
 import * as zod from "zod";
 import { createOrEditOwnTherapistFormValidation } from "./index.constant";
 
-export interface IProfileProps {
+interface IProfileScreenProps {
   user: ITherapist;
 }
 
-export type TProfileFC = FC<IProfileProps>;
+export type TProfileScreenFC = FC<IProfileScreenProps>;
 
 export type TCreateOrEditOwnTherapistFormValidation = zod.infer<typeof createOrEditOwnTherapistFormValidation>;

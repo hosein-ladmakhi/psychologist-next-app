@@ -11,7 +11,12 @@ export const useCategories = () => {
   useEffect(() => {
     setCategoriesLoading(true);
     getCategories({ limit: 10000 })
-      .then((res) => setCategories(res.content))
+      .then((res) => {
+        return setCategories(res?.content || []);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
       .finally(() => {
         setCategoriesLoading(false);
       });

@@ -1,7 +1,7 @@
 "use client";
 
 import { Grid, Typography } from "@mui/material";
-import { TProfileFC } from "./index.type";
+import { TProfileScreenFC } from "./index.type";
 import TextInput from "@/components/TextInput";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
@@ -13,9 +13,9 @@ import ImagePicker from "@/components/ImagePicker";
 import { API_URL } from "@/constants";
 import { uploadTherapistProfile } from "@/services/therapist.service";
 import { useProfileForm } from "./useForm";
-import { categoriesSelects, degreeOfEducationSelects, genderSelects } from "@/utils/select-options";
+import { categoriesSelects, degreeOfEducationSelects, genderSelects } from "@/utils/selectOptions";
 
-const ProfileScreen: TProfileFC = ({ user }) => {
+const ProfileScreen: TProfileScreenFC = ({ user }) => {
   const imageRef = useRef<File | null>(null);
   const [loading, handleTransition] = useTransition();
   const { control, handleSubmit } = useProfileForm(user);
@@ -98,7 +98,7 @@ const ProfileScreen: TProfileFC = ({ user }) => {
             <TextInput control={control} label="Biography" name="bio" multiline rows={8} />
           </Grid>
           <Grid item lg={2}>
-            <Button type="submit" loading={loading}>
+            <Button loadingSpinnerSize="1.2rem" type="submit" loading={loading}>
               Submit Changes
             </Button>
           </Grid>
