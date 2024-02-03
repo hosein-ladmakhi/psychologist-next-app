@@ -57,8 +57,8 @@ export const addTherapistDaysOff = (body: IAddNewOffDayReqBody) =>
 export const updateOwnTherapistProfile = (data: ICreateOrEditTherapistReqBody) =>
   httpPatch<ICreateOrEditTherapistReqBody, ITherapist>(`${API_URL}/therapist/own`, data);
 
-export const getOwnSchedulesTherapist = () =>
-  httpGet<ITherapistSchedules[]>(`${API_URL}/therapist-schedules/therapist/own`, undefined, ["own-schedules"]);
+export const getOwnSchedulesTherapist = (filterObject: Object = {}) =>
+  httpGet<ITherapistSchedules[]>(`${API_URL}/therapist-schedules/therapist/own${prepareQueryParams(filterObject)}`, undefined, ["own-schedules"]);
 
 export const getOwnTherapistScheduleDayOff = (filterObject: Object = {}) =>
   httpGet<ITherapistSchedulesOff[]>(`${API_URL}/therapist-schedules-day-off/therapists/own${prepareQueryParams(filterObject)}`, undefined, [

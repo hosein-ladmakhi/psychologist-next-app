@@ -21,6 +21,7 @@ export const handleApiRes = (res: Response) => {
 };
 
 export const handleApiErr = (error: any) => {
+  console.log("Some Error Happen");
   if (error.status === 401) {
     return redirectionApiErr();
   }

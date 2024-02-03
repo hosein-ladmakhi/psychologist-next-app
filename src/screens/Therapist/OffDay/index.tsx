@@ -30,7 +30,7 @@ const OffDayScheduleScreen: TOffDayScheduleScreenFC = ({ content }) => {
 
       {isShowFilterDayOffForm && (
         <Suspense fallback={<></>}>
-          <FilterDayOffForm />
+          <FilterDayOffForm onClose={handleShowFilterDayOffForm} />
         </Suspense>
       )}
 

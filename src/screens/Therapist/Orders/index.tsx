@@ -38,7 +38,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, todayOrders }) => {
       </FlexBox>
       {isShowFilterOrderForm && (
         <Suspense fallback={<></>}>
-          <FilterOrderForm therapistId={1} />
+          <FilterOrderForm handleClose={handleFilterOrderForm} therapistId={1} />
         </Suspense>
       )}
       <Grid my={4} container spacing={3}>

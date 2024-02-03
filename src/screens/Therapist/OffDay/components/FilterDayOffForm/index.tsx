@@ -1,15 +1,32 @@
 import { Box, Grid } from "@mui/material";
-import { TFilterDayOffFormFC } from "./index.type";
+import { TFilterDayOffFormFC, TFilterDayOffFormValidation } from "./index.type";
 import Button from "@/components/Button";
 import { Search } from "@mui/icons-material";
 import DatePicker from "@/components/DatePicker";
 import { useForm } from "react-hook-form";
 import DayPicker from "@/components/DayPicker";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { filterDayOffFormValidation } from "./index.constant";
+import { useSearchParams } from "@/hooks/useSearchParams";
+import moment from "moment";
+import { APP_DATE_FORMAT } from "@/constants";
 
-const FilterDayOffForm: TFilterDayOffFormFC = () => {
-  const { control } = useForm();
+const FilterDayOffForm: TFilterDayOffFormFC = ({ onClose }) => {
+  const { control, handleSubmit, reset } = useForm<TFilterDayOffFormValidation>({ resolver: zodResolver(filterDayOffFormValidation) });
+  const { onChangeMultipleSearchParams } = useSearchParams();
+
+  const onSubmit = handleSubmit((data) => {
+    onChangeMultipleSearchParams({ ...data, date: data.date ? moment(data.date).format(APP_DATE_FORMAT) : undefined });
+  });
+
+  const handleResetForm = () => {
+    onChangeMultipleSearchParams({ day: undefined, date: undefined });
+    reset();
+    onClose();
+  };
+
   return (
-    <Box component="form" mt={5}>
+    <Box onSubmit={onSubmit} component="form" mt={5}>
       <Grid container columnSpacing={1.5}>
         <Grid item lg={6}>
           <DatePicker control={control} label="Date" name="date" />
@@ -20,9 +37,16 @@ const FilterDayOffForm: TFilterDayOffFormFC = () => {
 
         <Grid item lg={1}>
           <Box mt={2}>
-            <Button fullWidth size="large">
+            <Button type="submit" fullWidth size="large">
               <Search sx={{ marginInlineEnd: "5px" }} fontSize="small" />
               Search
+            </Button>
+          </Box>
+        </Grid>
+        <Grid item lg={1}>
+          <Box mt={2}>
+            <Button onClick={handleResetForm} fullWidth size="large">
+              Reset
             </Button>
           </Box>
         </Grid>

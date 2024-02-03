@@ -27,7 +27,7 @@ const SchedulesScreen: TSchedulesScreenFC = ({ content }) => {
       </FlexBox>
       {isShowFilterScheduleForm && (
         <Suspense fallback={<></>}>
-          <FilterScheduleForm schedules={content} />
+          <FilterScheduleForm schedules={content} handleClose={handleShowFilterScheduleForm} />
         </Suspense>
       )}
 
