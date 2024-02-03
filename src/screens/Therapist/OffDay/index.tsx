@@ -9,12 +9,16 @@ import { APP_DATE_FORMAT } from "@/constants";
 import { getDate } from "@/utils/getDate";
 import dynamic from "next/dynamic";
 import { Suspense, useState } from "react";
+import CreateDayOffDialog from "./components/CreateDayOffDialog";
 
 const FilterDayOffForm = dynamic(() => import("./components/FilterDayOffForm"));
 
 const OffDayScheduleScreen: TOffDayScheduleScreenFC = ({ content }) => {
   const [isShowFilterDayOffForm, setShowFilterDayOffForm] = useState<boolean>(false);
   const handleShowFilterDayOffForm = () => setShowFilterDayOffForm((prev) => !prev);
+
+  const [isShowCreateDayOffForm, setShowCreateDayOffForm] = useState<boolean>(false);
+  const handleShowCreateDayOffForm = () => setShowCreateDayOffForm((prev) => !prev);
 
   return (
     <>
@@ -24,13 +28,19 @@ const OffDayScheduleScreen: TOffDayScheduleScreenFC = ({ content }) => {
         </Typography>
         <FlexBox justifyContent="flex-start" gap={1}>
           <Button onClick={handleShowFilterDayOffForm}>{isShowFilterDayOffForm ? "Close" : "Open"} Filter</Button>
-          <Button>Create New Days Off</Button>
+          <Button onClick={handleShowCreateDayOffForm}>Create New Days Off</Button>
         </FlexBox>
       </FlexBox>
 
       {isShowFilterDayOffForm && (
         <Suspense fallback={<></>}>
           <FilterDayOffForm onClose={handleShowFilterDayOffForm} />
+        </Suspense>
+      )}
+
+      {isShowCreateDayOffForm && (
+        <Suspense fallback={<></>}>
+          <CreateDayOffDialog />
         </Suspense>
       )}
 
