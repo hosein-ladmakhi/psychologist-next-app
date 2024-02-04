@@ -14,6 +14,7 @@ import { IFilterOrderFormValidation } from "./components/FilterOrderDialog/index
 import dynamic from "next/dynamic";
 import moment from "moment";
 import { APP_DATE_FORMAT } from "@/constants";
+import CreateOrderDialog from "./components/CreateOrderDialog";
 
 const FilterOrderDialog = dynamic(() => import("./components/FilterOrderDialog"));
 const DoneOrderDialog = dynamic(() => import("./components/DoneOrderDialog"));
@@ -26,6 +27,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
   const [isShowDoneOrderDialog, setShowDoneOrderDialogStatus] = useState<boolean>(false);
   const [isShowDocumentationDialog, setShowDocumentationDialogStatus] = useState<boolean>(false);
+  const [isShowCreateOrderDialog, setShowCreateOrderDialogStatus] = useState<boolean>(false);
 
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
 
@@ -55,6 +57,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
     setShowDocumentationDialogStatus(false);
     setShowDoneOrderDialogStatus(false);
     setShowFilterDialogStatus(false);
+    setShowCreateOrderDialogStatus(false);
   };
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
@@ -108,6 +111,10 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
     setShowFilterDialogStatus(true);
   };
 
+  const handleCreate = () => {
+    setShowCreateOrderDialogStatus(true);
+  };
+
   const additionalActions: TAdditionalTableAction[] = [
     {
       color: "error",
@@ -143,6 +150,11 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
           <DocumentationDialog onClose={onCloseDialog} selectedOrder={selectedOrder!} />
         </Suspense>
       )}
+      {isShowCreateOrderDialog && (
+        <Suspense fallback={<></>}>
+          <CreateOrderDialog onClose={onCloseDialog} />
+        </Suspense>
+      )}
       <Table
         handleFilter={handleFilter}
         loading={pending}
@@ -155,6 +167,8 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
         currentPage={page}
         totalPage={count}
         handleResetFilter={handleResetFilter}
+        handleCreate={handleCreate}
+        createButtonLabel="Create Order"
       />
     </>
   );

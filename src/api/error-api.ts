@@ -1,4 +1,5 @@
-import { redirectionApiErr } from "./redirectionApiErr";
+import { unauthClientrRedirect } from "./unauthClientRedirect";
+import { unauthServerRedirect } from "./unauthServerRedirect";
 
 export abstract class Exception {
   constructor(public status: number, public message: string, public error: string) {}
@@ -21,9 +22,8 @@ export const handleApiRes = (res: Response) => {
 };
 
 export const handleApiErr = (error: any) => {
-  console.error("Some Error Happen");
   if (error.status === 401) {
-    return redirectionApiErr();
+    return typeof window === typeof undefined ? unauthServerRedirect() : unauthClientrRedirect();
   }
   return Promise.reject(error);
 };

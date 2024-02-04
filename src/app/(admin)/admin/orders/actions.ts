@@ -1,8 +1,8 @@
 "use server";
 
 import { uploadOrderDocumenation } from "@/services/documenation.service";
-import { changeOrderStatus } from "@/services/order.service";
-import { EOrderStatus } from "@/types/order.model";
+import { changeOrderStatus, createOrder } from "@/services/order.service";
+import { EOrderStatus, ICreateOrder } from "@/types/order.model";
 import { revalidateTag } from "next/cache";
 
 export const uploadDocumentationAndDoneOrderAction = async (orderId: number, data: FormData) => {
@@ -18,6 +18,15 @@ export const uploadDocumentationAndDoneOrderAction = async (orderId: number, dat
 
 export const cancelOrderAction = async (id: number) => {
   const res = await changeOrderStatus(id, { status: EOrderStatus.Cancel });
+  if (res) {
+    revalidateTag("orders");
+    return true;
+  }
+  return false;
+};
+
+export const createOrderAction = async (data: ICreateOrder) => {
+  const res = await createOrder(data);
   if (res) {
     revalidateTag("orders");
     return true;

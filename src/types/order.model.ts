@@ -38,3 +38,20 @@ export interface IOrderDetailBasedOnTherapist {
   patients: IPatient[];
   categories: ICategory[];
 }
+
+export interface IReservationDate {
+  dates: string[];
+}
+
+export interface ICreateOrder {
+  patient: number;
+  therapist: number;
+  day: number;
+  location: number;
+  date: string;
+  room: number;
+  categories: number[];
+  type: ETherapistScheduleType;
+  startHour: string;
+  endHour: string;
+}

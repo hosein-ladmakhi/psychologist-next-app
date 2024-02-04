@@ -2,6 +2,6 @@
 
 import { RedirectType, redirect } from "next/navigation";
 
-export const redirectionApiErr = () => {
+export const unauthServerRedirect = () => {
   return redirect("/auth/login", RedirectType.replace);
 };
