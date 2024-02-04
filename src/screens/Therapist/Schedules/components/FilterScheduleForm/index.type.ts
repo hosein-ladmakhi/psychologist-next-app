@@ -1,12 +1,8 @@
-import { ITherapistSchedules } from "@/types/therapist.model";
 import { FC } from "react";
 import * as zod from "zod";
 import { filterScheduleFormValidation } from "./index.constant";
 
-interface IFilterScheduleForm {
-  schedules: ITherapistSchedules[];
-  handleClose: () => void;
-}
+interface IFilterScheduleForm {}
 
 export type TFilterScheduleFormFC = FC<IFilterScheduleForm>;
 

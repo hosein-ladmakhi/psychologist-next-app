@@ -1,24 +1,15 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { TRouteLoadingProviderFC } from "./index.type";
-
-import "nprogress/nprogress.css";
-import { useEffect, useLayoutEffect } from "react";
-import nprogress from "nprogress";
+import NextTopLoader from "nextjs-toploader";
 
 const RouteLoadingProvider: TRouteLoadingProviderFC = ({ children }) => {
-  const pathname = usePathname();
-
-  useLayoutEffect(() => {
-    nprogress.start();
-  }, [pathname]);
-
-  useEffect(() => {
-    nprogress.done();
-  }, [pathname]);
-
-  return <>{children}</>;
+  return (
+    <>
+      <NextTopLoader color="#6c5ce7" height={6} crawl showSpinner={false} />
+      {children}
+    </>
+  );
 };
 
 export default RouteLoadingProvider;

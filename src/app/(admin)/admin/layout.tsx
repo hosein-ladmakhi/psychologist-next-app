@@ -1,7 +1,6 @@
 import AppHeader from "@/components/AppHeader";
-import { AppBar, Container, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
+import { Container } from "@mui/material";
 import { Metadata } from "next";
-import Link from "next/link";
 import { FC, PropsWithChildren } from "react";
 
 export const metadata: Metadata = {
@@ -37,7 +36,7 @@ const menuItems: { label: string; href: string }[] = [
 const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <AppHeader menuItems={menuItems} />
+      <AppHeader user={{} as any} menuItems={menuItems} />
       <Container maxWidth="xl">{children}</Container>
     </>
   );

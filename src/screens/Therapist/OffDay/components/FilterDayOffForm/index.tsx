@@ -19,12 +19,6 @@ const FilterDayOffForm: TFilterDayOffFormFC = ({ onClose }) => {
     onChangeMultipleSearchParams({ ...data, date: data.date ? moment(data.date).format(APP_DATE_FORMAT) : undefined });
   });
 
-  const handleResetForm = () => {
-    onChangeMultipleSearchParams({ day: undefined, date: undefined });
-    reset();
-    onClose();
-  };
-
   return (
     <Box onSubmit={onSubmit} component="form" mt={5}>
       <Grid container columnSpacing={1.5}>
@@ -40,13 +34,6 @@ const FilterDayOffForm: TFilterDayOffFormFC = ({ onClose }) => {
             <Button type="submit" fullWidth size="large">
               <Search sx={{ marginInlineEnd: "5px" }} fontSize="small" />
               Search
-            </Button>
-          </Box>
-        </Grid>
-        <Grid item lg={1}>
-          <Box mt={2}>
-            <Button onClick={handleResetForm} fullWidth size="large">
-              Reset
             </Button>
           </Box>
         </Grid>

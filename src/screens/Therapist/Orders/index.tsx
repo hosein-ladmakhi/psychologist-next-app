@@ -17,12 +17,26 @@ const FilterOrderForm = dynamic(() => import("./components/FilterOrderForm"));
 const OrdersScreen: TOrdersScreenFC = ({ data, todayOrders }) => {
   const [isShowFilterOrderForm, setShowFilterOrderForm] = useState<boolean>(false);
   const handleFilterOrderForm = () => setShowFilterOrderForm((prev) => !prev);
-  const { onChangeSearchParams, getSearchParams } = useSearchParams();
+  const { onChangeSearchParams, getSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const router = useRouter();
   const content = getSearchParams("mode") === "today" ? todayOrders : data;
   const handleChangeMode = (mode: "all" | "today") => onChangeSearchParams("mode", mode);
 
   const handleViewOrder = (id: number) => router.push(`/therapist/orders/${id}`);
+
+  const handleReset = () => {
+    onChangeMultipleSearchParams({
+      category: undefined,
+      date: undefined,
+      day: undefined,
+      location: undefined,
+      patient: undefined,
+      status: undefined,
+      time: undefined,
+      type: undefined,
+    });
+    setShowFilterOrderForm(false);
+  };
 
   return (
     <>
@@ -32,6 +46,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, todayOrders }) => {
         </Typography>
         <FlexBox gap={0.5}>
           <Button onClick={handleFilterOrderForm}>{isShowFilterOrderForm ? "Close" : "Open"} Filter</Button>
+          <Button onClick={handleReset}>Reset Filter</Button>
           <Button onClick={handleChangeMode.bind(null, "today")}>Show Today Therapy Session</Button>
           <Button onClick={handleChangeMode.bind(null, "all")}>Show All Therpy Session</Button>
         </FlexBox>

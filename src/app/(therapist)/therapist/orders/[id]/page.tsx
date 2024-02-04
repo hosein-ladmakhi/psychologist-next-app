@@ -1,6 +1,11 @@
 import OrderDetailScreen from "@/screens/Therapist/OrderDetail";
 import { TOrderDetailPageFC } from "./page.type";
 import { getOrderById, getOrderByPatientId } from "@/services/order.service";
+import { Metadata } from "next";
+
+export const metdata: Metadata = {
+  title: "Order Detail",
+};
 
 export const dynamic = "force-dynamic";
 

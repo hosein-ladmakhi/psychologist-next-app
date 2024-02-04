@@ -92,3 +92,11 @@ export interface IAddNewOffDayReqBody {
   date: string;
   schedule: number;
 }
+
+export type TAddNewOwnScheduleReqBody = Omit<IAddNewScheduleToTherapistReqBody, "therapist">;
+
+export interface IScheduleDetailForFilter {
+  times: string[];
+  locations: ILocation[];
+  rooms: number[];
+}

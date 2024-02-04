@@ -2,8 +2,15 @@ import AppHeader from "@/components/AppHeader";
 import { getProfile } from "@/services/auth.service";
 import { ITherapist } from "@/types/therapist.model";
 import { Container } from "@mui/material";
-import { redirect } from "next/navigation";
+import { Metadata } from "next";
 import { FC, PropsWithChildren } from "react";
+
+export const metadata: Metadata = {
+  title: {
+    template: "Therapist | %s Page",
+    default: "Main",
+  },
+};
 
 const menuItems: { label: string; href: string }[] = [
   {
@@ -23,8 +30,8 @@ const menuItems: { label: string; href: string }[] = [
     label: "DayOff",
   },
   {
-    href: "/therapist/account",
-    label: "Account",
+    href: "/therapist/dashboard",
+    label: "Dashboard",
   },
 ];
 

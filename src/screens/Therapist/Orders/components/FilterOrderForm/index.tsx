@@ -11,12 +11,14 @@ import { useEffect, useState } from "react";
 import { IPatient } from "@/types/patient.model";
 import { getOrderPatientByTherapistId } from "@/services/order.service";
 import { ICategory } from "@/types/category.model";
-import { orderLocationSelects, orderStatusSelects, orderTypeSelects, patientsSelects } from "@/utils/selectOptions";
+import { removeDuplicatedSelectKey } from "@/utils/selectOptions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { filterOrderFormValidation } from "./index.constant";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import moment from "moment";
 import { APP_DATE_FORMAT } from "@/constants";
+import { EOrderStatus } from "@/types/order.model";
+import { ETherapistScheduleType } from "@/types/therapist.model";
 
 const FilterOrderForm: TFilterOrderFormFC = ({ therapistId, handleClose }) => {
   const { control, handleSubmit, reset } = useForm<TFilterOrderFormValidation>({ resolver: zodResolver(filterOrderFormValidation) });
@@ -27,12 +29,12 @@ const FilterOrderForm: TFilterOrderFormFC = ({ therapistId, handleClose }) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const { onChangeMultipleSearchParams } = useSearchParams();
 
-  const THERAPY_TYPE_OPTIONS: TSelectOptions[] = orderTypeSelects();
-  const PATIENTS_OPTIONS: TSelectOptions[] = patientsSelects(patients);
-  const LOCATIONS_OPTIONS: TSelectOptions[] = orderLocationSelects(locations);
+  const THERAPY_TYPE_OPTIONS: TSelectOptions[] = Object.entries(ETherapistScheduleType).map(([key, value]) => ({ key, value }));
+  const PATIENTS_OPTIONS: TSelectOptions[] = patients.map((patient) => ({ key: `${patient.firstName} ${patient.lastName}`, value: patient.id }));
+  const LOCATIONS_OPTIONS: TSelectOptions[] = removeDuplicatedSelectKey(locations.map((location) => ({ key: location, value: location })));
   const TIMES_OPTIONS: TSelectOptions[] = times.map((time) => ({ key: time, value: time }));
   const CATEGORIES_OPTIONS: TSelectOptions[] = categories.map((category) => ({ key: category.enName, value: category.enName }));
-  const STATUS_OPTIONS: TSelectOptions[] = orderStatusSelects();
+  const STATUS_OPTIONS: TSelectOptions[] = Object.entries(EOrderStatus).map(([key, value]) => ({ key, value }));
 
   useEffect(() => {
     setLoading(true);
@@ -47,22 +49,6 @@ const FilterOrderForm: TFilterOrderFormFC = ({ therapistId, handleClose }) => {
         setLoading(false);
       });
   }, [therapistId]);
-
-  const handleResetForm = () => {
-    reset();
-    const resetedData: TFilterOrderFormValidation = {
-      category: undefined,
-      date: undefined,
-      day: undefined,
-      location: undefined,
-      patient: undefined,
-      status: undefined,
-      time: undefined,
-      type: undefined,
-    };
-    onChangeMultipleSearchParams(resetedData);
-    handleClose();
-  };
 
   const onSubmit = handleSubmit((data) => {
     onChangeMultipleSearchParams({ ...data, date: data.date ? moment(data.date).format(APP_DATE_FORMAT) : undefined });
@@ -120,13 +106,6 @@ const FilterOrderForm: TFilterOrderFormFC = ({ therapistId, handleClose }) => {
           <FlexBox mt={2}>
             <Button type="submit" disabled={loading} fullWidth size="large">
               Find The Therapy Session
-            </Button>
-          </FlexBox>
-        </Grid>
-        <Grid item lg={2}>
-          <FlexBox mt={2}>
-            <Button type="button" onClick={handleResetForm} disabled={loading} fullWidth size="large">
-              Reset The Filter
             </Button>
           </FlexBox>
         </Grid>

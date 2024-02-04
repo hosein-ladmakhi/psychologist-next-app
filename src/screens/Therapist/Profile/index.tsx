@@ -13,7 +13,7 @@ import ImagePicker from "@/components/ImagePicker";
 import { API_URL } from "@/constants";
 import { uploadTherapistProfile } from "@/services/therapist.service";
 import { useProfileForm } from "./useForm";
-import { categoriesSelects, degreeOfEducationSelects, genderSelects } from "@/utils/selectOptions";
+import { EDegtreeOfEducation, EGender } from "@/types/therapist.model";
 
 const ProfileScreen: TProfileScreenFC = ({ user }) => {
   const imageRef = useRef<File | null>(null);
@@ -22,9 +22,9 @@ const ProfileScreen: TProfileScreenFC = ({ user }) => {
 
   const { categories, categoriesLoading } = useCategories();
 
-  const DEGREE_OF_EDUCATION_OPTIONS = degreeOfEducationSelects();
-  const GENDER_OPTIONS = genderSelects();
-  const CATEGORIES_OPTIONS = categoriesSelects(categories);
+  const DEGREE_OF_EDUCATION_OPTIONS = Object.entries(EDegtreeOfEducation).map(([key, value]) => ({ key, value }));
+  const GENDER_OPTIONS = Object.entries(EGender).map(([key, value]) => ({ key, value }));
+  const CATEGORIES_OPTIONS = categories.map((category) => ({ key: category.enName, value: category.id }));
 
   const handleUploadNewProfile = () => {
     const formdata = new FormData();

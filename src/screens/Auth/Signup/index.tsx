@@ -51,7 +51,14 @@ const SignupScreen: TSignupScreenFC = () => {
             <TextInput helperText="Your Must Fill Your Phone Number" control={control} label="Phone Number" name="phone" icon={<Phone />} />
           </Grid>
           <Grid item md={12}>
-            <TextInput helperText="Your Password Must Be More Than 8 Character" control={control} label="Password" name="password" icon={<Key />} />
+            <TextInput
+              type="password"
+              helperText="Your Password Must Be More Than 8 Character"
+              control={control}
+              label="Password"
+              name="password"
+              icon={<Key />}
+            />
           </Grid>
           <Grid item md={12}>
             <RadioGroup
