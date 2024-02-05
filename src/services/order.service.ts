@@ -10,7 +10,10 @@ export const getOrders = (filterObject: Object) =>
 export const changeOrderStatus = (id: number, data: IOrderChangeStatusReqBody) =>
   httpPatch<IOrderChangeStatusReqBody, IOrder>(`${API_URL}/orders/change-status/${id}`, data);
 
-export const getOwnOrders = (filterObject: Object = {}) => httpGet<IOrder[]>(`${API_URL}/orders/own${prepareQueryParams(filterObject)}`);
+export const getTherapistOwnOrders = (filterObject: Object = {}) => httpGet<IOrder[]>(`${API_URL}/orders/own${prepareQueryParams(filterObject)}`);
+
+export const getOwnPatientOrders = (filterObject: Object = {}) =>
+  httpGet<IOrder[]>(`${API_URL}/orders/patient/own${prepareQueryParams(filterObject)}`);
 
 export const getOrderPatientByTherapistId = (id: number) => httpGet<IOrderDetailBasedOnTherapist>(`${API_URL}/orders/detail/${id}`);
 

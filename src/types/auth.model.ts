@@ -13,3 +13,13 @@ export interface ILoginReqBody {
 export interface IAuthResponse {
   token: string;
 }
+
+export interface IPasswordUpdateReqBody {
+  password: string;
+  currentPassword: string;
+}
+
+export interface IPasswordUpdateResponse {
+  success: boolean;
+  message?: string;
+}

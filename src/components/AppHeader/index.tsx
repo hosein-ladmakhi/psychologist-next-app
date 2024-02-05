@@ -8,16 +8,18 @@ import { Logout } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
 import FlexBox from "../FlexBox";
 import { API_URL } from "@/constants";
+import { ITherapist } from "@/types/therapist.model";
 
 const AppHeader: TAppHeaderFC = ({ menuItems, user }) => {
   const handleLogout = () => {
     signOut({ redirect: true, callbackUrl: "/auth/login" });
   };
+  const userProfileImage = (user as ITherapist)?.image;
   return (
     <AppBar sx={{ marginBottom: "40px" }} position="static">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <FlexBox>
-          <Avatar src={`${API_URL}${user?.image}`} sx={{ height: "50px", width: "50px", marginRight: "10px" }} />
+          {userProfileImage && <Avatar src={`${API_URL}${userProfileImage}`} sx={{ height: "50px", width: "50px", marginRight: "10px" }} />}
           <Typography variant="h6" component="h1" fontWeight="bold">
             {user?.firstName} {user?.lastName}
           </Typography>

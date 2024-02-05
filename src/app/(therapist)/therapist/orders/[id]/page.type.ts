@@ -1,7 +1,7 @@
 import { INextPage } from "@/types/base.model";
 import { FC } from "react";
 
-interface IOrderDetailParam {
+export interface IOrderDetailParam {
   id: number;
 }
 

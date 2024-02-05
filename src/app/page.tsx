@@ -13,6 +13,9 @@ const HomePage: FC = async () => {
         <Link component={NextLink} href="/therapist/profile">
           Therapist Page
         </Link>
+        <Link component={NextLink} href="/patient/profile">
+          Patient Page
+        </Link>
       </FlexBox>
     </Container>
   );

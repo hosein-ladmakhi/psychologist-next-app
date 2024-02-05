@@ -12,3 +12,6 @@ export const createPatient = (data: TCreateOrEditPatientBody) => httpPost<TCreat
 
 export const editPatient = (id: number, data: TCreateOrEditPatientBody) =>
   httpPatch<TCreateOrEditPatientBody, IPatient>(`${API_URL}/patient/${id}`, data);
+
+export const updateOwnPatientProfile = (data: TCreateOrEditPatientBody) =>
+  httpPatch<TCreateOrEditPatientBody, IPatient>(`${API_URL}/patient/profile`, data);

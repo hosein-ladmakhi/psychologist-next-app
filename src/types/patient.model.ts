@@ -1,5 +1,5 @@
-import { IBaseEntity, IBaseUser, IDatasourcePageRes } from './base.model';
-import { IOrder } from './order.model';
+import { IBaseEntity, IBaseUser, IDatasourcePageRes } from "./base.model";
+import { IOrder } from "./order.model";
 
 export interface IPatient extends IBaseEntity, IBaseUser {
   orders: IOrder[];
@@ -7,7 +7,4 @@ export interface IPatient extends IBaseEntity, IBaseUser {
 
 export type TPatientPageRes = IDatasourcePageRes<IPatient>;
 
-export type TCreateOrEditPatientBody = Pick<
-  IPatient,
-  'firstName' | 'lastName' | 'phone'
->;
+export type TCreateOrEditPatientBody = Pick<IPatient, "firstName" | "lastName" | "phone">;
