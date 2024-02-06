@@ -59,6 +59,7 @@ const MyTicketsScreen: TMyTicketsScreenFC = ({ count, data, totalPage }) => {
       transformedCreatedDate: moment(ticket.createdAt).format(APP_DATE_TIME_FORMAT),
       transformedClosedDate: ticket.closedAt ? moment(ticket.closedAt).format(APP_DATE_TIME_FORMAT) : " - ",
       transformedAttachment: (ticket?.attachments?.length || 0) > 0 ? "Have Attachments" : " - ",
+      subTickets: ticket?.childrens?.length,
     }));
   }, [data]);
 
@@ -71,7 +72,7 @@ const MyTicketsScreen: TMyTicketsScreenFC = ({ count, data, totalPage }) => {
       )}
       {isShowViewTicketDialog && selectedTicket && (
         <Suspense fallback={<></>}>
-          <ViewTicketDialog handleCreate={handleCreate} selectedTicket={selectedTicket} handleClose={handleClose} />
+          <ViewTicketDialog handleDelete={handleDelete} handleCreate={handleCreate} selectedTicket={selectedTicket} handleClose={handleClose} />
         </Suspense>
       )}
       <Table

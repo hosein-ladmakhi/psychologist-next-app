@@ -4,7 +4,7 @@ export const ticketsColumns: ITableColumn[] = [
   {
     label: "Id",
     name: "id",
-    width: 100,
+    width: 50,
   },
   {
     label: "Title",
@@ -17,14 +17,19 @@ export const ticketsColumns: ITableColumn[] = [
     width: 150,
   },
   {
+    label: "Sub Tickets",
+    name: "subTickets",
+    width: 150,
+  },
+  {
     label: "Created Date",
     name: "transformedCreatedDate",
-    width: 200,
+    width: 150,
   },
   {
     label: "Closed Date",
     name: "transformedClosedDate",
-    width: 200,
+    width: 150,
   },
   {
     label: "Attachments",
