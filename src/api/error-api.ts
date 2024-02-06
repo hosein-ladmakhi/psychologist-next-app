@@ -12,9 +12,11 @@ export class UnauthorizationException extends Exception {
 }
 
 export const handleApiRes = (res: Response) => {
+  console.log(res.url, res.status);
   switch (res.status) {
     case 200:
     case 201:
+    case 400:
       return res.json();
     case 401:
       throw new UnauthorizationException();

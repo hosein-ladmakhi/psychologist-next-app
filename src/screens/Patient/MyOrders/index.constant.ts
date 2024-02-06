@@ -27,6 +27,11 @@ export const myOrdersColumns: ITableColumn[] = [
     width: 200,
   },
   {
+    label: "Status",
+    name: "status",
+    width: 100,
+  },
+  {
     label: "Address",
     name: "address",
     width: 200,

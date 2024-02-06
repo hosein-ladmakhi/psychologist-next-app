@@ -11,3 +11,4 @@ export const DATES = {
 };
 
 export const APP_DATE_FORMAT = "YYYY-MM-DD";
+export const APP_DATE_TIME_FORMAT = "YYYY-MM-DD HH:mm";
