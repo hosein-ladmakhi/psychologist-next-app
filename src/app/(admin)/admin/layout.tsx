@@ -31,6 +31,10 @@ const menuItems: { label: string; href: string }[] = [
     href: "/admin/therapists",
     label: "Therapists",
   },
+  {
+    href: "/admin/tickets",
+    label: "Tickets",
+  },
 ];
 
 const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
