@@ -9,7 +9,7 @@ export enum ETicketStatus {
 
 export interface ITicket extends IBaseEntity {
   createdAt: Date;
-  closedAt?: Date;
+  closeAt?: Date;
   title: string;
   content: string;
   attachments: string[];
@@ -17,6 +17,17 @@ export interface ITicket extends IBaseEntity {
   status: ETicketStatus;
   parent?: ITicket;
   childrens: ITicket[];
+  answer?: string;
+  answerAt?: Date;
 }
 
 export type TTicketPageRes = IDatasourcePageRes<ITicket>;
+
+export interface IUpdateTicketReqBody {
+  status?: ETicketStatus;
+  closeAt?: Date;
+}
+
+export interface IAnswerTicketReqBody {
+  answer: string;
+}

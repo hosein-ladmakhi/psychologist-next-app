@@ -62,7 +62,7 @@ const CreateTicketDialog: TCreateTicketDialogFC = ({ handleClose, selectedTicket
       <form onSubmit={onSubmit}>
         <TextInput control={control} label="Title" name="title" type="text" />
         <TextInput control={control} label="Content" name="content" rows={10} multiline />
-        <input type="file" hidden ref={attachmentsRef} />
+        <input multiple type="file" hidden ref={attachmentsRef} />
         <FlexBox gap={1} justifyContent="flex-end" mt={1}>
           <Button color="warning" onClick={handleAttachmentsExplorer}>
             Add Attachments

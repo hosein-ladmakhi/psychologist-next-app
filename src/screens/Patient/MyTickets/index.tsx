@@ -12,6 +12,7 @@ import { deleteTicketAction } from "@/app/(patient)/patient/my-tickets/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import ViewTicketDialog from "./components/ViewTicketDialog";
 import { ITicket } from "@/types/ticket.model";
+import FilterTicketDialog from "./components/FilterTicketDialog";
 
 const CreateTicketDialog = dynamic(() => import("./components/CreateTicketDialog"));
 
@@ -22,10 +23,13 @@ const MyTicketsScreen: TMyTicketsScreenFC = ({ count, data, totalPage }) => {
   const [selectedTicket, setSelectedTicket] = useState<ITicket>();
   const [isShowViewTicketDialog, setShowViewTicketDialogStatus] = useState<boolean>(false);
 
+  const [isShowFilterTicketDialog, setShowFilterTicketDialogStatus] = useState<boolean>(false);
+
   const handleClose = () => {
     setShowCreateTicketDialogStatus(false);
     setSelectedTicket(undefined);
     setShowViewTicketDialogStatus(false);
+    setShowFilterTicketDialogStatus(false);
   };
 
   const handleCreate = () => {
@@ -53,11 +57,15 @@ const MyTicketsScreen: TMyTicketsScreenFC = ({ count, data, totalPage }) => {
     },
   ];
 
+  const handleFilter = () => {
+    setShowFilterTicketDialogStatus(true);
+  };
+
   const transformedData = useMemo(() => {
     return data.map((ticket) => ({
       ...ticket,
       transformedCreatedDate: moment(ticket.createdAt).format(APP_DATE_TIME_FORMAT),
-      transformedClosedDate: ticket.closedAt ? moment(ticket.closedAt).format(APP_DATE_TIME_FORMAT) : " - ",
+      transformedClosedDate: ticket.closeAt ? moment(ticket.closeAt).format(APP_DATE_TIME_FORMAT) : " - ",
       transformedAttachment: (ticket?.attachments?.length || 0) > 0 ? "Have Attachments" : " - ",
       subTickets: ticket?.childrens?.length,
     }));
@@ -73,6 +81,11 @@ const MyTicketsScreen: TMyTicketsScreenFC = ({ count, data, totalPage }) => {
       {isShowViewTicketDialog && selectedTicket && (
         <Suspense fallback={<></>}>
           <ViewTicketDialog handleDelete={handleDelete} handleCreate={handleCreate} selectedTicket={selectedTicket} handleClose={handleClose} />
+        </Suspense>
+      )}
+      {isShowFilterTicketDialog && (
+        <Suspense fallback={<></>}>
+          <FilterTicketDialog />
         </Suspense>
       )}
       <Table

@@ -1,6 +1,6 @@
 "use server";
 
-import { createTicket, deleteTicket } from "@/services/ticket.service";
+import { createTicket, deleteOwnTicket } from "@/services/ticket.service";
 import { revalidateTag } from "next/cache";
 
 export const createTicketAction = async (data: FormData) => {
@@ -14,7 +14,7 @@ export const createTicketAction = async (data: FormData) => {
 };
 
 export const deleteTicketAction = async (id: number) => {
-  const res = await deleteTicket(id);
+  const res = await deleteOwnTicket(id);
   if (res) {
     revalidateTag("own-tickets");
     return true;

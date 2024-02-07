@@ -36,4 +36,9 @@ export const ticketsColumns: ITableColumn[] = [
     name: "transformedClosedDate",
     width: 200,
   },
+  {
+    label: "Answer Date",
+    name: "transformedAnswerDate",
+    width: 200,
+  },
 ];
