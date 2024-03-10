@@ -19,4 +19,5 @@ export interface ICity {
   province_id: number;
   latitude: number;
   longitude: number;
+  name: string;
 }

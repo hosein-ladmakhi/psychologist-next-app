@@ -1,4 +1,4 @@
-import { loginUser, profileUser } from "@/services/auth.service";
+import { loginUser } from "@/services/auth.service";
 import { jwtDecode } from "jwt-decode";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -12,6 +12,7 @@ export const authOptions: AuthOptions = {
       authorize: async (credentials: TLoginFormValidation) => {
         const { role, ...data } = credentials;
         const res = await loginUser(role, data);
+        console.log(1234, res);
         return res?.token ? { accessToken: res?.token } : undefined;
       },
     }),

@@ -8,6 +8,6 @@ export interface ICreateOrEditCategoryDialogProps {
   selectedCategory?: ICategory;
 }
 
-export type TCreateOrEditCategoryFormValidation = zod.infer<typeof createOrEditCategoryFormValidation>;
+export type TCreateOrEditCategoryFormValidation = zod.infer<typeof createOrEditCategoryFormValidation> & { icon?: string };
 
 export type TCreateOrEditCategoryDialogFC = FC<ICreateOrEditCategoryDialogProps>;

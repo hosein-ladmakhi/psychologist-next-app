@@ -134,7 +134,7 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
               name="workingFields"
               id="working-fields-label"
               label="Working Fields"
-              options={categories.map((category) => ({ key: category.enName, value: category.id }))}
+              options={categories.map((category) => ({ key: category.faName, value: category.id }))}
               defaultValue={selectedTherapist?.workingFields ? selectedTherapist?.workingFields?.map((e) => e.id) : []}
               disabled={categoriesLoading}
               multiple

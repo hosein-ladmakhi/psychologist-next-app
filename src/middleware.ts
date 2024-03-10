@@ -1,10 +1,20 @@
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { protctedPageMiddleware } from "./app/protected-page.middleware";
+import { withAuth as withNextAuth } from "next-auth/middleware";
+import { NextFetchEvent, NextRequest } from "next/server";
 
-const middleware = (request: NextRequest, event: NextFetchEvent) => {
-  const reqPathname = request.nextUrl.pathname;
-  if (reqPathname.startsWith("/therapist") || reqPathname.startsWith("/admin")) return protctedPageMiddleware(request as any, event);
-  return NextResponse.next();
+const withAuth = () => {
+  return (request: NextRequest, event: NextFetchEvent) => {
+    withNextAuth({
+      callbacks: {
+        authorized(params) {
+          return !!params.token;
+        },
+      },
+      secret: "xxx",
+      pages: { signIn: "/auth/login" },
+    })(request as any, event);
+  };
 };
 
-export default middleware;
+export default withAuth();
+
+export const config = { matcher: ["/"] };

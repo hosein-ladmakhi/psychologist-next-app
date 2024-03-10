@@ -1,7 +1,7 @@
 "use client";
 
 import Table from "@/components/Table";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { categoriesColumns } from "./index.constant";
 import { TCategoriesScreenFC } from "./index.type";
 import { useSearchParams } from "@/hooks/useSearchParams";
@@ -10,6 +10,7 @@ import { deleteCategoryAction } from "@/app/(admin)/admin/categories/actions";
 import { ICategory } from "@/types/category.model";
 import { errorNotify, successNotify } from "@/utils/notify";
 import dynamic from "next/dynamic";
+import { API_URL } from "@/constants";
 
 const FilterCategoryDialog = dynamic(() => import("./components/FilterCategoryDialog"));
 const CreateOrEditCategoryDialog = dynamic(() => import("./components/CreateOrEditCategoryDialog"));
@@ -62,6 +63,13 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
     setShowCreateOrEditDialogStatus(true);
   };
 
+  const transformedCategories = useMemo(() => {
+    return data.map((d) => ({
+      ...d,
+      transformedIcon: d.icon ? <img style={{ height: "100px", width: "100px" }} src={`${API_URL}/upload/${d.icon}`} /> : "No Icon",
+    }));
+  }, [data]);
+
   return (
     <>
       {isShowFilterDialog && <FilterCategoryDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />}
@@ -72,7 +80,7 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
         title="Categories Page"
         columns={categoriesColumns}
         dataKey="id"
-        rows={data}
+        rows={transformedCategories}
         loading={pending}
         handleDelete={handleDelete}
         handleEdit={handleEdit}

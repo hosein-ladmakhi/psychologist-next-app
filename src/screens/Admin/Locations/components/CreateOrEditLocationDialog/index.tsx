@@ -14,7 +14,7 @@ const CreateOrEditLocationDialog: TCreateOrEditLocationDialogFC = ({ onClose, se
   const { handleSubmit, control } = useCreateOrEditLocationForm(selectedLocation);
   const [pending, handleTransition] = useTransition();
   const { cities, citiesLoading } = useCities();
-  const citiesOptions = cities.map((city) => ({ key: city.slug, value: city.slug }));
+  const citiesOptions = cities.map((city) => ({ key: city.name, value: city.name }));
 
   const modalTitle = selectedLocation ? "Edit Location" : "Create New Location";
 

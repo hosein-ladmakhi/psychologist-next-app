@@ -15,7 +15,7 @@ const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
           </Grid>
           <Grid item md={7}>
             <FlexBox minHeight={600} position="relative" width="100%">
-              <Image src="/auth.svg" fill alt="salam" />
+              <Image src="/svgs/auth.svg" fill alt="auth image" />
             </FlexBox>
           </Grid>
         </Grid>
