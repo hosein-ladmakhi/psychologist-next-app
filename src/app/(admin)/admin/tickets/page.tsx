@@ -7,6 +7,7 @@ export const dynamic = "force-dyanmic";
 
 const TicketsPage: TTicketsPageFC = async () => {
   const res = await getTicketsPage();
+
   return <TicketsScreen data={res?.content} count={res?.count} totalPage={calculateTotalPageTable(res?.count)} />;
 };
 

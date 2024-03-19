@@ -11,9 +11,9 @@ import { useCategories } from "@/hooks/api/useCategories";
 import { useCreateOrEditTherapistForm } from "./useForm";
 import TextInput from "@/components/TextInput";
 import Select from "@/components/Select";
-import CheckBox from "@/components/CheckBox";
 import Button from "@/components/Button";
 import { errorNotify, successNotify } from "@/utils/notify";
+import { getDegreeOfEducationEnum, getGendersEnumSelection } from "@/utils/getEnumTransformer";
 
 const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, selectedTherapist }) => {
   const { categories, categoriesLoading } = useCategories();
@@ -29,12 +29,12 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
 
   const handleCreate = async (data: TCreateOrEditTherapistFormValidation) => {
     if (!imageRef?.current) {
-      errorNotify("You Must Select Your Profile Image");
+      errorNotify("باید تصویر پروفایل پزشک را انتخاب کنید");
       return;
     }
     const uploadedFile = await handleUploadProfile();
     if (!uploadedFile) {
-      errorNotify("Your Profile Image Not Uploaded Try Again");
+      errorNotify("آپلود تصویر پروفایل با شکست مواجعه شد");
       return;
     }
 
@@ -45,10 +45,10 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
         gender: data.gender ? EGender.female : EGender.male,
         degreeOfEducation: data.degreeOfEducation as EDegtreeOfEducation,
       });
-      if (res) successNotify("Therapist Created ...");
+      if (res) successNotify("عملیات ساخت پزشک با موفقیت انجام گردید");
       else throw new Error();
     } catch (error) {
-      errorNotify("Therapist Not Created ...");
+      errorNotify("عملیات ساخت پزشک با شکست مواجعه شد");
     } finally {
       onClose();
     }
@@ -63,7 +63,7 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
     if (imageRef?.current) {
       const uploadedFile = await handleUploadProfile();
       if (!uploadedFile) {
-        errorNotify("Your Profile Image Not Uploaded Try Again");
+        errorNotify("عملیات ساخت پزشک با شکست مواجعه شد");
         return;
       } else {
         reqBody.image = uploadedFile?.filePath;
@@ -71,10 +71,10 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
     }
     try {
       const res = await editTherapistAction(selectedTherapist?.id!, reqBody as ICreateOrEditTherapistReqBody);
-      if (res) successNotify("Therapist Updated ...");
+      if (res) successNotify("عملیات ویرایش پزشک با موفقیت اانچام گردید");
       else throw new Error();
     } catch (error) {
-      errorNotify("Therapist Not Updated ...");
+      errorNotify("عملیات ویرایش پزشک با شکست مواجعه شد");
     } finally {
       onClose();
     }
@@ -90,7 +90,7 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
     });
   });
 
-  const modalTitle = selectedTherapist ? "Edit Therapist" : "Create New Therapist";
+  const modalTitle = selectedTherapist ? "ویرایش پزشک" : "ساخت پزشک جدید";
 
   return (
     <Modal opened handleClose={onClose} title={modalTitle} size="xl">
@@ -107,24 +107,27 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
             </Box>
           </Grid>
           <Grid item lg={6}>
-            <TextInput label="First Name" name="firstName" control={control} />
+            <TextInput label="نام پزشک" name="firstName" control={control} />
           </Grid>
           <Grid item lg={6}>
-            <TextInput label="Last Name" name="lastName" control={control} />
+            <TextInput label="نام خانوادگی پزشک" name="lastName" control={control} />
           </Grid>
           <Grid item lg={6}>
-            <TextInput label="Phone Number 1" name="phone" control={control} />
+            <TextInput label="شماره تماس 1" name="phone" control={control} />
           </Grid>
           <Grid item lg={6}>
-            <TextInput label="Phone Number 2" name="phone2" control={control} />
+            <TextInput label="شماره تماس 2" name="phone2" control={control} />
           </Grid>
           <Grid item lg={6}>
             <Select
               control={control}
               name="degreeOfEducation"
               id="degree-of-education"
-              label="Degree Of Education"
-              options={Object.entries(EDegtreeOfEducation).map(([key, value]) => ({ key, value }))}
+              label="مدرک تحصیلی پزشک"
+              options={Object.entries(EDegtreeOfEducation).map(([key, value]) => ({
+                key: getDegreeOfEducationEnum(key as EDegtreeOfEducation),
+                value,
+              }))}
               defaultValue={selectedTherapist?.degreeOfEducation || ""}
             />
           </Grid>
@@ -133,7 +136,7 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
               control={control}
               name="workingFields"
               id="working-fields-label"
-              label="Working Fields"
+              label="زمینه های تخصصی پزشک"
               options={categories.map((category) => ({ key: category.faName, value: category.id }))}
               defaultValue={selectedTherapist?.workingFields ? selectedTherapist?.workingFields?.map((e) => e.id) : []}
               disabled={categoriesLoading}
@@ -141,17 +144,17 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
             />
           </Grid>
           <Grid item lg={12}>
-            <TextInput rows={4} label="Home Address" name="address" control={control} multiline />
+            <Select control={control} name="gender" id="genders-label" label="جنسیت پزشک" options={getGendersEnumSelection()} />
           </Grid>
           <Grid item lg={12}>
-            <TextInput rows={4} label="Bio" name="bio" control={control} multiline />
+            <TextInput rows={4} label="آدرس خونه پزشک" name="address" control={control} multiline />
           </Grid>
           <Grid item lg={12}>
-            <CheckBox control={control} name="gender" label="Are You Female ?" defaultChecked />
+            <TextInput rows={4} label="بیوگرافی" name="bio" control={control} multiline />
           </Grid>
           <Grid item lg={3}>
             <Button type="submit" loading={createOrEditLoading} loadingSpinnerSize="30px" fullWidth>
-              Save This Therapist
+              {modalTitle}
             </Button>
           </Grid>
         </Grid>

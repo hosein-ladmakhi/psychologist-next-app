@@ -17,7 +17,7 @@ const ScheduleTherapistDialog: TScheduleTherapistDialogFC = ({ selectedTherapist
   };
 
   return (
-    <Modal size="xxxl" opened handleClose={onClose} title="Schedules Of Therapist">
+    <Modal size="xxxl" opened handleClose={onClose} title="چارت رزرو های این پزشک">
       <LoadingText loading={schedulesLoading} loadingText="Loading Schedules" loadingTextVariant="body1" spinnerSize="30px" />
       <Grid container spacing={1}>
         {Object.keys(DATES).map((dateKey) => {
@@ -29,10 +29,10 @@ const ScheduleTherapistDialog: TScheduleTherapistDialogFC = ({ selectedTherapist
                   <Typography variant="h6" component="h1">
                     {getDate(dateKey)}
                   </Typography>
-                  <Typography variant="body1">Schedules Count : {transformedSchedule?.items?.length || 0}</Typography>
+                  <Typography variant="body1">تعداد آیتم های رزرو : {transformedSchedule?.items?.length || 0}</Typography>
                   <Box mt={4}>
                     <Button onClick={onSelectDay.bind(null, +dateKey)} color="secondary" fullWidth>
-                      See Schedule
+                      نمایش کلی چارت
                     </Button>
                   </Box>
                 </CardContent>

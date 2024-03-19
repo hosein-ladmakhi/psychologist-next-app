@@ -14,6 +14,7 @@ import {
   WorkspacePremium as WorkspacePremiumIcon,
 } from "@mui/icons-material";
 import FlexBox from "@/components/FlexBox";
+import { getDegreeOfEducationEnum, getGenderEnum } from "@/utils/getEnumTransformer";
 
 const ContentBox = ({ children }: PropsWithChildren) => (
   <FlexBox my={1} gap={1} justifyContent="flex-start" alignItems="flex-start">
@@ -31,7 +32,7 @@ const ContentText = ({ children }: PropsWithChildren) => {
 
 const ViewTherapistDialog: TViewTherapistDialogFC = ({ selectedTherapist, onClose }) => {
   return (
-    <Modal handleClose={onClose} opened title="View Therapist" size="lg">
+    <Modal handleClose={onClose} opened title="جزئیات پزشک" size="lg">
       <FlexBox width="100%">
         <Avatar sx={{ height: 80, width: 80, marginBottom: "1rem" }}>
           <Image fill alt="profile-img" src={`${API_URL}${selectedTherapist?.image}`} />
@@ -40,39 +41,39 @@ const ViewTherapistDialog: TViewTherapistDialogFC = ({ selectedTherapist, onClos
       <ContentBox>
         <PersonIcon />
         <ContentText>
-          Full Name : {selectedTherapist?.firstName} {selectedTherapist?.lastName}
+          نام و نام خانوادگی پزشک : {selectedTherapist?.firstName} {selectedTherapist?.lastName}
         </ContentText>
       </ContentBox>
       <ContentBox>
         <PhoneIcon />
         <ContentText>
-          Phone Numbers : {selectedTherapist?.phone} - {selectedTherapist?.phone2}
+          شماره تماس های پزشک : {selectedTherapist?.phone} - {selectedTherapist?.phone2}
         </ContentText>
       </ContentBox>
       <ContentBox>
         <WcIcon />
-        <ContentText>Gender : {selectedTherapist?.gender}</ContentText>
+        <ContentText>جنسیت پزشک : {getGenderEnum(selectedTherapist?.gender!)}</ContentText>
       </ContentBox>
       <ContentBox>
         <WorkspacePremiumIcon />
-        <ContentText>Degree Of Education : {selectedTherapist?.degreeOfEducation}</ContentText>
+        <ContentText>مدرک تحصیلی : {getDegreeOfEducationEnum(selectedTherapist?.degreeOfEducation!)}</ContentText>
       </ContentBox>
       <ContentBox>
         <PlaceIcon />
-        <ContentText>Location : {selectedTherapist?.address}</ContentText>
+        <ContentText>آدرس خونه : {selectedTherapist?.address}</ContentText>
       </ContentBox>
       <ContentBox>
         <CategoryIcon />
-        <ContentText>Working Fields :</ContentText>
+        <ContentText>زمینه های تخصص پزشک :</ContentText>
         <FlexBox justifyContent="flex-start" gap={0.5} flexWrap="wrap">
           {selectedTherapist?.workingFields?.map((e) => (
-            <Chip label={e.enName} key={e.id} size="small" />
+            <Chip label={e.faName} key={e.id} size="small" />
           ))}
         </FlexBox>
       </ContentBox>
       <ContentBox>
         <DisplaySettingsIcon />
-        <ContentText>Bio : {selectedTherapist?.bio}</ContentText>
+        <ContentText>بیوگرافی پزشک : {selectedTherapist?.bio}</ContentText>
       </ContentBox>
     </Modal>
   );

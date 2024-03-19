@@ -1,13 +1,13 @@
 export const API_URL = process.env.NEXT_PUBLIC_APP_URL;
 
 export const DATES = {
-  "1": "Monday",
-  "2": "Tuesday",
-  "3": "Wednesday",
-  "4": "Thursday",
-  "5": "Friday",
-  "6": "Saturday",
-  "7": "Sunday",
+  "6": "شنبه",
+  "7": "یکشنبه",
+  "1": "دوشنبه",
+  "2": "سه شنبه",
+  "3": "چهارشنبه",
+  "4": "پنجشنبه",
+  "5": "جمعه",
 };
 
 export const APP_DATE_FORMAT = "YYYY-MM-DD";

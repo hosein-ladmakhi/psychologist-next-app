@@ -2,17 +2,17 @@ import { EDegtreeOfEducation } from "@/types/therapist.model";
 import * as zod from "zod";
 
 export const createOrEditTherapistFormValidation = zod.object({
-  firstName: zod.string({ required_error: "You Must Provide Your First Name" }).min(3, "Your First Name Must Include 3 Character"),
-  lastName: zod.string({ required_error: "You Must Provide Your Last Name" }).min(3, "Your First Name Must Include 3 Character"),
-  phone: zod.string({ required_error: "You Must Provide Your Phone Number" }).length(11, "Your Phone Number Has Invalid Format"),
-  phone2: zod.string({ required_error: "You Must Provide Your Phone Number 2" }).length(11, "Your Phone Number 2 Has Invalid Format"),
-  bio: zod.string({ required_error: "You Must Provide Your Biography" }).min(3, "Your Biography Must Include 3 Character"),
-  address: zod.string({ required_error: "You Must Provide Your Home Address" }).min(3, "Your Home Address Must Include 3 Character"),
-  workingFields: zod.array(zod.number()).min(1, "You Should Select At Least One Working Fields").default([]),
+  firstName: zod.string({ required_error: "فیلد نام پزشک اجباری میباشد" }).min(3, "فیلد نام حداقل باید 3 کاراکتر داشته باشد"),
+  lastName: zod.string({ required_error: "فیلد نام خانوادگی پزشک اجباری میباشد" }).min(3, "فیلد نام خانوادگی حداقل باید 3 حرف داشته باشد"),
+  phone: zod.string({ required_error: "شماره تماس اول باید پر شود" }).length(11, "فرمت شماره تماس وارد شده نادرست میباشد"),
+  phone2: zod.string({ required_error: "شماره تماس دوم باید پر شود" }).length(11, "فرمت شماره تماس وارد شده نادرست میباشد"),
+  bio: zod.string({ required_error: "فیلد بیوگرافی پزشک را پر کنید" }).min(3, "فیلد بیوگرافی پزشک باید حداقل 3 حرف داشته باشد"),
+  address: zod.string({ required_error: "آدرس خونه باید پر شود" }).min(3, "آدرس خونه باید حداقل 3 حرف داشته باشد"),
+  workingFields: zod.array(zod.number()).min(1, "باید حداقل یک زمینه تخصصی برای پزشک انتخاب کنید").default([]),
   degreeOfEducation: zod
     .string({
-      required_error: "You Must Fill Degree Of Education",
+      required_error: "مدرک تحصیلی پزشک را انتخاب کنید",
     })
-    .refine((arg) => Object.values(EDegtreeOfEducation).includes(arg as any), "You Must Fill Degree Of Education"),
-  gender: zod.boolean().default(false),
+    .refine((arg) => Object.values(EDegtreeOfEducation).includes(arg as any), "مدرک تحصیلی پزشک را انتخاب کنید"),
+  gender: zod.string({ required_error: "جنسیت پزشک را پر کنید" }),
 });

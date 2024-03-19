@@ -2,28 +2,28 @@ import { ITableColumn } from "@/components/Table/index.type";
 
 export const therapistsColumns: ITableColumn[] = [
   {
-    label: "Id",
+    label: "سریال پزشک",
     name: "id",
-    width: 50,
+    width: 150,
   },
   {
-    label: "Full Name",
+    label: "نام و نام خانوادگی",
     name: "fullName",
     width: 250,
   },
   {
-    label: "Phone 1",
+    label: "شماره تماس 1",
     name: "phone",
     width: 200,
   },
   {
-    label: "Phone 2",
+    label: "شماره تماس 2",
     name: "phone2",
     width: 200,
   },
   {
-    label: "Gender",
-    name: "gender",
-    width: 100,
+    label: "جنسیت",
+    name: "transformedGender",
+    width: 150,
   },
 ];

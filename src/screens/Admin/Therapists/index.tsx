@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import FilterTherapistDialog from "./components/FilterTherapistDialog";
 import CreateOrEditTherapistDialog from "./components/CreateOrEditTherapistDialog";
+import { getGenderEnum } from "@/utils/getEnumTransformer";
 
 const ViewTherapistDialog = dynamic(() => import("./components/ViewTherapistDialog"));
 const ScheduleTherapistDialog = dynamic(() => import("./components/ScheduleTherapistDialog"));
@@ -72,17 +73,17 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
     {
       color: "secondary",
       onClick: handleViewTherapist,
-      text: "View",
+      text: "جزئیات",
     },
     {
       color: "success",
       onClick: handleScheduleTherapistDialog,
-      text: "Plan",
+      text: "چارت رزرو",
     },
     {
       color: "warning",
       onClick: handleScheduleTherapistOffDay,
-      text: "Off Day",
+      text: "مرخصی",
     },
   ];
 
@@ -104,7 +105,11 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
   };
 
   const tranformedData = useMemo(() => {
-    return data.map((therapist) => ({ ...therapist, fullName: therapist.firstName + " " + therapist.lastName }));
+    return data.map((therapist) => ({
+      ...therapist,
+      fullName: therapist.firstName + " " + therapist.lastName,
+      transformedGender: getGenderEnum(therapist.gender),
+    }));
   }, [data]);
 
   return (
@@ -133,8 +138,8 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
       <Table
         additionalActions={additionalActions}
         handleResetFilter={handleResetFilter}
-        createButtonLabel="Create New Therapist"
-        title="Therapists Page"
+        createButtonLabel="ساخت پزشک جدید"
+        title="لیست پزشکان سایت"
         columns={therapistsColumns}
         dataKey="id"
         rows={tranformedData}

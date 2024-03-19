@@ -61,9 +61,9 @@ const Table: TTableFC = ({
           {title || ""}
         </Typography>
         <ButtonGroup variant="contained" color="secondary">
-          {handleResetFilter && <Button onClick={handleResetFilter}>Reset Filter</Button>}
-          {handleFilter && <Button onClick={handleFilter}>Filter Table</Button>}
           {handleCreate && <Button onClick={handleCreate}>{createButtonLabel}</Button>}
+          {handleFilter && <Button onClick={handleFilter}>فیلتر جدول</Button>}
+          {handleResetFilter && <Button onClick={handleResetFilter}>پاک کردن فیلتر ها</Button>}
         </ButtonGroup>
       </Box>
       <Box minHeight={500}>
@@ -90,12 +90,12 @@ const Table: TTableFC = ({
                   <Box display="flex" justifyContent="center" alignItems="center" gap="20px">
                     {handleDelete && (
                       <Button color="error" onClick={onHandleDelete.bind(null, row)}>
-                        Delete
+                        حذف
                       </Button>
                     )}
                     {handleEdit && (
                       <Button color="primary" onClick={handleEdit.bind(null, row)}>
-                        Edit
+                        ویرایش
                       </Button>
                     )}
                     {additionalActions &&
@@ -113,7 +113,7 @@ const Table: TTableFC = ({
 
         {loading && <LinearProgress />}
       </Box>
-      {typeof currentPage !== typeof undefined && totalPage > 1 && (
+      {typeof currentPage !== typeof undefined && (totalPage || 0) > 1 && (
         <Box mt="30px" width="100%" display="flex" justifyContent="center" alignItems="center">
           <Pagination color="secondary" page={currentPage} count={totalPage} onChange={(_, page: number) => handleChangePage(page)} />
         </Box>

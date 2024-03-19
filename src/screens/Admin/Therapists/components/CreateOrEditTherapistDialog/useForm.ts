@@ -3,7 +3,7 @@ import { TCreateOrEditTherapistFormValidation } from "./index.type";
 import { createOrEditTherapistFormValidation } from "./index.constant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { ITherapist } from "@/types/therapist.model";
+import { EGender, ITherapist } from "@/types/therapist.model";
 
 export const useCreateOrEditTherapistForm = (selectedTherapist?: ITherapist) => {
   const { register, formState, handleSubmit, setValue, reset, control } = useForm<TCreateOrEditTherapistFormValidation>({
@@ -18,6 +18,7 @@ export const useCreateOrEditTherapistForm = (selectedTherapist?: ITherapist) => 
       setValue("phone2", selectedTherapist?.phone2);
       setValue("bio", selectedTherapist?.bio);
       setValue("address", selectedTherapist?.address);
+      setValue("gender", selectedTherapist?.gender as EGender);
       setValue("degreeOfEducation", selectedTherapist?.degreeOfEducation);
       setValue(
         "workingFields",

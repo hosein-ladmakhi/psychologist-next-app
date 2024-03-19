@@ -1,14 +1,12 @@
 "use client";
 
-import { Box, Grid, Link, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { TLoginFormValidation, TLoginScreenFC } from "./index.type";
 import FlexBox from "@/components/FlexBox";
 import { Key, Phone, VerifiedUser } from "@mui/icons-material";
 import Button from "@/components/Button";
-import RadioGroup from "@/components/RadioGroup";
 import { useForm } from "react-hook-form";
 import TextInput from "@/components/TextInput";
-import NextLink from "next/link";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -55,28 +53,9 @@ const LoginScreen: TLoginScreenFC = () => {
             />
           </Grid>
           <Grid item md={12}>
-            <RadioGroup
-              control={control}
-              label="What is your role to signup?"
-              name="role"
-              radios={[
-                { key: "Therapist", value: "therapist" },
-                { key: "Patient", value: "patient" },
-              ]}
-              id="role"
-            />
-          </Grid>
-          <Grid item md={12}>
             <Button loadingSpinnerSize="1.5rem" loading={pending} type="submit" size="large" fullWidth>
               Submit
             </Button>
-          </Grid>
-          <Grid item md={12}>
-            <Box mt={2}>
-              <Link href="/auth/signup" component={NextLink}>
-                I Want To Create New Account
-              </Link>
-            </Box>
           </Grid>
         </Grid>
       </form>

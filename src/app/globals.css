@@ -1,3 +1,15 @@
 .react-pdf__Document {
   width: 0 !important;
 }
+
+
+body {
+  direction: rtl;
+}
+
+.link {
+  margin-inline-end: 60px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+}

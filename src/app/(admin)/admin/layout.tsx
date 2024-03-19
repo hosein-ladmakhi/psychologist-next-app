@@ -13,27 +13,27 @@ export const metadata: Metadata = {
 const menuItems: { label: string; href: string }[] = [
   {
     href: "/admin/patients",
-    label: "Patients",
+    label: "بیماران",
   },
   {
     href: "/admin/orders",
-    label: "Orders",
+    label: "رزرو ها",
   },
   {
     href: "/admin/locations",
-    label: "Locations",
+    label: "مکان ها",
   },
   {
     href: "/admin/categories",
-    label: "Categories",
+    label: "زمینه های تخصصی",
   },
   {
     href: "/admin/therapists",
-    label: "Therapists",
+    label: "پزشکان",
   },
   {
     href: "/admin/tickets",
-    label: "Tickets",
+    label: "تیکت ها",
   },
 ];
 

@@ -12,6 +12,7 @@ import { closeTicketAction, deleteTicketAction } from "@/app/(admin)/admin/ticke
 import { errorNotify, successNotify } from "@/utils/notify";
 import { ETicketStatus, ITicket } from "@/types/ticket.model";
 import ViewTicketDialog from "./components/ViewTicketDialog";
+import { getTicketStatusEnum } from "@/utils/getEnumTransformer";
 
 const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
   const [loading, handleTransition] = useTransition();
@@ -23,17 +24,23 @@ const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
       transformedPatient: ticket.patient.firstName + " " + ticket.patient.lastName,
       transformedDate: moment(ticket.createdAt).format(APP_DATE_TIME_FORMAT),
       transformedClosedDate: ticket?.closeAt ? moment(ticket.closeAt).format(APP_DATE_TIME_FORMAT) : " - ",
-      hasSubTickets: ticket?.childrens?.length > 0 ? "Yes" : "No",
+      hasSubTickets: ticket?.childrens?.length > 0 ? "بله" : "خیر",
       transformedTitle: <SummaryText lineClamp={1}>{ticket.title}</SummaryText>,
       transformedAnswerDate: ticket?.answerAt ? moment(ticket.answerAt).format(APP_DATE_TIME_FORMAT) : " - ",
+      transformedStatus: getTicketStatusEnum(ticket.status),
     }));
   }, [data]);
 
   const handleCloseTicket = (data: any) => {
     handleTransition(async () => {
-      const res = await closeTicketAction(data.id);
-      if (res) successNotify("Close Ticket Successfully ...");
-      else errorNotify("Unable To Close Ticket");
+      const ticket = data as ITicket;
+      if (ticket.status === ETicketStatus.Close) {
+        errorNotify("این تیکت قبلا توسط ادمین بسته شده است");
+        return;
+      }
+      const res = await closeTicketAction(ticket.id);
+      if (res) successNotify("تیکت مورد نظر با موفقیت بسته شد");
+      else errorNotify("عملیات بستن تیکت با شکست مواجعه شد دوباره تلاش کنید");
     });
   };
 
@@ -41,8 +48,8 @@ const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
     const ticket = data as ITicket;
     handleTransition(async () => {
       const res = await deleteTicketAction(ticket.id);
-      if (res) successNotify("Delete Ticket Successfully");
-      else errorNotify("Unable To Delete Ticket");
+      if (res) successNotify("حذف تیکت با موفقیت انجام شد");
+      else errorNotify("عملیات حذف تیکت با شکست مواجعه شد دوباره تلاش کنید");
     });
   };
 
@@ -61,12 +68,12 @@ const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
     {
       color: "warning",
       onClick: handleCloseTicket,
-      text: "Close",
+      text: "بستن",
     },
     {
       color: "secondary",
       onClick: handleViewTicket,
-      text: "View",
+      text: "نمایش",
     },
   ];
 
@@ -81,7 +88,7 @@ const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
         handleDelete={handleDelete}
         additionalActions={actionsButton}
         columns={ticketsColumns}
-        title="Tickets Page"
+        title="صفحه تیکت و پشتیبانی"
         rows={transformedData}
         dataKey="id"
         totalPage={count}
