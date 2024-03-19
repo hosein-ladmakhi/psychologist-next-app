@@ -12,3 +12,5 @@ export const DATES = {
 
 export const APP_DATE_FORMAT = "YYYY-MM-DD";
 export const APP_DATE_TIME_FORMAT = "YYYY-MM-DD HH:mm";
+
+export const DATES_KEY = [6, 7, 1, 2, 3, 4, 5]

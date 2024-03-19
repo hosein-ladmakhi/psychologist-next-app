@@ -29,8 +29,8 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
   const handleDelete = (data: any) => {
     handleTransition(async () => {
       const res = await deleteDaysOffAction(data.id);
-      if (res) successNotify("Deleted Successfully ...");
-      else errorNotify("Unable To Delete ...");
+      if (res) successNotify("مرخصی با موفقیت حذف گردید");
+      else errorNotify("عملیات حذف مرخصی با شکست مواجعه شد");
     });
   };
 
@@ -64,22 +64,22 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
       {count === 0 && (
         <FlexBox justifyContent="space-between">
           <Typography variant="body1" component="h1" fontWeight="bold">
-            No Days Off Schedule Exist
+            این پزشک مرخصی ندارد
           </Typography>
           <Button disabled={pending} onClick={handleCreate} color="secondary">
-            Create New Days Off
+            افزودن مرخصی جدید
           </Button>
         </FlexBox>
       )}
 
       {count > 0 && (
         <Table
-          createButtonLabel="Add New Days Off"
+          createButtonLabel="افزودن مرخصی جدید"
           handleCreate={handleCreate}
           handleDelete={handleDelete}
           columns={therapistScheduleOffDayColumns}
           rows={transformedData}
-          title={`${therapistFullName} Days Off`}
+          title={`چارت مرخصی های ${therapistFullName}`}
           dataKey="id"
           currentPage={page}
           totalPage={count}

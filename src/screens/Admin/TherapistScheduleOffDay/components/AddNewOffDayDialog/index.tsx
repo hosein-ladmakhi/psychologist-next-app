@@ -57,40 +57,40 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
 
   const onSubmit = handleSubmit((data) => {
     if (!moment(data.date).isValid()) {
-      setError("date", { message: "You Must Select Your Date" });
+      setError("date", { message: "تاریخ ثبت مرخصی باید پر شود" });
       return;
     }
     const reqBody: IAddNewOffDayReqBody = {
       date: moment(data.date).format(APP_DATE_FORMAT),
       schedule: data.schedule,
     };
-    confirmation({ title: `Are You Sure To Save Your Day Off In ${reqBody.date}` }).then(() => {
+    confirmation({ title: `آیا از ثبت مرخصی جدید در تاریخ ${reqBody.date} اطمینان دارید ؟` }).then(() => {
       handleTransition(async () => {
         const res = await addDaysOfAction(reqBody);
-        if (res) successNotify("Add Days Off Successfully");
-        else errorNotify("Adding Days Off Failed ...");
+        if (res) successNotify("عملیات ثبت مرخصی با موفقیت انجام گردید");
+        else errorNotify("عملیات ثبت مرخصی با شکست مواجعه شد");
         onClose();
       });
     });
   });
 
   return (
-    <Modal size="xl" opened title="Add New Off Day">
+    <Modal size="xl" opened title="افزودن مرمخصی جدید" handleClose={onClose}>
       <form onSubmit={onSubmit}>
-        <TextInput control={control} label="Therapist" name="therapist" disabled />
-        <DatePicker control={control} label="Date" name="date" />
+        <TextInput control={control} label="پزشک مورد نظر" name="therapist" disabled />
+        <DatePicker control={control} label="تاریخ مرخصی" name="date" />
         <TextInput control={control} label="" name="day" disabled />
         <Select
           control={control}
           id="select-schedules"
-          label="Schedule"
+          label="آیتم رزروی"
           name="schedule"
           options={filteredAndTranformedSchedule}
           disabled={therapistSchedulesLoading}
         />
         <Box mt={2}>
           <Button type="submit" loading={therapistSchedulesLoading || pending} fullWidth>
-            Submit
+            ثبت مرخصی جدید
           </Button>
         </Box>
       </form>
