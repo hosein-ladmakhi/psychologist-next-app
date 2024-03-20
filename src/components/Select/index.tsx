@@ -1,4 +1,3 @@
-import { getFormError } from "@/utils/getFormError";
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select as MuiSelect } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { TSelectFC } from "./index.type";
@@ -8,16 +7,17 @@ const Select: TSelectFC = ({ control, name, defaultValue, label, id, options, mu
     <Controller
       name={name}
       control={control}
-      render={({ field, formState }) => {
+      render={({ field, fieldState }) => {
+        const error = fieldState?.error?.message;
         return (
-          <FormControl margin="dense" fullWidth>
+          <FormControl error={!!fieldState.error?.message} margin="dense" fullWidth>
             <InputLabel id={id}>{label}</InputLabel>
             <MuiSelect
               defaultChecked
               disabled={disabled}
               labelId={id}
               label={label}
-              error={!!getFormError(formState, name)}
+              error={!!error}
               multiple={multiple}
               defaultValue={defaultValue}
               {...field}
@@ -28,7 +28,7 @@ const Select: TSelectFC = ({ control, name, defaultValue, label, id, options, mu
                 </MenuItem>
               ))}
             </MuiSelect>
-            <FormHelperText>{getFormError(formState, name)}</FormHelperText>
+            <FormHelperText>{error}</FormHelperText>
           </FormControl>
         );
       }}

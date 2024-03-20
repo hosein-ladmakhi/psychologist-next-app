@@ -15,12 +15,12 @@ const FilterOrderDialog: TFilterOrderDialogFC = ({ onClose, onChangeFilter }) =>
   });
 
   return (
-    <Modal handleClose={onClose} size="sm" opened title="Filter Orders">
+    <Modal handleClose={onClose} size="sm" opened title="جستجوی جدول">
       <form onSubmit={onSubmit}>
-        <Select name="status" control={control} id="order-status" options={ORDERS_STATUS_OPTIONS} label="Status Of Orders" />
+        <Select name="status" control={control} id="order-status" options={ORDERS_STATUS_OPTIONS} label="وضعیت رزرو" />
         <Box mt={2}>
           <Button type="submit" fullWidth>
-            Submit
+            اعمال فیلتر
           </Button>
         </Box>
       </form>

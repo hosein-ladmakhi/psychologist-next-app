@@ -50,41 +50,54 @@ const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onCl
         startTime: moment(data.startTime).format("HH:mm"),
       };
       const res = await addNewScheduleAction(reqBody as IAddNewScheduleToTherapistReqBody);
-      if (res) successNotify("The Schedule Added Successfully");
-      else errorNotify("The Adding New Schedule Process failed ...");
+      if (res) successNotify("آیتم رزرو با موفقیت به چارت رزروی اضافه شد");
+      else errorNotify("عملیات افزودن رزرو با شکست مواجعه شد");
       onClose();
       reset();
     });
   });
 
   return (
-    <Modal size="xl" opened title="Create Schedule">
+    <Modal handleClose={onClose} size="xl" opened title="فرم افزودن آیتم جدید به چارت رزرو">
       <form onSubmit={onSubmit}>
         <Grid container spacing={3}>
           <Grid item md={6}>
-            <TextInput disabled name="day" control={control} label="Day" />
+            <TextInput disabled name="day" control={control} label="روز هفته" />
           </Grid>
           <Grid item md={6}>
-            <TextInput disabled name="therapist" control={control} label="Therapist" />
+            <TextInput disabled name="therapist" control={control} label="پزشک" />
           </Grid>
           <Grid item md={6}>
-            <Select control={control} id="location-label" label="Location" name="location" options={locationsOption} disabled={locationsLoading} />
+            <Select
+              control={control}
+              id="location-label"
+              label="آدرس محل برگزاری"
+              name="location"
+              options={locationsOption}
+              disabled={locationsLoading}
+            />
           </Grid>
           <Grid item md={6}>
-            <TextInput name="room" control={control} label="Room" />
+            <TextInput name="room" control={control} label="اتاق" />
           </Grid>
           <Grid item md={6}>
-            <TimePicker label="Start Time" name="startTime" control={control} />
+            <TimePicker label="ساعت شروع" name="startTime" control={control} />
           </Grid>
           <Grid item md={6}>
-            <TimePicker label="End Time" name="endTime" control={control} />
+            <TimePicker label="ساعت پایان" name="endTime" control={control} />
           </Grid>
           <Grid item md={12}>
-            <RadioGroup control={control} label="Select Your Schedule Type" id="schedule-label" name="type" radios={SCHEDULE_TYPE_OPTIONS} />
+            <RadioGroup
+              control={control}
+              label="نحوه برگزاری جلسه رزرو را انتخاب کنید"
+              id="schedule-label"
+              name="type"
+              radios={SCHEDULE_TYPE_OPTIONS}
+            />
           </Grid>
           <Grid item md={12}>
-            <Button loading={pending} type="submit" fullWidth>
-              Submit
+            <Button size="large" loading={pending} type="submit" fullWidth>
+              ساخت آیتم رزرو
             </Button>
           </Grid>
         </Grid>

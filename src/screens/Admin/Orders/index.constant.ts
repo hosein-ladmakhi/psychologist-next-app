@@ -3,32 +3,32 @@ import { ITableColumn } from "@/components/Table/index.type";
 export const ordersColumns: ITableColumn[] = [
   {
     name: "id",
-    label: "Id",
-    width: 50,
+    label: "سریال رزرو",
+    width: 150,
   },
   {
     name: "patientFullName",
-    label: "Patient",
+    label: "بیمار",
     width: 200,
   },
   {
     name: "therapistFullName",
-    label: "Therapist",
+    label: "پزشک",
     width: 200,
   },
   {
     name: "time",
-    label: "Time",
+    label: "بازه زمانی",
     width: 200,
   },
   {
     name: "orderDate",
-    label: "Date",
+    label: "تاریخ",
     width: 150,
   },
   {
-    name: "status",
-    label: "Status",
-    width: 100,
+    name: "transformedStatus",
+    label: "وضعیت",
+    width: 200,
   },
 ];

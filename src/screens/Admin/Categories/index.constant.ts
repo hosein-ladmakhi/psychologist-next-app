@@ -2,23 +2,23 @@ import { ITableColumn } from "@/components/Table/index.type";
 
 export const categoriesColumns: ITableColumn[] = [
   {
-    label: "Id",
+    label: "سریال",
     name: "id",
     width: 100,
   },
   {
-    label: "Icon",
+    label: "آیکن یا تصویر",
     name: "transformedIcon",
     width: 250,
   },
   {
-    label: "Farsi Name",
+    label: "نام زمینه به فارسی",
     name: "faName",
-    width: 250,
+    width: 400,
   },
   {
-    label: "English Name",
+    label: "نام زمینه به اینگلیسی",
     name: "enName",
-    width: 250,
+    width: 400,
   },
 ];

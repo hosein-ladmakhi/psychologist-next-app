@@ -3,27 +3,27 @@ import { ITableColumn } from "@/components/Table/index.type";
 export const therapistScheduleColumns: ITableColumn[] = [
   {
     name: "startHour",
-    label: "Start Hour",
-    width: 100,
+    label: "ساعت شروع جلسه",
+    width: 200,
   },
   {
     name: "endHour",
-    label: "End Hour",
-    width: 100,
+    label: "ساعت پایان رزرو",
+    width: 200,
   },
   {
-    name: "type",
-    label: "Session Type",
+    name: "transformedType",
+    label: "نوع جلسه رزرو",
     width: 200,
   },
   {
     name: "locationAddress",
-    label: "Location",
-    width: 300,
+    label: "آدرس برگزاری",
+    width: 700,
   },
   {
     name: "room",
-    label: "Room",
+    label: "اتاق",
     width: 100,
   },
 ];

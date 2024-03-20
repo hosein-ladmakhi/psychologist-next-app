@@ -2,18 +2,18 @@ import { ITableColumn } from "@/components/Table/index.type";
 
 export const locationsColumns: ITableColumn[] = [
   {
-    label: "Id",
+    label: "سریال",
     name: "id",
     width: 100,
   },
   {
-    label: "City",
+    label: "شهر",
     name: "city",
-    width: 100,
+    width: 400,
   },
   {
-    label: "Address",
+    label: "آدرس محلی",
     name: "address",
-    width: 250,
+    width: 750,
   },
 ];

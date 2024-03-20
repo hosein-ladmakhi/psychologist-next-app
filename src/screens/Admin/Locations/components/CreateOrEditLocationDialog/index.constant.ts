@@ -1,6 +1,6 @@
 import * as zod from "zod";
 
 export const createOrEditLocationFormValidation = zod.object({
-  city: zod.string({ required_error: "You Must Select The City" }),
-  address: zod.string({ required_error: "You Must Fill The Address" }).min(3, "Your Address Must At Least 3 Character"),
+  city: zod.string({ required_error: "فیلد شهر باید پر شود" }),
+  address: zod.string({ required_error: "فیلد آدرس محلی باید پر شود" }).min(3, "فیلد آدرس محلی باید حداقل 3 حرف داشته باشد"),
 });

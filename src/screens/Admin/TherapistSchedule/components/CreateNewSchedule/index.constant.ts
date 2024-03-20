@@ -4,15 +4,15 @@ import * as zod from "zod";
 
 export const SCHEDULE_TYPE_OPTIONS: TSelectOptions[] = [
   {
-    key: "Both",
+    key: "حضوری و آنلاین",
     value: ETherapistScheduleType.both,
   },
   {
-    key: "Online",
+    key: "آنلاین",
     value: ETherapistScheduleType.online,
   },
   {
-    key: "Onsite",
+    key: "حضوری",
     value: ETherapistScheduleType.onsite,
   },
 ];
@@ -22,7 +22,7 @@ export const createNewScheduleFormValidation = zod.object({
   therapist: zod.any(),
   startTime: zod.any(),
   endTime: zod.any(),
-  location: zod.coerce.number({ required_error: "Select Your Location", invalid_type_error: "Select Your Location" }).transform(Number),
-  room: zod.coerce.number({ required_error: "Enter Your Room Number", invalid_type_error: "Enter Your Room Number" }).transform(Number),
-  type: zod.string({ required_error: "Select Your Schedule Type" }),
+  location: zod.coerce.number({ required_error: "آدرس محل برگزاری رزرو را انتخاب کنید", invalid_type_error: "آدرس محل برگزاری رزرو را انتخاب کنید" }).transform(Number),
+  room: zod.coerce.number({ required_error: "اتاق برگزاری رزرو را وارد کنید", invalid_type_error: "اتاق برگزاری رزرو را وارد کنید" }).transform(Number),
+  type: zod.string({ required_error: "نوع برگزاری رزرو را وارد کنید" }),
 });

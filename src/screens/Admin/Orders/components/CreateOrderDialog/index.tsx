@@ -17,8 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createOrderFormValidation } from "./index.constant";
 import { ICreateOrder } from "@/types/order.model";
 import { errorNotify, successNotify } from "@/utils/notify";
-import moment, { Moment } from "moment";
 import { createOrderAction } from "@/app/(admin)/admin/orders/actions";
+import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 
 const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
   const { control, watch, setValue, handleSubmit, setError } = useForm<TCreateOrderFormValidation>({
@@ -127,17 +127,17 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
   const SCHEDULES_CATEGORIES_SELECT_OPTIONS = removeDuplicatedSelectKey(
     therapists
       .find((element) => element.id === watchedTherapist)
-      ?.workingFields?.map((workField) => ({ key: workField.enName, value: workField.id })) || []
+      ?.workingFields?.map((workField) => ({ key: workField.faName, value: workField.id })) || []
   );
 
   const getScheduleTypeOption = () => {
     if (!currentSchedule) return [];
     if (currentSchedule?.type === ETherapistScheduleType.both) {
-      return Object.entries(ETherapistScheduleType).map(([key, value]) => ({ key, value }));
+      return Object.entries(ETherapistScheduleType).map(([key, value]) => ({ key: getScheduleTypeEnum(key as ETherapistScheduleType), value }));
     }
     return [
       {
-        key: currentSchedule?.type,
+        key: getScheduleTypeEnum(currentSchedule?.type!),
         value: currentSchedule?.type,
       },
     ];
@@ -147,7 +147,7 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
     const [startHour, endHour] = data.time.split("_");
     const selectedSchedule = therapistSchedules.find((element) => element.startHour === startHour && element.endHour === endHour);
     if (!selectedSchedule) {
-      errorNotify("Something went wrong ...");
+      errorNotify("عملیات دریافت نوبت با شکست مواجعه شد");
       return;
     }
 
@@ -162,31 +162,24 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
 
     handleTransition(async () => {
       const res = await createOrderAction(reqBody);
-      if (res) successNotify("Create Order Successfully ...");
-      else errorNotify("Unable To Create ...");
+      if (res) successNotify("دریافت نوبت با موفقیت انجام شد");
+      else errorNotify("عملیات دریافت نوبت رزرو با شکست مواجعه شد");
       onClose();
     });
   });
 
   return (
-    <Modal title="Create New Order" opened handleClose={onClose} size="xl">
+    <Modal title="فرم دریافت نوبت" opened handleClose={onClose} size="xl">
       <form onSubmit={onSubmit}>
         <Grid container spacing={3}>
           <Grid item md={6}>
-            <Select
-              control={control}
-              id="order-patients"
-              label="Patients"
-              name="patient"
-              options={PATIENTS_SELECT_OPTIONS}
-              disabled={patientsLoading}
-            />
+            <Select control={control} id="order-patients" label="بیمار" name="patient" options={PATIENTS_SELECT_OPTIONS} disabled={patientsLoading} />
           </Grid>
           <Grid item md={6}>
             <Select
               control={control}
               id="order-therapists"
-              label="Therapists"
+              label="پزشک"
               name="therapist"
               options={THERAPISTS_SELECT_OPTIONS}
               disabled={therapistsLoading}
@@ -196,7 +189,7 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
             <Select
               control={control}
               id="order-schedules-day"
-              label="Reservation Day"
+              label="روز هفته"
               name="day"
               options={SCHEDULES_DAY_SELECT_OPTIONS}
               disabled={therapistSchedulesLoading || !watchedTherapist}
@@ -206,7 +199,7 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
             <Select
               control={control}
               id="order-schedules-time"
-              label="Reservation Time"
+              label="بازه زمانی"
               name="time"
               options={SCHEDULES_TIME_SELECT_OPTIONS}
               disabled={therapistSchedulesLoading || !watchedDay}
@@ -216,7 +209,7 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
             <Select
               control={control}
               id="order-schedules-date"
-              label="Reservation Date"
+              label="تاریخ برگزاری"
               name="date"
               options={SCHEDULES_DATE_SELECT_OPTIONS}
               disabled={reservationDatesLoading || !watchedTherapist || !watchedTime}
@@ -226,7 +219,7 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
             <Select
               control={control}
               id="order-schedules-categories"
-              label="Reservation Categories"
+              label="زمینه های تخصصی"
               name="categories"
               options={SCHEDULES_CATEGORIES_SELECT_OPTIONS}
               multiple
@@ -239,20 +232,20 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
               disabled={!watchedDay || !watchedTime}
               control={control}
               id="order-schedules-type"
-              label="Reservation Type"
+              label="شیوه برگزاری"
               name="type"
               options={getScheduleTypeOption()}
             />
           </Grid>
           <Grid item md={6}>
-            <TextInput control={control} label="Location Address" name="location" disabled />
+            <TextInput control={control} label="محل برگزاری" name="location" disabled />
           </Grid>
           <Grid item md={6}>
-            <TextInput control={control} label="Room Number" name="room" disabled />
+            <TextInput control={control} label="اتاق" name="room" disabled />
           </Grid>
           <Grid item md={3}>
             <Button loading={pending} loadingSpinnerSize="1rem" type="submit" fullWidth size="large">
-              Submit
+              دریافت نوبت
             </Button>
           </Grid>
         </Grid>

@@ -17,6 +17,7 @@ import { errorNotify, successNotify } from "@/utils/notify";
 import { getDate } from "@/utils/getDate";
 import useTherapistSchedule from "@/hooks/api/useTherapistSchedule";
 import { APP_DATE_FORMAT } from "@/constants";
+import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 
 const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
   const confirmation = useConfirm();
@@ -48,9 +49,9 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
       data = data.filter((element) => element.day === dayNumber);
     }
     return data.map((schedule) => ({
-      key: `${schedule.location.city} ${schedule.location.address} Room ${schedule.room} - ( ${getDate(schedule.day)} ${schedule.startHour} - ${
+      key: `${schedule.location.city} ${schedule.location.address} اتاق ${schedule.room} - ( ${getDate(schedule.day)} ${schedule.startHour} - ${
         schedule.endHour
-      } ) - ${schedule.type}`,
+      } ) - ${getScheduleTypeEnum(schedule.type)}`,
       value: schedule.id,
     }));
   }, [watch("date"), therapistSchedules]);

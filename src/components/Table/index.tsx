@@ -41,10 +41,10 @@ const Table: TTableFC = ({
   const onHandleDelete = (data: any) => {
     if (handleDelete) {
       confirm({
-        title: deleteConfirmationTitle || "Are You Sure To Delete This Item",
+        title: deleteConfirmationTitle || "آیا از حذف این آیتم اطمینان دارید ؟",
         cancellationButtonProps: { color: "error" },
-        cancellationText: deleteCancelConfirmationBtnText || "Cancel Deleting ...",
-        confirmationText: deleteOkConfirmationBtnText || "Yes, Im sure Delete Please",
+        cancellationText: deleteCancelConfirmationBtnText || "خیر , لغو درخواست",
+        confirmationText: deleteOkConfirmationBtnText || "بله , اطمینان دارم",
         description: DeleteConfirmationDescription ? <DeleteConfirmationDescription {...data} /> : undefined,
       })
         .then(() => {

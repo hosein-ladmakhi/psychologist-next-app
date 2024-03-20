@@ -23,8 +23,8 @@ const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, se
       if (res?.fileName) data.icon = res?.fileName;
     }
     const res = await createNewCategoryAction(data);
-    if (res) successNotify("New Category Created Successfully ...");
-    else errorNotify("Creating New Category Process has Failed ...");
+    if (res) successNotify("عمیات ساخت زمینه تخصصی با موفقیت انجام گردید");
+    else errorNotify("عملیات ساخت زمینه تخصصی با شکست مواجعه شد");
     onClose();
   };
 
@@ -37,8 +37,8 @@ const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, se
       else data.icon = selectedCategory?.icon;
     }
     const res = await editCategoryAction(selectedCategory?.id!, data);
-    if (res) successNotify("Edit Category Finished Successfully ...");
-    else errorNotify("Edit Category Process has Failed ...");
+    if (res) successNotify("عملیات ویرایش زمینه تخصصی با موفقیت انجام گردید");
+    else errorNotify("عملیات ویرایش زمینه تخصصی با شکست مواجعه شد");
     onClose();
   };
 
@@ -49,17 +49,17 @@ const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, se
     });
   });
 
-  const modalTitle = selectedCategory ? "Edit Category" : "Create New Category";
+  const modalTitle = selectedCategory ? "ویزایش زمینه تخصصی" : "ساخت زمینه تخصصی جدید";
 
   return (
     <Modal title={modalTitle} size="lg" opened handleClose={onClose}>
       <ImagePicker height={100} width={100} ref={iconRef} />
       <form style={{ marginTop: "10px" }} onSubmit={onCreateOrEditCategory}>
-        <TextInput name="faName" label="Farsi Name" control={control} />
-        <TextInput name="enName" label="English Name" control={control} />
+        <TextInput name="faName" label="نام فارسی زمینه تخصصی" control={control} />
+        <TextInput name="enName" label="نام اینگلیسی زمینه تخصصی" control={control} />
         <Box mt={4}>
           <Button loading={pending} loadingSpinnerSize="1.5rem" type="submit" size="large" fullWidth>
-            Submit
+            اعمال تغییرات
           </Button>
         </Box>
       </form>

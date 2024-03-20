@@ -46,8 +46,8 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
   const handleDelete = (category: Record<string, any>) => {
     handleTransition(async () => {
       const res = await deleteCategoryAction(category.id);
-      if (res) successNotify(`The ${category.enName} has deleted successfully ...`);
-      else errorNotify("The category not deleted, try again");
+      if (res) successNotify(`زمینه ${category.faName} با موفقیت حذف گردید`);
+      else errorNotify("عملیات حذف زمینه تخصصی با شکست مواجعه شد");
       onCloseDialog();
     });
   };
@@ -76,8 +76,8 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
       {isShowCreateOrEditDialog && <CreateOrEditCategoryDialog onClose={onCloseDialog} selectedCategory={selectedCategory} />}
       <Table
         handleResetFilter={handleResetFilter}
-        createButtonLabel="Create New Category"
-        title="Categories Page"
+        createButtonLabel="افزودن زمینه تخصصی"
+        title="لیست زمینه های تخصصی"
         columns={categoriesColumns}
         dataKey="id"
         rows={transformedCategories}

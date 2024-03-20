@@ -11,14 +11,14 @@ const FilterCategoryDialog: TFilterCategoryDialogFC = ({ onClose, onChangeFilter
   });
 
   return (
-    <Modal size="sm" opened title="Filter Tables" handleClose={onClose}>
+    <Modal size="sm" opened title="جست جوی جدول زمینه ها" handleClose={onClose}>
       <form onSubmit={onSubmit}>
-        <TextField {...register("faName")} fullWidth margin="dense" label="Farsi Name" />
-        <TextField {...register("enName")} fullWidth label="English Name" margin="dense" />
+        <TextField {...register("faName")} fullWidth margin="dense" label="نام فارسی زمینه" />
+        <TextField {...register("enName")} fullWidth label="نام اینگلیسی زمینه" margin="dense" />
 
         <Box mt={4}>
           <Button type="submit" size="large" fullWidth>
-            Search
+            اعمال جستجو
           </Button>
         </Box>
       </form>

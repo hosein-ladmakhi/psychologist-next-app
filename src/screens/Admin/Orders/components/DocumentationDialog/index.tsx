@@ -17,12 +17,12 @@ const DocumentationDialog: TDocumentationDialogFC = ({ onClose, selectedOrder })
       <Grid container spacing={2}>
         <Grid lg={5} item>
           <Typography mb={2} fontWeight="bold" variant="body1" component="h1">
-            You Can See All Documentation And Select Them To See
+            شما لیستی از داکیومنت های آپلود شده برای این نوبت رزرو را مشاهده میکنید, برای دیدن فایل داکیومنت کلیک کنید
           </Typography>
           <List disablePadding>
             {selectedOrder?.documentation?.map((document, documentIndex) => (
               <ListItem onClick={handleSelectedDocument.bind(null, document)} key={document.id} disablePadding disableGutters>
-                <ListItemButton>Document Number {documentIndex + 1}</ListItemButton>
+                <ListItemButton>داکیومنت شماره {documentIndex + 1}</ListItemButton>
               </ListItem>
             ))}
           </List>

@@ -2,37 +2,37 @@ import { ITableColumn } from "@/components/Table/index.type";
 
 export const therapistScheduleOffDayColumns: ITableColumn[] = [
   {
-    label: "ID",
+    label: "سریال مرخصی",
     name: "id",
+    width: 150,
+  },
+  {
+    label: "تاریخ مرخصی",
+    name: "date",
+    width: 150,
+  },
+  {
+    label: "روز مرخصی",
+    name: "day",
+    width: 150,
+  },
+  {
+    label: "بازه زمانی",
+    name: "time",
+    width: 150,
+  },
+  {
+    label: "نوع شیفت",
+    name: "transformedType",
     width: 100,
   },
   {
-    label: "Date",
-    name: "date",
-    width: 200,
-  },
-  {
-    label: "Day",
-    name: "day",
-    width: 200,
-  },
-  {
-    label: "Time",
-    name: "time",
-    width: 200,
-  },
-  {
-    label: "Type",
-    name: "type",
-    width: 200,
-  },
-  {
-    label: "Location",
+    label: "آدرس محل کار",
     name: "location",
-    width: 200,
+    width: 600,
   },
   {
-    label: "Room",
+    label: "اتاق",
     name: "room",
     width: 200,
   },

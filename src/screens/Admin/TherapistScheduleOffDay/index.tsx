@@ -14,6 +14,7 @@ import Button from "@/components/Button";
 import dynamic from "next/dynamic";
 import { getDate } from "@/utils/getDate";
 import { APP_DATE_FORMAT } from "@/constants";
+import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 
 const AddNewOffDayDialog = dynamic(() => import("./components/AddNewOffDayDialog"));
 
@@ -49,6 +50,7 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
       location: `${data.schedule.location.city} - ${data.schedule.location.address}`,
       room: data.schedule.room,
       date: moment(data.date).format(APP_DATE_FORMAT),
+      transformedType: getScheduleTypeEnum(data.schedule.type),
     }));
   }, [content]);
 

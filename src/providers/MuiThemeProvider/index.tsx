@@ -9,7 +9,7 @@ import { CacheProvider } from "@emotion/react";
 const MuiThemeProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ThemeProvider theme={muiTheme}>
-      <ConfirmProvider>
+      <ConfirmProvider defaultOptions={{ confirmationButtonProps: { style: { marginInlineStart: "10px" } } }}>
         <CacheProvider value={muiRTLCache}>
           <CssBaseline />
           {children}

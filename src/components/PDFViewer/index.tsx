@@ -42,10 +42,10 @@ const PDFViewer: TPDFViewerFC = ({ file }) => {
       <FlexBox my={2}>
         <ButtonGroup>
           <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
-            Previous Page
+            صفحه قبل
           </Button>
           <Button onClick={handleNextPage} disabled={currentPage === totalPages}>
-            Next Page
+            صفحه بعد
           </Button>
         </ButtonGroup>
       </FlexBox>

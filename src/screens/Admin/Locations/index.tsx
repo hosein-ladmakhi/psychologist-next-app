@@ -29,8 +29,8 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
   const handleDelete = (data: any) => {
     handleTransition(async () => {
       const res = await deleteLocationAction(data?.id);
-      if (res) successNotify("Location Deleted Successfully");
-      else errorNotify("Location Creation Failed ...");
+      if (res) successNotify("آدرس مورد نظر با موفقیت حذف گردید");
+      else errorNotify("عملیات حذف آدرس با شکست مواجعه شد");
     });
   };
 
@@ -64,7 +64,7 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
       <Table
         handleChangePage={handleChangePage}
         loading={pending}
-        title="Locations Page"
+        title="لیست آدرس ها"
         columns={locationsColumns}
         dataKey="id"
         rows={data}
@@ -72,7 +72,7 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         handleCreate={handleCreate}
-        createButtonLabel="Create New Location"
+        createButtonLabel="افزودن آدرس جدید"
         currentPage={page}
         totalPage={count}
       />

@@ -9,6 +9,7 @@ import { errorNotify, successNotify } from "@/utils/notify";
 import { getDate } from "@/utils/getDate";
 import moment from "moment";
 import { APP_DATE_FORMAT } from "@/constants";
+import { getOrderStatusEnum, getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 
 const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -25,15 +26,15 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
   const handleDoneOrder = () => {
     handleTransition(async () => {
       if (!fileRef?.current?.files?.length) {
-        errorNotify("You Must Select At Least One Document");
+        errorNotify("برای به اتمام رساندن نوبت رزرو باید یک فایلی در قالب شرح این نوبت آپلود کنید");
         return;
       }
       const formdata = new FormData();
       formdata.append("order", selectedOrder?.id as any);
       new Array(fileRef?.current?.files!).map((file) => formdata.append("files", file! as any));
       const res = await uploadDocumentationAndDoneOrderAction(selectedOrder?.id, formdata);
-      if (res) successNotify("Your Order Done And Your Documentation Uploaded ...");
-      else errorNotify("Something Went Wrong ...");
+      if (res) successNotify("داکیومنت این رزرو با موفقیت ثبت شد و تغییر وضعیت این رزرو با موفقیت ذخیره گردید");
+      else errorNotify("تغییر وضعیت رزرو با شکست مواجعه شد دوباره تلاش کنید");
       onClose();
     });
   };
@@ -41,44 +42,44 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
   return (
     <Modal handleClose={onClose} size="md" opened title="Done Order">
       <Typography mb={1} fontWeight="bold" variant="h6" component="h1">
-        You Must Upload Documentation File For Confirm Done Process Of This Session
+        شما برای تغییر وضعیت این رزرو باید یک شرح یا توضیحاتی در مورد این نوبت رزرو و بیمار آپلود کنید
       </Typography>
       {pending && (
         <Box mb={2}>
           <LinearProgress />
         </Box>
       )}
-      {printDetail("Date", moment(selectedOrder?.date!).format(APP_DATE_FORMAT))}
-      {printDetail("Day", getDate(selectedOrder?.day!))}
-      {printDetail("Start", selectedOrder?.startHour)}
-      {printDetail("End", selectedOrder?.endHour)}
-      {printDetail("Patient", selectedOrder?.patient?.firstName + " " + selectedOrder?.patient?.lastName)}
-      {printDetail("Therapist", selectedOrder?.therapist?.firstName + " " + selectedOrder?.therapist?.lastName)}
-      {printDetail("Type", selectedOrder?.type)}
-      {printDetail("Status", selectedOrder?.status)}
-      {printDetail("Location", `${selectedOrder?.city} - ${selectedOrder?.address}`)}
-      {printDetail("Room", selectedOrder?.room)}
+      {printDetail("تاریخ رزرو", moment(selectedOrder?.date!).format(APP_DATE_FORMAT))}
+      {printDetail("روز رزرو", getDate(selectedOrder?.day!))}
+      {printDetail("ساعت شروع", selectedOrder?.startHour)}
+      {printDetail("ساعت پایان", selectedOrder?.endHour)}
+      {printDetail("بیار", selectedOrder?.patient?.firstName + " " + selectedOrder?.patient?.lastName)}
+      {printDetail("پزشک", selectedOrder?.therapist?.firstName + " " + selectedOrder?.therapist?.lastName)}
+      {printDetail("شیوه برگزاری", getScheduleTypeEnum(selectedOrder?.type))}
+      {printDetail("وضعیت این رزرو.", getOrderStatusEnum(selectedOrder?.status))}
+      {printDetail("آدرس برگزاری", `${selectedOrder?.city} - ${selectedOrder?.address}`)}
+      {printDetail("اتاق", selectedOrder?.room)}
       <FlexBox justifyContent="flex-start" gap={1}>
         <Typography variant="body1" component="h3">
-          Categories :
+          زمینه های تخصصی مرتبط :
         </Typography>
         {selectedOrder?.categories?.map((category) => (
-          <Chip label={category.enName} key={category.enName} size="small" />
+          <Chip label={category.faName} key={category.faName} size="small" />
         ))}
       </FlexBox>
       <Grid mt={3} container spacing={2}>
         <Grid item lg={6}>
           <Button onClick={handleOpenFileExplorer} fullWidth>
-            Select Documents
+            آپلود داکیومنت
           </Button>
         </Grid>
         <Grid item lg={6}>
           <Button color="secondary" onClick={handleDoneOrder} fullWidth>
-            Done This Order
+            به اتمام رساندن رزرو
           </Button>
         </Grid>
       </Grid>
-      <input type="file" multiple hidden ref={fileRef} />
+      <input type="file" multiple hidden ref={fileRef} accept="application/pdf" />
     </Modal>
   );
 };

@@ -15,6 +15,7 @@ import dynamic from "next/dynamic";
 import moment from "moment";
 import { APP_DATE_FORMAT } from "@/constants";
 import CreateOrderDialog from "./components/CreateOrderDialog";
+import { getOrderStatusEnum } from "@/utils/getEnumTransformer";
 
 const FilterOrderDialog = dynamic(() => import("./components/FilterOrderDialog"));
 const DoneOrderDialog = dynamic(() => import("./components/DoneOrderDialog"));
@@ -38,6 +39,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
       patientFullName: order?.patient?.firstName + " " + order?.patient?.lastName,
       time: order?.startHour + " - " + order?.endHour,
       orderDate: moment(order?.date!).format(APP_DATE_FORMAT),
+      transformedStatus: getOrderStatusEnum(order.status),
     }));
   }, [data]);
 
@@ -45,8 +47,8 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
     return confirm({
       title,
       description,
-      confirmationText: "Yes Im Sure",
-      cancellationText: "No Im Not Sure, Cancel Please",
+      confirmationText: "بله اطمینان دارم",
+      cancellationText: "خیر مطمئن نیستم",
       cancellationButtonProps: { color: "error" },
       allowClose: true,
     });
@@ -65,14 +67,14 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const handleCancel = (data: Object) => {
     const order = data as IOrder;
     if (order.status !== EOrderStatus.Pending) {
-      errorNotify("You Cant Cancel This Order Beacuse It Is Done Before");
+      errorNotify("برای به کنسل کردن این رزرو باید وضعیت رزرو درحال انتظار باشد");
       return;
     }
-    handleConfirmation("Cancel The Order", "Are You Sure To Cancel This Order ???").then(() => {
+    handleConfirmation("کنسل کردن", "آیا از کنسل کردن این رزرو اطمینان دارید").then(() => {
       handleTransition(async () => {
         const res = await cancelOrderAction(order.id);
-        if (res) successNotify("Canceled Successfully");
-        else errorNotify("Cancelation Process failed ...");
+        if (res) successNotify("این رزرو با موفقیت کنسل گردید");
+        else errorNotify("عملیات کنسل کردن رزرو با شکست مواجعه شد");
       });
     });
   };
@@ -84,10 +86,10 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const handleDone = (data: Object) => {
     const order = data as IOrder;
     if (order.status !== EOrderStatus.Pending) {
-      errorNotify("This Order Have Done Before");
+      errorNotify("این رزرو قبلا به اتمام رسیده است");
       return;
     }
-    handleConfirmation("Done The Order", "Are You Sure To Done This Order ???")
+    handleConfirmation("تغییر وضعیت به اتمام رسیده", "آیا از تغییر وضعیت رزرو به به اتمام رسیده اطمینان دارید ؟؟؟")
       .then(() => {
         setSelectedOrder(data as IOrder);
         setShowDoneOrderDialogStatus(true);
@@ -98,7 +100,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const handleViewDocumentation = (data: Object) => {
     const order = data as IOrder;
     if (order.status !== EOrderStatus.Done) {
-      errorNotify("When The Order Is Done, It Can Be Contain Documentation");
+      errorNotify("برای نمایش پرونده سلامت باید وضعیت رزرو به اتمام رسیده باشد");
       return;
     }
     setSelectedOrder(order);
@@ -118,17 +120,17 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
   const additionalActions: TAdditionalTableAction[] = [
     {
       color: "error",
-      text: "Cancel",
+      text: "کنسل کردن",
       onClick: handleCancel,
     },
     {
       color: "secondary",
-      text: "Done",
+      text: "انجام شده",
       onClick: handleDone,
     },
     {
       color: "warning",
-      text: "Documentation",
+      text: "پرونده سلامت",
       onClick: handleViewDocumentation,
     },
   ];
@@ -160,7 +162,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
         loading={pending}
         additionalActions={additionalActions}
         columns={ordersColumns}
-        title="Orders Page"
+        title="لیست رزرو ها"
         rows={transformedData}
         dataKey="id"
         handleChangePage={handleChangePage}
@@ -168,7 +170,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
         totalPage={count}
         handleResetFilter={handleResetFilter}
         handleCreate={handleCreate}
-        createButtonLabel="Create Order"
+        createButtonLabel="افزودن رزرو جدید"
       />
     </>
   );

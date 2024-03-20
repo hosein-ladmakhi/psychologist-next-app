@@ -16,18 +16,18 @@ const CreateOrEditLocationDialog: TCreateOrEditLocationDialogFC = ({ onClose, se
   const { cities, citiesLoading } = useCities();
   const citiesOptions = cities.map((city) => ({ key: city.name, value: city.name }));
 
-  const modalTitle = selectedLocation ? "Edit Location" : "Create New Location";
+  const modalTitle = selectedLocation ? "ویرایش آدرس" : "ساخت آدرس جدید";
 
   const handleCreate = async (data: TCreateOrEditLocationFormValidation) => {
     const res = await createLocationAction(data);
-    if (res) successNotify("Create Location Successfully ...");
-    else errorNotify("Create Location Failed ...");
+    if (res) successNotify("ساخت آدرس با موفقیت انجام گردید");
+    else errorNotify("عملیات افزودن آدرس جدید با شکست مواجعه شد");
   };
 
   const handleEdit = async (data: TCreateOrEditLocationFormValidation) => {
     const res = await editLocationAction(selectedLocation?.id!, data);
-    if (res) successNotify("Edit Location Successfully ...");
-    else errorNotify("Edit Location Failed ...");
+    if (res) successNotify("ویرایش آدرس با موفقیت انجام گردید");
+    else errorNotify("عملیات ویرایش آدرس با شکست مواجعه شد");
   };
 
   const onSubmit = handleSubmit((data: TCreateOrEditLocationFormValidation) => {
@@ -46,16 +46,16 @@ const CreateOrEditLocationDialog: TCreateOrEditLocationDialogFC = ({ onClose, se
             disabled={citiesLoading}
             control={control}
             id="cities-label"
-            label="City"
+            label="شهر"
             name="city"
             options={citiesOptions}
             defaultValue={selectedLocation?.city}
           />
         )}
-        <TextInput control={control} label="Address" name="address" multiline rows={5} />
+        <TextInput control={control} label="آدرس محلی" name="address" multiline rows={5} />
         <Box mt={4}>
           <Button type="submit" loadingSpinnerSize="1.5rem" loading={pending} fullWidth>
-            Submit
+            ذخیره سازی تغییرات
           </Button>
         </Box>
       </form>

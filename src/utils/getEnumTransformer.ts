@@ -1,4 +1,5 @@
-import { EDegtreeOfEducation, EGender } from "@/types/therapist.model";
+import { EOrderStatus } from "@/types/order.model";
+import { EDegtreeOfEducation, EGender, ETherapistScheduleType } from "@/types/therapist.model";
 import { ETicketStatus } from "@/types/ticket.model";
 
 export const getTicketStatusEnum = (data: ETicketStatus) => {
@@ -43,4 +44,28 @@ export const getDegreeOfEducationEnum = (data: EDegtreeOfEducation) => {
 
 export const getGendersEnumSelection = () => {
     return Object.entries(EGender).map(([key, value]) => ({ key: getGenderEnum(key as EGender), value }))
+}
+
+
+export const getScheduleTypeEnum = (data: ETherapistScheduleType) => {
+    switch (data) {
+        case ETherapistScheduleType.onsite:
+            return 'حضوری';
+        case ETherapistScheduleType.both:
+            return 'حضوری و آنلاین';
+        case ETherapistScheduleType.online:
+            return 'آنلاین'
+    }
+}
+
+
+export const getOrderStatusEnum = (data: EOrderStatus) => {
+    switch (data) {
+        case EOrderStatus.Cancel:
+            return 'کنسل شده';
+        case EOrderStatus.Done:
+            return 'به اتمام رسیده';
+        case EOrderStatus.Pending:
+            return 'در انتظار برگزاری'
+    }
 }

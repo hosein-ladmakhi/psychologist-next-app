@@ -11,6 +11,7 @@ import { errorNotify, successNotify } from "@/utils/notify";
 import FlexBox from "@/components/FlexBox";
 import dynamic from "next/dynamic";
 import { getDate } from "@/utils/getDate";
+import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 
 const CreateNewSchedule = dynamic(() => import("./components/CreateNewSchedule"));
 
@@ -26,6 +27,7 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
       : schedules?.map((schedule) => ({
           ...schedule,
           locationAddress: `${schedule.location?.city}-${schedule.location?.address}`,
+          transformedType: getScheduleTypeEnum(schedule.type),
         })) || [];
   }, [schedules, schedulesCount]);
 
@@ -40,8 +42,8 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
   const handleDelete = (selectedSchedule: any) => {
     handleTransition(async () => {
       const res = await deleteScheduleByIdAction(selectedSchedule?.id);
-      if (res) successNotify("This schedule deleted successfully ...");
-      else errorNotify("This schedule delete process has failed ...");
+      if (res) successNotify("آیتم رزرو انتخاب شده با موفقیت حذف گردید");
+      else errorNotify("عملیات حذف آیتم رزرو شده با شکست مواجعه شد");
       onClose();
     });
   };
@@ -51,10 +53,10 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
       {schedulesCount === 0 && (
         <FlexBox justifyContent="space-between">
           <Typography variant="body1" component="h1" fontWeight="bold">
-            No Schedule Exist
+            آیتم رزوی ساخته نشده است
           </Typography>
           <Button disabled={pending} onClick={handleCreate} color="secondary">
-            Create New Schedule
+            ساخت آیتم رزرو جدید
           </Button>
         </FlexBox>
       )}
@@ -70,12 +72,12 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
           rows={transformedSchedule}
           columns={therapistScheduleColumns}
           dataKey="id"
-          title={`${therapist?.firstName} ${therapist?.lastName} - ${selectedDayText}`}
+          title={`چارت رزرو ${therapist.firstName} ${therapist.lastName} در روز ${selectedDayText}`}
           currentPage={1}
           totalPage={calculateTotalPageTable(schedulesCount)}
           handleDelete={handleDelete}
           handleCreate={handleCreate}
-          createButtonLabel="Create New Schedule"
+          createButtonLabel="ساخت آیتم رزرو جدید"
           loading={pending}
         />
       )}
