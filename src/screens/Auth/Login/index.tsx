@@ -23,9 +23,9 @@ const LoginScreen: TLoginScreenFC = () => {
     handleTransition(async () => {
       const isOk = await loginAction(data);
       if (isOk) {
-        successNotify("Login Successfully ...");
+        successNotify("ورود به حساب کاربری با موفقیت انجام شد");
         route.push("/");
-      } else errorNotify("Unable To Login ....");
+      } else errorNotify("عملیات ورود به حساب کاربری با شکست انجام شد");
     });
   });
 
@@ -34,27 +34,27 @@ const LoginScreen: TLoginScreenFC = () => {
       <FlexBox gap={1}>
         <VerifiedUser fontSize="large" />
         <Typography fontWeight="bold" variant="h5" component="h1">
-          Login Psychologist Application
+          ورود به پنل ادمین دکتر آنلاین
         </Typography>
       </FlexBox>
       <form onSubmit={onSubmit} style={{ width: "100%", marginTop: "40px" }}>
         <Grid container spacing={1}>
           <Grid item md={12}>
-            <TextInput helperText="Your Must Fill Your Phone Number" control={control} label="Phone Number" name="phone" icon={<Phone />} />
+            <TextInput helperText="شما باید شماره تماس خود را وارد کنید" control={control} label="شماره تماس" name="phone" icon={<Phone />} />
           </Grid>
           <Grid item md={12}>
             <TextInput
               type="password"
-              helperText="Your Password Must Be More Than 8 Character"
+              helperText="گذرواژه شما باید 8 حرف داشته باشد"
               control={control}
-              label="Password"
+              label="گذرواژه"
               name="password"
               icon={<Key />}
             />
           </Grid>
           <Grid item md={12}>
             <Button loadingSpinnerSize="1.5rem" loading={pending} type="submit" size="large" fullWidth>
-              Submit
+              ورود به حساب
             </Button>
           </Grid>
         </Grid>

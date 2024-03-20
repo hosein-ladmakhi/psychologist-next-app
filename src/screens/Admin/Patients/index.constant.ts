@@ -2,27 +2,27 @@ import { ITableColumn } from "@/components/Table/index.type";
 
 export const patientsColumn: ITableColumn[] = [
   {
-    label: "Id",
+    label: "سریال بیمار",
     name: "id",
     width: 100,
   },
   {
-    label: "First Name",
+    label: "نام بیمار",
     name: "firstName",
     width: 250,
   },
   {
-    label: "Last Name",
+    label: "نام خانوادگی بیمار",
     name: "lastName",
     width: 250,
   },
   {
-    label: "Phone",
+    label: "شماره تماس",
     name: "phone",
     width: 250,
   },
   {
-    label: "Orders Count",
+    label: "تعداد رزرو های ثبت شده",
     name: "ordersCount",
     width: 250,
   },

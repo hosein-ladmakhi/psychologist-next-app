@@ -13,14 +13,14 @@ const FilterPatientDialog: TFilterPatientDialogFC = ({ onClose, onChangeFilters 
   });
 
   return (
-    <Modal size="sm" opened title="Filter Tables">
+    <Modal size="sm" opened title="جستجوی جدول">
       <form onSubmit={onSubmit}>
-        <TextInput label="First Name" name="firstName" control={control} />
-        <TextInput label="Last Name" name="lastName" control={control} />
-        <TextInput label="Phone Number" name="phone" control={control} />
+        <TextInput label="نام بیمار" name="firstName" control={control} />
+        <TextInput label="نام خانوادگی بیمار" name="lastName" control={control} />
+        <TextInput label="شماره تماس بیمار" name="phone" control={control} />
         <Box mt={4}>
           <Button type="submit" size="large" fullWidth>
-            Search
+            اعمال فیلتر
           </Button>
         </Box>
       </form>

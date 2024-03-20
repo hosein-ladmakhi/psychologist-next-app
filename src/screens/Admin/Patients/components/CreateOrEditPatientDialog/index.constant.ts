@@ -1,7 +1,7 @@
 import * as zod from "zod";
 
 export const createOrEditPatientFormValidation = zod.object({
-  firstName: zod.string({ required_error: "You Must Provide Your First Name" }).min(3, "Your First Name Must Include 3 Character"),
-  lastName: zod.string({ required_error: "You Must Provide Your Last Name" }).min(3, "Your First Name Must Include 3 Character"),
-  phone: zod.string({ required_error: "You Must Provide Your Phone Number" }).length(11, "Your Phone Number Has Invalid Format"),
+  firstName: zod.string({ required_error: "نام بیمار باید پر شود" }).min(3, "نام بیمار باید حداقل 3 حرف داشته باشد"),
+  lastName: zod.string({ required_error: "نام خانوادگی بیمار باید پر شود" }).min(3, "نام خانوادگی بیمار باید حداقل 3 حرف داشته باشد"),
+  phone: zod.string({ required_error: "شماره تماس بیمار باید پر شود" }).length(11, "شماره تماس وارد شده فرمت نادرستی دارد"),
 });

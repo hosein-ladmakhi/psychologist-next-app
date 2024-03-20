@@ -14,15 +14,15 @@ const CreateOrEditPatientDialog: TCreateOrEditPatientDialogFC = ({ onClose, sele
 
   const onCreatePatient = async (data: TCreateOrEditPatientFormValidation) => {
     const res = await createNewPatientAction(data);
-    if (res) successNotify("New Patient Created Successfully ...");
-    else errorNotify("Creating New Patient Process has Failed ...");
+    if (res) successNotify("بیمار مورد نظر با موفقیت ایجاد گردید");
+    else errorNotify("عملیات افزودن بیمار با شکست مواجعه شد");
     onClose();
   };
 
   const onEditPatient = async (data: TCreateOrEditPatientFormValidation) => {
     const res = await editPatientAction(selectedPatient?.id!, data);
-    if (res) successNotify("Edit Patient Finished Successfully ...");
-    else errorNotify("Edit Patient Process has Failed ...");
+    if (res) successNotify("بیمار مورد نظر با موفقیت ویرایش شد");
+    else errorNotify("عملیات ویرایش بیمار با شکست مواجعه شد");
     onClose();
   };
 
@@ -33,17 +33,17 @@ const CreateOrEditPatientDialog: TCreateOrEditPatientDialogFC = ({ onClose, sele
     });
   });
 
-  const modalTitle = selectedPatient ? "Edit Patient" : "Create New Patient";
+  const modalTitle = selectedPatient ? "ویرایش بیمار" : "ساخت بیمار جدید";
 
   return (
     <Modal title={modalTitle} size="lg" handleClose={onClose} opened>
       <form onSubmit={onCreateOrEditPatient}>
-        <TextInput label="First Name" name="firstName" control={control} />
-        <TextInput label="Last Name" name="lastName" control={control} />
-        <TextInput label="Phone Number" name="phone" control={control} />
+        <TextInput label="نام بیمار" name="firstName" control={control} />
+        <TextInput label="نام خانوادگی بیمار" name="lastName" control={control} />
+        <TextInput label="شماره تماس بیمار" name="phone" control={control} />
         <Box mt={4}>
           <Button loadingSpinnerSize="1.5rem" type="submit" size="large" fullWidth loading={pending}>
-            Submit
+            اعمال تغییرات
           </Button>
         </Box>
       </form>

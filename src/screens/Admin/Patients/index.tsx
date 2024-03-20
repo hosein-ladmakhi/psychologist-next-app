@@ -31,11 +31,11 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
   const handleDelete = (patient: Record<string, any>) => {
     handleTransition(async () => {
       if (patient.orders.length) {
-        errorNotify("Your Patient have orders, please first delete orders and after that try again");
+        errorNotify("بیمار شما رزرو ثبت شده دارد, برای حذف بیمار ابتدا باید رزرو های مرتبط به این بیمار را حذف کنید");
       } else {
         const res = await deletePatientAction(patient as IPatient);
-        if (res) successNotify(`The ${patient.firstName} ${patient.lastName} has deleted successfully ...`);
-        else errorNotify("The patient not deleted, try again");
+        if (res) successNotify(`بیمار ${patient.firstName} ${patient.lastName} با موفقیت حذف گردید`);
+        else errorNotify("عملیات حذف بیمار با شکست مواجعه شد");
       }
       onCloseDialog();
     });
@@ -86,11 +86,11 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
   }, [data]);
 
   const additionalActions: TAdditionalTableAction[] = [
-    {
-      color: "success",
-      onClick: handleViewPatient,
-      text: "Orders",
-    },
+    // {
+    //   color: "success",
+    //   onClick: handleViewPatient,
+    //   text: "نوبت رزرو ها",
+    // },
   ];
 
   return (
@@ -112,8 +112,8 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
       )}
       <Table
         handleResetFilter={handleResetFilter}
-        createButtonLabel="Create Patient"
-        title={`Patients Page (${count})`}
+        createButtonLabel="افزودن بیمار"
+        title={`لیست بیماران (${count})`}
         columns={patientsColumn}
         dataKey="id"
         rows={transformedData}

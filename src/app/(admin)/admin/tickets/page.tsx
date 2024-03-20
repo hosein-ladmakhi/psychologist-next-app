@@ -3,7 +3,7 @@ import { TTicketsPageFC } from "./page.type";
 import { getTicketsPage } from "@/services/ticket.service";
 import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 
-export const dynamic = "force-dyanmic";
+export const dynamic = "force-dynamic";
 
 const TicketsPage: TTicketsPageFC = async () => {
   const res = await getTicketsPage();
