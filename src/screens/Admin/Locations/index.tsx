@@ -5,10 +5,10 @@ import { TLocationsScreenFC } from "./index.type";
 import { locationsColumns } from "./index.constant";
 import { Suspense, useState, useTransition } from "react";
 import { ILocation } from "@/types/location.model";
-import { deleteLocationAction } from "@/app/(admin)/admin/locations/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import dynamic from "next/dynamic";
+import { deleteLocationAction } from "@/app/(admin)/locations/actions";
 
 const CreateOrEditLocationDialog = dynamic(() => import("./components/CreateOrEditLocationDialog"));
 const FilterLocationDialog = dynamic(() => import("./components/FilterLocationDialog"));

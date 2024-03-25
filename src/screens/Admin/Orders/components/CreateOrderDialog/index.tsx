@@ -17,8 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createOrderFormValidation } from "./index.constant";
 import { ICreateOrder } from "@/types/order.model";
 import { errorNotify, successNotify } from "@/utils/notify";
-import { createOrderAction } from "@/app/(admin)/admin/orders/actions";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
+import { createOrderAction } from "@/app/(admin)/orders/actions";
 
 const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
   const { control, watch, setValue, handleSubmit, setError } = useForm<TCreateOrderFormValidation>({

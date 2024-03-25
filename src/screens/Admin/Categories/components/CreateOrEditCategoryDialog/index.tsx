@@ -1,6 +1,5 @@
 import { useRef, useTransition } from "react";
 import { TCreateOrEditCategoryDialogFC, TCreateOrEditCategoryFormValidation } from "./index.type";
-import { createNewCategoryAction, editCategoryAction } from "@/app/(admin)/admin/categories/actions";
 import Modal from "@/components/Modal";
 import { Box } from "@mui/material";
 import TextInput from "@/components/TextInput";
@@ -9,6 +8,7 @@ import { useCreateOrEditCategoryForm } from "./useForm";
 import { errorNotify, successNotify } from "@/utils/notify";
 import ImagePicker from "@/components/ImagePicker";
 import { uploadCategoryIcon } from "@/services/category.service";
+import { createNewCategoryAction, editCategoryAction } from "@/app/(admin)/categories/actions";
 
 const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, selectedCategory }) => {
   const [pending, handleTransition] = useTransition();

@@ -17,6 +17,7 @@ export interface IAuthResponse {
 export interface IPasswordUpdateReqBody {
   password: string;
   currentPassword: string;
+  type?: string
 }
 
 export interface IPasswordUpdateResponse {

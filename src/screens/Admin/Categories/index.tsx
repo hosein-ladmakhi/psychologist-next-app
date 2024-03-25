@@ -6,11 +6,11 @@ import { categoriesColumns } from "./index.constant";
 import { TCategoriesScreenFC } from "./index.type";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { TFilterCategoryFormValidation } from "./components/FilterCategoryDialog/index.type";
-import { deleteCategoryAction } from "@/app/(admin)/admin/categories/actions";
 import { ICategory } from "@/types/category.model";
 import { errorNotify, successNotify } from "@/utils/notify";
 import dynamic from "next/dynamic";
 import { API_URL } from "@/constants";
+import { deleteCategoryAction } from "@/app/(admin)/categories/actions";
 
 const FilterCategoryDialog = dynamic(() => import("./components/FilterCategoryDialog"));
 const CreateOrEditCategoryDialog = dynamic(() => import("./components/CreateOrEditCategoryDialog"));

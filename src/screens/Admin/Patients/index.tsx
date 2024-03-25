@@ -4,7 +4,6 @@ import Table from "@/components/Table";
 import { IPatient } from "@/types/patient.model";
 import { Suspense, useMemo, useState, useTransition } from "react";
 import DeletePatientConfirmation from "./components/DeletePatientConfirmation";
-import { deletePatientAction } from "@/app/(admin)/admin/patients/actions";
 import { TPatientsScreenFC } from "./index.type";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { TFilterPatientFormValidation } from "./components/FilterPatientDialog/index.type";
@@ -12,6 +11,7 @@ import { TAdditionalTableAction } from "@/types/base.model";
 import { patientsColumn } from "./index.constant";
 import { errorNotify, successNotify } from "@/utils/notify";
 import dynamic from "next/dynamic";
+import { deletePatientAction } from "@/app/(admin)/patients/actions";
 
 const CreateOrEditPatientDialog = dynamic(() => import("./components/CreateOrEditPatientDialog"));
 const ViewOrdersDialog = dynamic(() => import("./components/ViewOrdersDialog"));

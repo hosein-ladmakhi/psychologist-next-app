@@ -8,5 +8,5 @@ export const loginUser = (type: string, body: ILoginReqBody) => httpPost<ILoginR
 
 export const getProfile = <T>() => httpGet<T>(`${API_URL}/auth/profile`, undefined, ["profile"]);
 
-export const updatePassword = (data: IPasswordUpdateReqBody) =>
-  httpPatch<IPasswordUpdateReqBody, IPasswordUpdateResponse>(`${API_URL}/auth/patient/password`, data);
+export const updatePasswordById = (id: number, { type, ...reqBody }: IPasswordUpdateReqBody) =>
+  httpPatch<IPasswordUpdateReqBody, IPasswordUpdateResponse>(`${API_URL}/auth/${type}/password/${id}`, reqBody);

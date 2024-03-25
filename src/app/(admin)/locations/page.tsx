@@ -8,7 +8,7 @@ import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Locations",
+  title: "آدرس ها",
 };
 
 const LocationsPage: TLocationsPageFC = async ({ searchParams }) => {

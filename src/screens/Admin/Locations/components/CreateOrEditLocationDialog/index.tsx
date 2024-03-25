@@ -6,9 +6,9 @@ import { useTransition } from "react";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
 import { Box } from "@mui/material";
-import { createLocationAction, editLocationAction } from "@/app/(admin)/admin/locations/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import useCities from "@/hooks/api/useCities";
+import { createLocationAction, editLocationAction } from "@/app/(admin)/locations/actions";
 
 const CreateOrEditLocationDialog: TCreateOrEditLocationDialogFC = ({ onClose, selectedLocation }) => {
   const { handleSubmit, control } = useCreateOrEditLocationForm(selectedLocation);

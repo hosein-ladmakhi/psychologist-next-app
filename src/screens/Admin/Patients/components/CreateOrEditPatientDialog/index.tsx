@@ -1,12 +1,12 @@
 import { useTransition } from "react";
 import { TCreateOrEditPatientDialogFC, TCreateOrEditPatientFormValidation } from "./index.type";
-import { createNewPatientAction, editPatientAction } from "@/app/(admin)/admin/patients/actions";
 import Modal from "@/components/Modal";
 import { Box } from "@mui/material";
 import TextInput from "@/components/TextInput";
 import { useCreateOrEditPatientForm } from "./useForm";
 import Button from "@/components/Button";
 import { errorNotify, successNotify } from "@/utils/notify";
+import { createNewPatientAction, editPatientAction } from "@/app/(admin)/patients/actions";
 
 const CreateOrEditPatientDialog: TCreateOrEditPatientDialogFC = ({ onClose, selectedPatient }) => {
   const [pending, handleTransition] = useTransition();

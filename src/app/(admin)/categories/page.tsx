@@ -8,7 +8,7 @@ import { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Categories",
+  title: "زمینه های تخصصی",
 };
 
 const CategoriesPage: TCategoriesPageFC = async ({ searchParams }) => {

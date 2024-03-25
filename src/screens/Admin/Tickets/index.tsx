@@ -8,11 +8,11 @@ import moment from "moment";
 import { APP_DATE_TIME_FORMAT } from "@/constants";
 import SummaryText from "@/components/SummaryText";
 import { TAdditionalTableAction } from "@/types/base.model";
-import { closeTicketAction, deleteTicketAction } from "@/app/(admin)/admin/tickets/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { ETicketStatus, ITicket } from "@/types/ticket.model";
 import ViewTicketDialog from "./components/ViewTicketDialog";
 import { getTicketStatusEnum } from "@/utils/getEnumTransformer";
+import { closeTicketAction, deleteTicketAction } from "@/app/(admin)/tickets/actions";
 
 const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
   const [loading, handleTransition] = useTransition();

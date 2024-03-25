@@ -8,13 +8,13 @@ import { TAdditionalTableAction } from "@/types/base.model";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { TFilterTherapistFormValidation } from "./components/FilterTherapistDialog/index.type";
 import { ITherapist } from "@/types/therapist.model";
-import { deleteTherapistAction } from "@/app/(admin)/admin/therapists/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import FilterTherapistDialog from "./components/FilterTherapistDialog";
 import CreateOrEditTherapistDialog from "./components/CreateOrEditTherapistDialog";
 import { getGenderEnum } from "@/utils/getEnumTransformer";
+import { deleteTherapistAction } from "@/app/(admin)/therapists/actions";
 
 const ViewTherapistDialog = dynamic(() => import("./components/ViewTherapistDialog"));
 const ScheduleTherapistDialog = dynamic(() => import("./components/ScheduleTherapistDialog"));

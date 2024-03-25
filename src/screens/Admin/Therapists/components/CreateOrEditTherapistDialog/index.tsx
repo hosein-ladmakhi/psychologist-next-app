@@ -5,7 +5,6 @@ import ImagePicker from "@/components/ImagePicker";
 import { Box, Grid } from "@mui/material";
 import { EDegtreeOfEducation, EGender, ICreateOrEditTherapistReqBody } from "@/types/therapist.model";
 import { uploadTherapistProfile } from "@/services/therapist.service";
-import { createTherapistAction, editTherapistAction } from "@/app/(admin)/admin/therapists/actions";
 import { API_URL } from "@/constants";
 import { useCategories } from "@/hooks/api/useCategories";
 import { useCreateOrEditTherapistForm } from "./useForm";
@@ -14,6 +13,7 @@ import Select from "@/components/Select";
 import Button from "@/components/Button";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { getDegreeOfEducationEnum, getGendersEnumSelection } from "@/utils/getEnumTransformer";
+import { createTherapistAction, editTherapistAction } from "@/app/(admin)/therapists/actions";
 
 const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, selectedTherapist }) => {
   const { categories, categoriesLoading } = useCategories();
