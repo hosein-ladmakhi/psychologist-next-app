@@ -15,7 +15,7 @@ const CategoriesPage: TCategoriesPageFC = async ({ searchParams }) => {
   const currentPage = +(searchParams.page || "1");
   const res = await getCategories(prepareCategoriesPageQueryParam(searchParams));
 
-  return <CategoriesScreen data={res?.content} total={calculateTotalPageTable(res?.count)} page={currentPage} />;
+  return <CategoriesScreen count={res.count} data={res?.content} totalPage={calculateTotalPageTable(res?.count)} page={currentPage} />;
 };
 
 export default CategoriesPage;

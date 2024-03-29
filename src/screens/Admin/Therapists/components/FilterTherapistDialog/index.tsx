@@ -14,14 +14,14 @@ const FilterTherapistDialog: TFilterTherapistDialogFC = ({ onClose, onChangeFilt
   });
 
   return (
-    <Modal size="sm" opened handleClose={onClose} title="Filter Tables">
+    <Modal size="sm" opened handleClose={onClose} title="فیلتر پزشکان">
       <form onSubmit={onSubmit}>
-        <TextInput name="firstName" label="First Name" control={control} />
-        <TextInput name="lastName" label="Last Name" control={control} />
-        <TextInput name="phone" label="Phone Number" control={control} />
+        <TextInput name="firstName" label="نام پزشک" control={control} />
+        <TextInput name="lastName" label="نام خانوادگی پزشک" control={control} />
+        <TextInput name="phone" label="شماره تلفن" control={control} />
         <Box mt={4}>
           <Button type="submit" size="large" fullWidth>
-            Search
+            جستجو
           </Button>
         </Box>
       </form>

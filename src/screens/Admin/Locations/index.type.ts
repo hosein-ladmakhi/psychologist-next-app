@@ -5,6 +5,7 @@ export interface ILocationsScreenProps {
   data: ILocation[];
   count: number;
   page: number;
+  totalPage: number
 }
 
 export type TLocationsScreenFC = FC<ILocationsScreenProps>;

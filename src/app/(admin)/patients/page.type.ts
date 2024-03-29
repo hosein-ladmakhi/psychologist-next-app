@@ -8,6 +8,6 @@ export interface IPatientSearchParamPage {
   phone?: string;
 }
 
-export interface IPatientsPageProps extends INextPage<{}, IPatientSearchParamPage> {}
+export interface IPatientsPageProps extends INextPage<{}, IPatientSearchParamPage> { }
 
 export type TPatientsPageFC = FC<IPatientsPageProps>;

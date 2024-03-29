@@ -87,7 +87,7 @@ const Table: TTableFC = ({
                   </TableCell>
                 ))}
                 <TableCell align="center">
-                  <Box display="flex" justifyContent="center" alignItems="center" gap="20px">
+                  <Box display="flex" justifyContent="flex-end" alignItems="center" gap="20px">
                     {handleDelete && (
                       <Button color="error" onClick={onHandleDelete.bind(null, row)}>
                         حذف

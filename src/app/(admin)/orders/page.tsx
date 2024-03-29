@@ -15,7 +15,7 @@ const OrdersPage: TOrdersPageFC = async ({ searchParams }) => {
   const currentPage = +(searchParams.page || "1");
   const res = await getOrders(prepareOrdersPageQueryParam(searchParams));
 
-  return <OrdersScreen data={res?.content} count={calculateTotalPageTable(res.count)} page={currentPage} />;
+  return <OrdersScreen count={res.count} data={res?.content} totalPage={calculateTotalPageTable(res.count)} page={currentPage} />;
 };
 
 export default OrdersPage;

@@ -5,19 +5,19 @@ import { FC, PropsWithChildren } from "react";
 
 export const metadata: Metadata = {
   title: {
-    template: "Psychologist | %s Page",
+    template: "سایت پزشک من | %s ",
     default: "Main",
   },
 };
 
 const menuItems: { label: string; href: string }[] = [
   {
-    href: "/therapists",
-    label: "پزشکان",
-  },
-  {
     href: "/",
     label: "ادمین ها",
+  },
+  {
+    href: "/therapists",
+    label: "پزشکان",
   },
   {
     href: "/patients",
@@ -44,7 +44,7 @@ const menuItems: { label: string; href: string }[] = [
 const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <AppHeader user={{} as any} menuItems={menuItems} />
+      <AppHeader menuItems={menuItems} />
       <Container maxWidth="xl">{children}</Container>
     </>
   );

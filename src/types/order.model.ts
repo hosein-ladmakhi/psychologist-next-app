@@ -1,5 +1,4 @@
-import { IBaseEntity, IDatasourcePageRes } from "./base.model";
-import { ICategory } from "./category.model";
+import { IBaseEntity } from "./base.model";
 import { IDocumentation } from "./documentation.model";
 import { IPatient } from "./patient.model";
 import { ETherapistScheduleType, ITherapist } from "./therapist.model";
@@ -26,18 +25,11 @@ export interface IOrder extends IBaseEntity {
   status: EOrderStatus;
 }
 
-export type TOrderPageRes = IDatasourcePageRes<IOrder>;
 
 export interface IOrderChangeStatusReqBody {
   status: EOrderStatus;
 }
 
-export interface IOrderDetailBasedOnTherapist {
-  locations: string[];
-  times: string[];
-  patients: IPatient[];
-  categories: ICategory[];
-}
 
 export interface IReservationDate {
   dates: string[];

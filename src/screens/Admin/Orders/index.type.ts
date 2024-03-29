@@ -6,6 +6,7 @@ export interface IOrdersScreenProps {
   data: IOrder[];
   count: number;
   page: number;
+  totalPage: number;
 }
 
 export type TOrdersScreenFC = FC<IOrdersScreenProps>;

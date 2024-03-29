@@ -3,8 +3,9 @@ import { FC } from "react";
 
 export interface ICategoriesScreenProps {
   data: ICategory[];
-  total: number;
+  totalPage: number;
   page: number;
+  count: number
 }
 
 export type TCategoriesScreenFC = FC<ICategoriesScreenProps>;

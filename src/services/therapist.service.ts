@@ -4,12 +4,10 @@ import {
   IAddNewOffDayReqBody,
   IAddNewScheduleToTherapistReqBody,
   ICreateOrEditTherapistReqBody,
-  IScheduleDetailForFilter,
   ITherapist,
   ITherapistSchedules,
   ITherapistSchedulesOff,
   ITherapistUploadRes,
-  TAddNewOwnScheduleReqBody,
   TTherapistSchedulesDayOffPageRes,
   TTherapistSchedulesPageRes,
   TTherapistSchedulesResPerDay,
@@ -56,21 +54,4 @@ export const deleteTherapistDaysOff = (id: number) => httpDelete<ITherapistSched
 export const addTherapistDaysOff = (body: IAddNewOffDayReqBody) =>
   httpPost<IAddNewOffDayReqBody, ITherapistSchedulesOff>(`${API_URL}/therapist-schedules-day-off`, body);
 
-export const updateOwnTherapistProfile = (data: ICreateOrEditTherapistReqBody) =>
-  httpPatch<ICreateOrEditTherapistReqBody, ITherapist>(`${API_URL}/therapist/own`, data);
 
-export const getOwnSchedulesTherapist = (filterObject: Object = {}) =>
-  httpGet<ITherapistSchedules[]>(`${API_URL}/therapist-schedules/therapist/own${prepareQueryParams(filterObject)}`, undefined, ["own-schedules"]);
-
-export const getOwnTherapistScheduleDayOff = (filterObject: Object = {}) =>
-  httpGet<ITherapistSchedulesOff[]>(`${API_URL}/therapist-schedules-day-off/therapists/own${prepareQueryParams(filterObject)}`, undefined, [
-    "own-therapist-schedule-days-off",
-  ]);
-
-export const addOwnDaysOff = (body: IAddNewOffDayReqBody) =>
-  httpPost<IAddNewOffDayReqBody, ITherapistSchedulesOff>(`${API_URL}/therapist-schedules-day-off/own`, body);
-
-export const addOwnNewSchedule = (data: TAddNewOwnScheduleReqBody) =>
-  httpPost<TAddNewOwnScheduleReqBody, ITherapistSchedules>(`${API_URL}/therapist-schedules/own`, data);
-
-export const getOwnScheduleFilteredData = () => httpGet<IScheduleDetailForFilter>(`${API_URL}/therapist-schedules/filtered-data`);

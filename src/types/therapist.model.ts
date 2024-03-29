@@ -63,10 +63,6 @@ export interface ITherapistSchedulesOff extends IBaseEntity {
   schedule: ITherapistSchedules;
 }
 
-export interface ITherapistSchedulesOffBasedOnTherapist {
-  user: ITherapist;
-  items: ITherapistSchedulesOff[];
-}
 
 export interface ICreateOrEditTherapistReqBody {
   phone2: string;
@@ -93,10 +89,3 @@ export interface IAddNewOffDayReqBody {
   schedule: number;
 }
 
-export type TAddNewOwnScheduleReqBody = Omit<IAddNewScheduleToTherapistReqBody, "therapist">;
-
-export interface IScheduleDetailForFilter {
-  times: string[];
-  locations: ILocation[];
-  rooms: number[];
-}

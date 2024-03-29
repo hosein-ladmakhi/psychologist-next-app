@@ -8,7 +8,7 @@ import { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Patients",
+  title: "بیماران",
 };
 
 const PatientsPage: TPatientsPageFC = async ({ searchParams }) => {

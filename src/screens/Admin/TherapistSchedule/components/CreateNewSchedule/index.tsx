@@ -11,10 +11,10 @@ import Button from "@/components/Button";
 import { Grid } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
-import { addNewScheduleAction } from "@/app/(admin)/admin/therapists/schedules/[therapistId]/[day]/actions";
 import { IAddNewScheduleToTherapistReqBody } from "@/types/therapist.model";
 import { errorNotify, successNotify } from "@/utils/notify";
 import useLocations from "@/hooks/api/useLocations";
+import { addNewScheduleAction } from "@/app/(admin)/therapists/schedules/[therapistId]/[day]/actions";
 
 const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onClose }) => {
   const [pending, handleTransition] = useTransition();

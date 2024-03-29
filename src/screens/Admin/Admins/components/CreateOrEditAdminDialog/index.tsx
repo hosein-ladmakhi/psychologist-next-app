@@ -13,10 +13,6 @@ import { createAdminAction, editAdminAction } from "@/app/(admin)/actions";
 
 const isActiveOptions = [
   {
-    key: "لطفا وضعیت حساب این ادمین را مشخص کنید",
-    value: "",
-  },
-  {
     key: "وضعیت فعال",
     value: "true",
   },

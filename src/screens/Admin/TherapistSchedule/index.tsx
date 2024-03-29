@@ -6,12 +6,12 @@ import Table from "@/components/Table";
 import { therapistScheduleColumns } from "./index.constant";
 import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 import { Suspense, useMemo, useState, useTransition } from "react";
-import { deleteScheduleByIdAction } from "@/app/(admin)/admin/therapists/schedules/[therapistId]/[day]/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import FlexBox from "@/components/FlexBox";
 import dynamic from "next/dynamic";
 import { getDate } from "@/utils/getDate";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
+import { deleteScheduleByIdAction } from "@/app/(admin)/therapists/schedules/[therapistId]/[day]/actions";
 
 const CreateNewSchedule = dynamic(() => import("./components/CreateNewSchedule"));
 

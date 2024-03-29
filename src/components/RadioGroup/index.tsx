@@ -1,15 +1,14 @@
 import { FormControl, FormControlLabel, FormHelperText, FormLabel, RadioGroup as MuiRadioGroup, Radio } from "@mui/material";
 import { TRadioGroupFC } from "./index.type";
 import { Controller } from "react-hook-form";
-import { getFormError } from "@/utils/getFormError";
 
 const RadioGroup: TRadioGroupFC = ({ id, label, name, radios, control }) => {
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, formState }) => {
-        const err = getFormError(formState, name);
+      render={({ field, fieldState }) => {
+        const err = fieldState.error?.message;
         return (
           <FormControl error={!!err} margin="dense">
             <FormLabel id={id}>{label}</FormLabel>

@@ -22,7 +22,7 @@ export const useSearchParams = () => {
     <T extends Object>(queries: T) => {
       const urlSearchParams = new URLSearchParams(searchParams);
       Object.entries(queries).map(([queryKey, queryValue]) => {
-        if (queryValue) urlSearchParams.set(queryKey, queryValue);
+        if (typeof queryValue !== typeof undefined) urlSearchParams.set(queryKey, `${queryValue}`);
         else urlSearchParams.delete(queryKey);
       });
       router.push(pathname + "?" + urlSearchParams);

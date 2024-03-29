@@ -15,7 +15,7 @@ import { deleteCategoryAction } from "@/app/(admin)/categories/actions";
 const FilterCategoryDialog = dynamic(() => import("./components/FilterCategoryDialog"));
 const CreateOrEditCategoryDialog = dynamic(() => import("./components/CreateOrEditCategoryDialog"));
 
-const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
+const CategoriesScreen: TCategoriesScreenFC = ({ data, totalPage, page, count }) => {
   const [pending, handleTransition] = useTransition();
   const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
   const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
@@ -77,7 +77,7 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
       <Table
         handleResetFilter={handleResetFilter}
         createButtonLabel="افزودن زمینه تخصصی"
-        title="لیست زمینه های تخصصی"
+        title={`لیست زمینه های تخصصی (${count})`}
         columns={categoriesColumns}
         dataKey="id"
         rows={transformedCategories}
@@ -88,7 +88,7 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, total, page }) => {
         handleChangePage={handleChangePage}
         handleFilter={handleFilter}
         currentPage={page}
-        totalPage={total}
+        totalPage={totalPage}
       />
     </>
   );

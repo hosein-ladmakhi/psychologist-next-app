@@ -5,7 +5,6 @@ import { TTherapistScheduleOffDayScreenFC } from "./index.type";
 import { therapistScheduleOffDayColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
 import moment from "moment";
-import { deleteDaysOffAction } from "@/app/(admin)/admin/therapists/off-day/[id]/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import FlexBox from "@/components/FlexBox";
@@ -15,6 +14,7 @@ import dynamic from "next/dynamic";
 import { getDate } from "@/utils/getDate";
 import { APP_DATE_FORMAT } from "@/constants";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
+import { deleteDaysOffAction } from "@/app/(admin)/therapists/off-day/[id]/actions";
 
 const AddNewOffDayDialog = dynamic(() => import("./components/AddNewOffDayDialog"));
 

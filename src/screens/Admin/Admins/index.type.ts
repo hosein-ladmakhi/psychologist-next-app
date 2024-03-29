@@ -2,9 +2,10 @@ import { IAdmin } from "@/types/admin.model";
 import type { FC } from "react"
 
 interface IAdminsScreenProps {
-    total: number;
+    count: number;
     page: number;
     data: IAdmin[]
+    totalPage: number;
 }
 
 export type TAdminsScreenFC = FC<IAdminsScreenProps>

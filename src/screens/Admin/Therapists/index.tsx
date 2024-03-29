@@ -15,11 +15,12 @@ import FilterTherapistDialog from "./components/FilterTherapistDialog";
 import CreateOrEditTherapistDialog from "./components/CreateOrEditTherapistDialog";
 import { getGenderEnum } from "@/utils/getEnumTransformer";
 import { deleteTherapistAction } from "@/app/(admin)/therapists/actions";
+import EditPasswordDialog from "@/components/EditPasswordDailog";
 
 const ViewTherapistDialog = dynamic(() => import("./components/ViewTherapistDialog"));
 const ScheduleTherapistDialog = dynamic(() => import("./components/ScheduleTherapistDialog"));
 
-const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
+const TherapistsScreen: TTherapistsScreenFC = ({ data, totalPage, page, count }) => {
   const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
   const [selectedTherapist, setSelectedTherapist] = useState<ITherapist>();
   const [pending, handleTransition] = useTransition();
@@ -29,6 +30,7 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
   const [isShowScheduleDialog, setShowScheduleDialogStatus] = useState<boolean>(false);
   const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
   const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
+  const [isShowChangePasswordDialog, setShowChangePasswordDialogStatus] = useState<boolean>(false);
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
@@ -42,6 +44,7 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
     setShowViewDialogStatus(false);
     setShowScheduleDialogStatus(false);
     setShowCreateOrEditDialogStatus(false);
+    setShowChangePasswordDialogStatus(false);
   };
 
   const onChangeFilters = (data: TFilterTherapistFormValidation) => onChangeMultipleSearchParams({ ...data, page: 1 });
@@ -69,6 +72,17 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
     router.push(`/admin/therapists/off-day/${therapist.id}`);
   };
 
+  const handleEditPassword = (data: Object) => {
+    const therapist = data as ITherapist;
+    setShowChangePasswordDialogStatus(true);
+    setSelectedTherapist(therapist);
+  };
+
+  const handleEditPasswordClose = () => {
+    setSelectedTherapist(undefined);
+    setShowChangePasswordDialogStatus(false);
+  };
+
   const additionalActions: TAdditionalTableAction[] = [
     {
       color: "secondary",
@@ -84,6 +98,11 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
       color: "warning",
       onClick: handleScheduleTherapistOffDay,
       text: "مرخصی",
+    },
+    {
+      color: "info",
+      onClick: handleEditPassword,
+      text: "ویرایش گذرواژه",
     },
   ];
 
@@ -134,12 +153,17 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
           <FilterTherapistDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />
         </Suspense>
       )}
+      {isShowChangePasswordDialog && (
+        <Suspense>
+          <EditPasswordDialog handleClose={handleEditPasswordClose} id={selectedTherapist!.id} type="therapist" />
+        </Suspense>
+      )}
 
       <Table
         additionalActions={additionalActions}
         handleResetFilter={handleResetFilter}
         createButtonLabel="ساخت پزشک جدید"
-        title="لیست پزشکان سایت"
+        title={`لیست پزشکان (${count})`}
         columns={therapistsColumns}
         dataKey="id"
         rows={tranformedData}
@@ -149,7 +173,7 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, total, page }) => {
         handleChangePage={handleChangePage}
         handleFilter={handleFilter}
         currentPage={page}
-        totalPage={total}
+        totalPage={totalPage}
         loading={pending}
       />
     </>

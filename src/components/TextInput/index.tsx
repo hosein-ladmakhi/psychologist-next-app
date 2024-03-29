@@ -1,7 +1,6 @@
 import { InputAdornment, TextField } from "@mui/material";
 import { ITextInputFC } from "./index.type";
 import { Controller } from "react-hook-form";
-import { getFormError } from "@/utils/getFormError";
 
 const TextInput: ITextInputFC = ({ control, name, label, rows = 1, disabled = false, multiline = false, icon, helperText, type = "text" }) => {
   return (
@@ -9,8 +8,8 @@ const TextInput: ITextInputFC = ({ control, name, label, rows = 1, disabled = fa
       control={control}
       name={name}
       disabled={disabled}
-      render={({ field, formState }) => {
-        const err = getFormError(formState, name);
+      render={({ field, fieldState }) => {
+        const err = fieldState.error?.message;
         return (
           <TextField
             type={type}

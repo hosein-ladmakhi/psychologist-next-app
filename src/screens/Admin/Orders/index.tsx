@@ -21,7 +21,7 @@ const FilterOrderDialog = dynamic(() => import("./components/FilterOrderDialog")
 const DoneOrderDialog = dynamic(() => import("./components/DoneOrderDialog"));
 const DocumentationDialog = dynamic(() => import("./components/DocumentationDialog"));
 
-const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
+const OrdersScreen: TOrdersScreenFC = ({ data, count, page, totalPage }) => {
   const confirm = useConfirm();
   const [pending, handleTransition] = useTransition();
   const [selectedOrder, setSelectedOrder] = useState<IOrder>();
@@ -162,12 +162,12 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page }) => {
         loading={pending}
         additionalActions={additionalActions}
         columns={ordersColumns}
-        title="لیست رزرو ها"
+        title={`لیست رزرو ها (${count})`}
         rows={transformedData}
         dataKey="id"
         handleChangePage={handleChangePage}
         currentPage={page}
-        totalPage={count}
+        totalPage={totalPage}
         handleResetFilter={handleResetFilter}
         handleCreate={handleCreate}
         createButtonLabel="افزودن رزرو جدید"

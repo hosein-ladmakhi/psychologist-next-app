@@ -14,16 +14,16 @@ export const therapistsColumns: ITableColumn[] = [
   {
     label: "شماره تماس 1",
     name: "phone",
-    width: 200,
+    width: 150,
   },
   {
     label: "شماره تماس 2",
     name: "phone2",
-    width: 200,
+    width: 150,
   },
   {
     label: "جنسیت",
     name: "transformedGender",
-    width: 150,
+    width: 120,
   },
 ];

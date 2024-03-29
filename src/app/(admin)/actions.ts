@@ -1,6 +1,6 @@
 'use server'
 
-import { createAdmin, editAdminById } from "@/services/admin.service"
+import { createAdmin, deleteAdminById, editAdminById } from "@/services/admin.service";
 import { ICreateOrEditAdminReqBody } from "@/types/admin.model"
 import { revalidateTag } from "next/cache";
 
@@ -19,6 +19,16 @@ export const editAdminAction = async (data: ICreateOrEditAdminReqBody) => {
     if (res?.id) {
         revalidateTag("admins")
         return true;
+    }
+    return false;
+}
+
+
+export const deleteAdminAction = async (id: number) => {
+    const res = await deleteAdminById(id);
+    if(res) {
+        revalidateTag("admins");
+        return true
     }
     return false;
 }

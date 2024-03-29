@@ -13,13 +13,17 @@ import { updatePasswordAction } from "@/app/(auth)/auth/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 
 const EditPasswordDialog: TEditPasswordDialogFC = ({ type, id, handleClose }) => {
-  const { control, handleSubmit } = useForm<TEditPasswordFormValidation>({ resolver: zodResolver(editPasswordFormValidation) });
+  const {
+    control,
+    handleSubmit
+  } = useForm<TEditPasswordFormValidation>({ resolver: zodResolver(editPasswordFormValidation) });
   const [pending, handleTransition] = useTransition();
 
   const onSubmit = handleSubmit((data) => {
     handleTransition(() => {
       updatePasswordAction(id, { type, ...data })
         .then((res) => {
+          console.log("result", res);
           if (res) {
             successNotify("گذرواژه با موفقیت ویرایش گردید");
           } else {

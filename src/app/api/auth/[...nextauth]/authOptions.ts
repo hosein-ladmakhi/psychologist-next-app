@@ -12,8 +12,7 @@ export const authOptions: AuthOptions = {
       authorize: async (credentials: TLoginFormValidation) => {
         const { role, ...data } = credentials;
         const res = await loginUser(role, data);
-        console.log(1234, res);
-        return res?.token ? { accessToken: res?.token } : undefined;
+        return res?.token ? { accessToken: res?.token, ...res } : undefined;
       },
     }),
   ],
@@ -26,12 +25,8 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ token, session }: any) {
-      const accessToken = token?.accessToken;
-      if (accessToken) {
-        const decoded = jwtDecode<any>(accessToken);
-        session.userToken = accessToken;
-        session.decoded = decoded;
-      }
+      session.accessToken = token.accessToken;
+      session.user = token.user;
       return session;
     },
   },

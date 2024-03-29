@@ -14,7 +14,7 @@ const Modal: TModalFC = ({ children, size = "xs", title, handleClose = () => {},
   return (
     <MuiModal open={opened} onClose={onClose}>
       <FlexBox flexDirection="column" height="100%" width="100%" onClick={onClose}>
-        <Card onClick={onPreventModalClose} style={{ width: modalWidthSize[size] }}>
+        <Card onClick={onPreventModalClose} style={{ width: modalWidthSize[size], overflowY: "auto" }}>
           <CardContent>
             <FlexBox justifyContent="space-between" mb={3}>
               <Typography variant="h6" component="h1">

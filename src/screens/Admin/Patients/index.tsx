@@ -12,6 +12,7 @@ import { patientsColumn } from "./index.constant";
 import { errorNotify, successNotify } from "@/utils/notify";
 import dynamic from "next/dynamic";
 import { deletePatientAction } from "@/app/(admin)/patients/actions";
+import EditPasswordDialog from "@/components/EditPasswordDailog";
 
 const CreateOrEditPatientDialog = dynamic(() => import("./components/CreateOrEditPatientDialog"));
 const ViewOrdersDialog = dynamic(() => import("./components/ViewOrdersDialog"));
@@ -25,6 +26,7 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
   const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
   const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
   const [isShowViewDialog, setShowViewDialogStatus] = useState<boolean>(false);
+  const [isShowChangePasswordDialog, setShowChangePasswordDialogStatus] = useState<boolean>(false);
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page.toString());
 
@@ -61,6 +63,18 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
     setShowCreateOrEditDialogStatus(false);
     setShowFilterDialogStatus(false);
     setShowViewDialogStatus(false);
+    setShowChangePasswordDialogStatus(false);
+  };
+
+  const handleEditPassword = (data: Object) => {
+    const patient = data as IPatient;
+    setShowChangePasswordDialogStatus(true);
+    setSelectedPatient(patient);
+  };
+
+  const handleEditPasswordClose = () => {
+    setSelectedPatient(undefined);
+    setShowChangePasswordDialogStatus(false);
   };
 
   const handleResetFilter = () => {
@@ -86,11 +100,11 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
   }, [data]);
 
   const additionalActions: TAdditionalTableAction[] = [
-    // {
-    //   color: "success",
-    //   onClick: handleViewPatient,
-    //   text: "نوبت رزرو ها",
-    // },
+    {
+      color: "success",
+      onClick: handleEditPassword,
+      text: "تغییر گذرواژه",
+    },
   ];
 
   return (
@@ -108,6 +122,11 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
       {isShowFilterDialog && (
         <Suspense fallback={<></>}>
           <FilterPatientDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />
+        </Suspense>
+      )}
+      {isShowChangePasswordDialog && (
+        <Suspense>
+          <EditPasswordDialog handleClose={handleEditPasswordClose} id={selectedPatient!.id} type="patient" />
         </Suspense>
       )}
       <Table

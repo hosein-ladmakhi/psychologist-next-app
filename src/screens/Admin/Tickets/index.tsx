@@ -88,10 +88,10 @@ const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
         handleDelete={handleDelete}
         additionalActions={actionsButton}
         columns={ticketsColumns}
-        title="صفحه تیکت و پشتیبانی"
+        title={`"صفحه تیکت و پشتیبانی" (${count})`}
         rows={transformedData}
         dataKey="id"
-        totalPage={count}
+        totalPage={totalPage}
         loading={loading}
       />
     </>

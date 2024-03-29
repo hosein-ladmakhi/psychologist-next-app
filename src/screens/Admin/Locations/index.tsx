@@ -13,7 +13,7 @@ import { deleteLocationAction } from "@/app/(admin)/locations/actions";
 const CreateOrEditLocationDialog = dynamic(() => import("./components/CreateOrEditLocationDialog"));
 const FilterLocationDialog = dynamic(() => import("./components/FilterLocationDialog"));
 
-const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
+const LocationsScreen: TLocationsScreenFC = ({ count, data, page, totalPage }) => {
   const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
   const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
   const [selectedLocation, setSelectedLocation] = useState<ILocation>();
@@ -64,7 +64,7 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
       <Table
         handleChangePage={handleChangePage}
         loading={pending}
-        title="لیست آدرس ها"
+        title={`لیست آدرس ها (${count})`}
         columns={locationsColumns}
         dataKey="id"
         rows={data}
@@ -74,7 +74,7 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page }) => {
         handleCreate={handleCreate}
         createButtonLabel="افزودن آدرس جدید"
         currentPage={page}
-        totalPage={count}
+        totalPage={totalPage}
       />
     </>
   );

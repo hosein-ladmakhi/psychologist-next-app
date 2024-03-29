@@ -1,9 +1,5 @@
-export interface ISignupReqBody {
-  firstName: string;
-  lastName: string;
-  password: string;
-  phone: string;
-}
+import { Session } from "next-auth";
+import { IAdmin } from "./admin.model";
 
 export interface ILoginReqBody {
   phone: string;
@@ -23,4 +19,19 @@ export interface IPasswordUpdateReqBody {
 export interface IPasswordUpdateResponse {
   success: boolean;
   message?: string;
+}
+
+
+export interface INextAuthSessionData {
+  user: IAdmin
+  expires: string;
+  accessToken: string
+}
+
+export type TNextAuthSessionStatus = 'authenticated' | 'unauthenticated' | 'loading'
+
+export interface INextAuthSession {
+  update: (data?: any) => Promise<Session | null>
+  data: INextAuthSessionData
+  status: TNextAuthSessionStatus
 }

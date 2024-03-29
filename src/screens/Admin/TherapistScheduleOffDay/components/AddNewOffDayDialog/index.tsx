@@ -12,12 +12,12 @@ import { IAddNewOffDayReqBody } from "@/types/therapist.model";
 import moment from "moment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useConfirm } from "material-ui-confirm";
-import { addDaysOfAction } from "@/app/(admin)/admin/therapists/off-day/[id]/actions";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { getDate } from "@/utils/getDate";
 import useTherapistSchedule from "@/hooks/api/useTherapistSchedule";
 import { APP_DATE_FORMAT } from "@/constants";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
+import { addDaysOfAction } from "@/app/(admin)/therapists/off-day/[id]/actions";
 
 const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
   const confirmation = useConfirm();

@@ -8,7 +8,6 @@ export interface IAdmin extends IBaseEntity, IBaseUser {
 
 export type TAdminPageRes = IDatasourcePageRes<IAdmin>;
 
-
 export interface ICreateOrEditAdminReqBody {
     firstName: string;
     lastName: string;
