@@ -1,6 +1,6 @@
 import { httpGet, httpPatch, httpPost } from "@/api";
 import { API_URL } from "@/constants";
-import { IAuthResponse, ILoginReqBody, IPasswordUpdateReqBody, IPasswordUpdateResponse, ISignupReqBody } from "@/types/auth.model";
+import { IAuthResponse, ILoginReqBody, IPasswordUpdateReqBody, IPasswordUpdateResponse } from "@/types/auth.model";
 
 export const loginUser = (type: string, body: ILoginReqBody) => httpPost<ILoginReqBody, IAuthResponse>(`${API_URL}/auth/login/${type}`, body);
 

@@ -1,9 +1,9 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { IApiOptions } from "@/types/api.model";
 import { getServerSession } from "next-auth";
 import { handleApiErr, handleApiRes } from "./error-api";
 import { getSession } from "next-auth/react";
 import { INextAuthSessionData } from "@/types/auth.model";
+import { authOptions } from "@/core/next-auth/authOptions";
 
 const api = async (url: string, method: string, options: IApiOptions, tags: string[] = []) => {
   const initialHeaders = new Headers(options?.headers || {});

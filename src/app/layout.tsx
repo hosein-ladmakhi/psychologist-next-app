@@ -8,8 +8,8 @@ import RouteLoadingProvider from "@/providers/RouteLoadingProvider";
 import LocalizationPickerProvider from "@/providers/LocalizationPickerProvider";
 import NextAuthProvider from "@/providers/NextAuthProvider";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/authOptions";
 import MuiThemeProvider from "@/providers/MuiThemeProvider";
+import { authOptions } from "@/core/next-auth/authOptions";
 
 const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
   const session = await getServerSession(authOptions);
