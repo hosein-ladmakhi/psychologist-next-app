@@ -18,7 +18,6 @@ const CreateOrEditAdminDialog = dynamic(() => import("./components/CreateOrEditA
 
 const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
   const [loading, handleTransition] = useTransition();
-
   const [isUpsertAdminOpen, setUpsertAdminOpen] = useState<boolean>(false);
   const [selectedAdmin, setSelectedAdmin] = useState<IAdmin>();
   const [isEditPasswordOpen, setEditPasswordOpen] = useState<boolean>(false);
@@ -130,6 +129,7 @@ const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
         dataKey="id"
         title={`لیست ادمین ها (${count})`}
         rows={transformedData}
+        loading={loading}
       />
 
       {isEditPasswordOpen && selectedAdmin && (

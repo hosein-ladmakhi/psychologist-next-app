@@ -2,7 +2,7 @@ import { unauthClientrRedirect } from "./unauthClientRedirect";
 import { unauthServerRedirect } from "./unauthServerRedirect";
 
 export abstract class Exception {
-  constructor(public status: number, public message: string, public error: string) {}
+  constructor(public status: number, public message: string, public error: string) { }
 }
 
 export class UnauthorizationException extends Exception {
@@ -12,7 +12,6 @@ export class UnauthorizationException extends Exception {
 }
 
 export const handleApiRes = (res: Response) => {
-  console.log(res.url, res.status);
   switch (res.status) {
     case 200:
     case 201:

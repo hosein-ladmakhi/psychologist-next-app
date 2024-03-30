@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import { Box } from "@mui/material";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { createAdminAction, editAdminAction } from "@/app/(admin)/actions";
+import { useSearchParams } from "@/hooks/useSearchParams";
 
 const isActiveOptions = [
   {
@@ -35,6 +36,7 @@ const CreateOrEditAdminDialog: FC<ICreateOrEditAdminDialogProps> = ({ handleClos
   });
 
   const [pending, handleTransition] = useTransition();
+  const searchParams = useSearchParams();
 
   const handleEditAdmin = (data: TCreateOrEditAdminFormValidation) => {
     handleTransition(() => {
@@ -61,6 +63,7 @@ const CreateOrEditAdminDialog: FC<ICreateOrEditAdminDialogProps> = ({ handleClos
         .then((res) => {
           if (res) {
             successNotify("ادمین با موفقیت ثبت گردید");
+            searchParams.onChangeSearchParams("page", 1);
           } else {
             errorNotify("عملیات ساختن ادمین با شکست مواجعه شد دوباره تلاش کنید");
           }
@@ -75,8 +78,6 @@ const CreateOrEditAdminDialog: FC<ICreateOrEditAdminDialogProps> = ({ handleClos
   };
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
-
     selectedAdmin ? handleEditAdmin(data) : handleCreateAdmin(data);
   });
 

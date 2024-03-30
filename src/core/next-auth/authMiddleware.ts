@@ -11,7 +11,7 @@ export const withAuth = () => {
     return (request: NextRequest, event: NextFetchEvent) => {
         withNextAuth({
             callbacks: {
-                authorized(params: any) {
+                authorized(params: any) {       
                     return params.token?.exp ? checkTokenExp(params.token.exp) : false
                 },
             },
