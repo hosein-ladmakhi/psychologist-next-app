@@ -106,7 +106,7 @@ const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
       {isUpsertAdminOpen && (
         <Suspense fallback={<></>}>
           <CreateOrEditAdminDialog handleClose={handleUpsertAdminClose} isOpen={isUpsertAdminOpen}
-                                   selectedAdmin={selectedAdmin} />
+            selectedAdmin={selectedAdmin} />
         </Suspense>
       )}
       {isFilterAdminOpen && (

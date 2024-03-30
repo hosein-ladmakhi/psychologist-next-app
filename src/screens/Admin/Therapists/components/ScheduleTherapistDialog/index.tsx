@@ -12,7 +12,7 @@ const ScheduleTherapistDialog: TScheduleTherapistDialogFC = ({ selectedTherapist
   const { schedules, schedulesLoading } = useTherapistSchedulePerday(selectedTherapist?.id!);
   const router = useRouter();
   const onSelectDay = (day: number) => {
-    router.push(`/admin/therapists/schedules/${selectedTherapist?.id}/${day}`);
+    router.push(`/therapists/schedules/${selectedTherapist?.id}/${day}`);
     onClose();
   };
 

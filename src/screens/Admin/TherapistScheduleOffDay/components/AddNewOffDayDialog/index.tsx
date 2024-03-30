@@ -9,7 +9,7 @@ import Button from "@/components/Button";
 import { Box } from "@mui/material";
 import DatePicker from "@/components/DatePicker";
 import { IAddNewOffDayReqBody } from "@/types/therapist.model";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useConfirm } from "material-ui-confirm";
 import { errorNotify, successNotify } from "@/utils/notify";
@@ -49,9 +49,8 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
       data = data.filter((element) => element.day === dayNumber);
     }
     return data.map((schedule) => ({
-      key: `${schedule.location.city} ${schedule.location.address} اتاق ${schedule.room} - ( ${getDate(schedule.day)} ${schedule.startHour} - ${
-        schedule.endHour
-      } ) - ${getScheduleTypeEnum(schedule.type)}`,
+      key: `${schedule.location.city} ${schedule.location.address} اتاق ${schedule.room} - ( ${getDate(schedule.day)} ${schedule.startHour} - ${schedule.endHour
+        } ) - ${getScheduleTypeEnum(schedule.type)}`,
       value: schedule.id,
     }));
   }, [watch("date"), therapistSchedules]);
@@ -62,7 +61,7 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
       return;
     }
     const reqBody: IAddNewOffDayReqBody = {
-      date: moment(data.date).format(APP_DATE_FORMAT),
+      date: moment(data.date).format('YYYY-MM-DD'),
       schedule: data.schedule,
     };
     confirmation({ title: `آیا از ثبت مرخصی جدید در تاریخ ${reqBody.date} اطمینان دارید ؟` }).then(() => {

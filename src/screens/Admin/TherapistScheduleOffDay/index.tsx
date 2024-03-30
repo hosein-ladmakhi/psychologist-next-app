@@ -4,7 +4,7 @@ import Table from "@/components/Table";
 import { TTherapistScheduleOffDayScreenFC } from "./index.type";
 import { therapistScheduleOffDayColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import FlexBox from "@/components/FlexBox";

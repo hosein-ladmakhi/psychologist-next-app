@@ -6,7 +6,7 @@ import Button from "@/components/Button";
 import { useRef, useTransition } from "react";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { getDate } from "@/utils/getDate";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { APP_DATE_FORMAT } from "@/constants";
 import { getOrderStatusEnum, getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { uploadDocumentationAndDoneOrderAction } from "@/app/(admin)/orders/actions";
@@ -19,7 +19,7 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
 
   const printDetail = (title: string, desc: string | number) => (
     <Typography variant="body1" component="h3">
-      {title} : {desc}
+      {title} : <Box display="inline-block">{desc}</Box>
     </Typography>
   );
 
@@ -40,7 +40,7 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
   };
 
   return (
-    <Modal handleClose={onClose} size="md" opened title="Done Order">
+    <Modal handleClose={onClose} size="md" opened title="به اتمام رساندن رزرو">
       <Typography mb={1} fontWeight="bold" variant="h6" component="h1">
         شما برای تغییر وضعیت این رزرو باید یک شرح یا توضیحاتی در مورد این نوبت رزرو و بیمار آپلود کنید
       </Typography>

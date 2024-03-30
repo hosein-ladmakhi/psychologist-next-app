@@ -11,7 +11,7 @@ import { useConfirm } from "material-ui-confirm";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { IFilterOrderFormValidation } from "./components/FilterOrderDialog/index.type";
 import dynamic from "next/dynamic";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { APP_DATE_FORMAT } from "@/constants";
 import CreateOrderDialog from "./components/CreateOrderDialog";
 import { getOrderStatusEnum } from "@/utils/getEnumTransformer";

@@ -10,7 +10,7 @@ import RadioGroup from "@/components/RadioGroup";
 import Button from "@/components/Button";
 import { Grid } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { IAddNewScheduleToTherapistReqBody } from "@/types/therapist.model";
 import { errorNotify, successNotify } from "@/utils/notify";
 import useLocations from "@/hooks/api/useLocations";

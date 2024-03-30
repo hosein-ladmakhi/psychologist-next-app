@@ -4,7 +4,7 @@ import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import TextInput from "@/components/TextInput";
 import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { APP_DATE_TIME_FORMAT } from "@/constants";
 import FlexBox from "@/components/FlexBox";
 import { useTransition } from "react";
@@ -63,16 +63,17 @@ const ViewTicketDialog: TViewTicketDialogFC = ({ handleClose, selectedTicket }) 
               وضعیت این تیکت : {getTicketStatusEnum(selectedTicket?.status!)}
             </Typography>
             <Typography variant="caption" component="span">
-              تاریخ ثبت تیکت : {moment(selectedTicket?.createdAt).format(APP_DATE_TIME_FORMAT)}
+              تاریخ ثبت تیکت : <Box component="span" display="inline-block" dir="ltr">{moment(selectedTicket?.createdAt).format(APP_DATE_TIME_FORMAT)}</Box>
             </Typography>
             {selectedTicket?.closeAt && (
               <Typography variant="caption" component="span">
-                تاریخ بسته شدن تیکت : {moment(selectedTicket?.closeAt).format(APP_DATE_TIME_FORMAT)}
+                تاریخ بسته شدن تیکت : <Box component="span" display="inline-block" dir="ltr">{moment(selectedTicket?.closeAt).format(APP_DATE_TIME_FORMAT)}</Box>
               </Typography>
             )}
             {selectedTicket?.answerAt && (
               <Typography variant="caption" component="span">
-                تاریخ ثبت پاسخ : {moment(selectedTicket?.answerAt).format(APP_DATE_TIME_FORMAT)}
+                تاریخ ثبت پاسخ :
+                <Box component="span" display="inline-block" dir="ltr"> {moment(selectedTicket?.answerAt).format(APP_DATE_TIME_FORMAT)}</Box>
               </Typography>
             )}
             {selectedTicket?.attachments?.length > 0 && (

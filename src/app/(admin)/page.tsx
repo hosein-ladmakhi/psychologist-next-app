@@ -13,8 +13,10 @@ const AdminsPage: TAdminsPageFC = async ({ searchParams }) => {
   const currentPage = +(searchParams.page || "1");
   const data = await getAdmins(prepareAdminsPageQueryParam(searchParams));
 
-  return <AdminsScreen data={data.content} page={currentPage} count={data.count}
-                       totalPage={calculateTotalPageTable(data.count)} />;
+  return (
+    <AdminsScreen data={data.content} page={currentPage} count={data.count}
+      totalPage={calculateTotalPageTable(data.count)} />
+  )
 };
 
 export default AdminsPage;

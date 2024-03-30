@@ -69,7 +69,7 @@ const TherapistsScreen: TTherapistsScreenFC = ({ data, totalPage, page, count })
 
   const handleScheduleTherapistOffDay = (data: Object) => {
     const therapist = data as ITherapist;
-    router.push(`/admin/therapists/off-day/${therapist.id}`);
+    router.push(`/therapists/off-day/${therapist.id}`);
   };
 
   const handleEditPassword = (data: Object) => {

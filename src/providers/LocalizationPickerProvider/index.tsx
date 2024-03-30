@@ -2,10 +2,10 @@
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { TLocalizationPickerProviderFC } from "./index.type";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 
 const LocalizationPickerProvider: TLocalizationPickerProviderFC = ({ children }) => {
-  return <LocalizationProvider dateAdapter={AdapterMoment}>{children}</LocalizationProvider>;
+  return <LocalizationProvider dateAdapter={AdapterMomentJalaali}>{children}</LocalizationProvider>;
 };
 
 export default LocalizationPickerProvider;

@@ -4,7 +4,7 @@ import Table from "@/components/Table";
 import { TTicketsScreenFC } from "./index.type";
 import { ticketsColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { APP_DATE_TIME_FORMAT } from "@/constants";
 import SummaryText from "@/components/SummaryText";
 import { TAdditionalTableAction } from "@/types/base.model";
