@@ -1,7 +1,7 @@
 import Modal from "@/components/Modal";
 import { PropsWithChildren } from "react";
 import { TViewTherapistDialogFC } from "./index.type";
-import { Avatar, Chip, Typography } from "@mui/material";
+import { Chip, Typography } from "@mui/material";
 import { API_URL } from "@/constants";
 import Image from "next/image";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import FlexBox from "@/components/FlexBox";
 import { getDegreeOfEducationEnum, getGenderEnum } from "@/utils/getEnumTransformer";
+import Avatar from "@/components/Avatar";
 
 const ContentBox = ({ children }: PropsWithChildren) => (
   <FlexBox my={1} gap={1} justifyContent="flex-start" alignItems="flex-start">
@@ -34,9 +35,7 @@ const ViewTherapistDialog: TViewTherapistDialogFC = ({ selectedTherapist, onClos
   return (
     <Modal handleClose={onClose} opened title="جزئیات پزشک" size="lg">
       <FlexBox width="100%">
-        <Avatar sx={{ height: 80, width: 80, marginBottom: "1rem" }}>
-          <Image fill alt="profile-img" src={`${API_URL}${selectedTherapist?.image}`} />
-        </Avatar>
+        <Avatar src={`${API_URL}${selectedTherapist?.image}`} avatarStyle={{ height: 80, width: 80, marginBottom: "1rem" }} />
       </FlexBox>
       <ContentBox>
         <PersonIcon />

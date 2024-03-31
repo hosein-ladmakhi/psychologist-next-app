@@ -35,7 +35,7 @@ const PDFViewer: TPDFViewerFC = ({ file }) => {
 
   return (
     <>
-      <Document onLoadSuccess={handleTotalPages} noData options={options} file={file} onLoadError={(e) => console.log("onLoadError", e)}>
+      <Document className="pdf-container" onLoadSuccess={handleTotalPages} noData options={options} file={file} onLoadError={(e) => console.log("onLoadError", e)}>
         <Page pageNumber={currentPage} />
       </Document>
 

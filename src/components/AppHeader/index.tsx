@@ -22,15 +22,17 @@ const AppHeader: TAppHeaderFC = ({ menuItems }) => {
   return (
     <AppBar sx={{ marginBottom: "40px" }} position="static">
       <Toolbar>
-        <Typography component="h1" variant="body1" fontWeight={"bold"}>{user?.firstName} {user?.lastName}</Typography>
-        <FlexBox justifyContent="space-between" flex={1}>
-          <FlexBox component="ul">
-            {menuItems.map((item) => (
-              <Link className="link" href={item.href} key={item.href}>
-                {item.label}
-              </Link>
-            ))}
-          </FlexBox>
+        <FlexBox width="100%" justifyContent="center" component="ul">
+          <Link className="link" href="/">
+            <Typography component="h1" fontWeight="bold" variant="body1">
+              {user?.firstName} {user?.lastName}
+            </Typography>
+          </Link>
+          {menuItems.map((item) => (
+            <Link className="link" href={item.href} key={item.href}>
+              {item.label}
+            </Link>
+          ))}
           <Button onClick={handleLogout} color="secondary">
             <Logout sx={{ marginInlineEnd: "5px" }} fontSize="small" />
             خروج از حساب کاربری

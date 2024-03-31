@@ -13,3 +13,9 @@ body {
   color: #fff;
   font-size: 16px;
 }
+
+@media print {
+  .pdf-container {
+    display: none;
+  }
+}

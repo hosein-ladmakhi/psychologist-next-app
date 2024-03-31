@@ -11,10 +11,8 @@ import dynamic from "next/dynamic";
 import { deleteLocationAction } from "@/app/(admin)/locations/actions";
 
 const CreateOrEditLocationDialog = dynamic(() => import("./components/CreateOrEditLocationDialog"));
-const FilterLocationDialog = dynamic(() => import("./components/FilterLocationDialog"));
 
 const LocationsScreen: TLocationsScreenFC = ({ count, data, page, totalPage }) => {
-  const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
   const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
   const [selectedLocation, setSelectedLocation] = useState<ILocation>();
   const { onChangeSearchParams } = useSearchParams();
@@ -22,7 +20,6 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page, totalPage }) =
 
   const onCloseDialog = () => {
     setSelectedLocation(undefined);
-    setShowFilterDialogStatus(false);
     setShowCreateOrEditDialogStatus(false);
   };
 
@@ -43,9 +40,6 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page, totalPage }) =
     setShowCreateOrEditDialogStatus(true);
   };
 
-  const handleFilter = () => {
-    setShowFilterDialogStatus(true);
-  };
 
   const handleChangePage = (page: number) => onChangeSearchParams("page", page);
 
@@ -56,11 +50,6 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page, totalPage }) =
           <CreateOrEditLocationDialog selectedLocation={selectedLocation} onClose={onCloseDialog} />
         </Suspense>
       )}
-      {isShowFilterDialog && (
-        <Suspense fallback={<></>}>
-          <FilterLocationDialog onClose={onCloseDialog} />
-        </Suspense>
-      )}
       <Table
         handleChangePage={handleChangePage}
         loading={pending}
@@ -68,7 +57,6 @@ const LocationsScreen: TLocationsScreenFC = ({ count, data, page, totalPage }) =
         columns={locationsColumns}
         dataKey="id"
         rows={data}
-        handleFilter={handleFilter}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         handleCreate={handleCreate}

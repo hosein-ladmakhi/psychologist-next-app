@@ -1,6 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 import { muiColorPalette } from "./color";
-import { figtreeFont } from "../fonts/figtree-font";
 import { vazirFont } from "../fonts/vazir-font";
 import createCache from "@emotion/cache"
 import { prefixer } from "stylis";

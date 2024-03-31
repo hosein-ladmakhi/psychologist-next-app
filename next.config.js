@@ -11,6 +11,10 @@ const nextConfig = {
         hostname: "pyschologist-api.liara.run",
         protocol: "https",
       },
+      {
+        hostname: 'o2osell.com',
+        protocol: 'https'
+      }
     ],
   },
   webpack: (config, options) => {

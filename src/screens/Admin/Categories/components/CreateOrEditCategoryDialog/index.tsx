@@ -9,6 +9,7 @@ import { errorNotify, successNotify } from "@/utils/notify";
 import ImagePicker from "@/components/ImagePicker";
 import { uploadCategoryIcon } from "@/services/category.service";
 import { createNewCategoryAction, editCategoryAction } from "@/app/(admin)/categories/actions";
+import FlexBox from "@/components/FlexBox";
 
 const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, selectedCategory }) => {
   const [pending, handleTransition] = useTransition();
@@ -52,8 +53,10 @@ const CreateOrEditCategoryDialog: TCreateOrEditCategoryDialogFC = ({ onClose, se
   const modalTitle = selectedCategory ? "ویزایش زمینه تخصصی" : "ساخت زمینه تخصصی جدید";
 
   return (
-    <Modal title={modalTitle} size="lg" opened handleClose={onClose}>
-      <ImagePicker height={100} width={100} ref={iconRef} />
+    <Modal title={modalTitle} size="md" opened handleClose={onClose}>
+      <FlexBox mb={2}>
+        <ImagePicker defaultSrc="https://o2osell.com/cat_img/default.png?1587036898" height={100} width={100} ref={iconRef} />
+      </FlexBox>
       <form style={{ marginTop: "10px" }} onSubmit={onCreateOrEditCategory}>
         <TextInput name="faName" label="نام فارسی زمینه تخصصی" control={control} />
         <TextInput name="enName" label="نام اینگلیسی زمینه تخصصی" control={control} />

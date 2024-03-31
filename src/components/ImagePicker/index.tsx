@@ -7,6 +7,7 @@ import { TImagePickerFC } from "./index.type";
 
 const ImagePicker: TImagePickerFC = ({ height, width, defaultSrc }, resultRef) => {
   const [image, setImage] = useState<File>();
+  const [errorOnLoad, setErrorOnLoad] = useState<boolean>(false)
   const imageInputRef = useRef<HTMLInputElement>(null);
   const onOpenFilePicker = () => imageInputRef?.current?.click();
   const onSelectImage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -22,11 +23,11 @@ const ImagePicker: TImagePickerFC = ({ height, width, defaultSrc }, resultRef) =
 
   return (
     <>
-      {!srcImage && !defaultSrc ? (
+      {!srcImage && (!defaultSrc || defaultSrc && errorOnLoad) ? (
         <Avatar onClick={onOpenFilePicker} sx={{ height, width }} />
       ) : (
-        <Avatar onClick={onOpenFilePicker} sx={{ height, width }}>
-          {defaultSrc && !srcImage && <Image fill alt="image picker" src={defaultSrc} />}
+        <Avatar onClick={onOpenFilePicker} sx={{ height, width, objectFit: 'cover', objectPosition: 'center' }}>
+          {defaultSrc && !srcImage && <Image fill alt="image picker" src={defaultSrc} onError={() => setErrorOnLoad(true)} />}
           {srcImage && <Image fill alt="image picker" src={srcImage} />}
         </Avatar>
       )}

@@ -4,14 +4,13 @@ import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import TextInput from "@/components/TextInput";
 import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
-import moment from "moment-jalaali";
-import { APP_DATE_TIME_FORMAT } from "@/constants";
 import FlexBox from "@/components/FlexBox";
 import { useTransition } from "react";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { getAttachmentsAsZipFile } from "@/services/ticket.service";
 import { getTicketStatusEnum } from "@/utils/getEnumTransformer";
 import { answerTicketAction } from "@/app/(admin)/tickets/actions";
+import { dateTool } from "@/core/dates";
 
 const ViewTicketDialog: TViewTicketDialogFC = ({ handleClose, selectedTicket }) => {
   const { control, handleSubmit } = useForm<TAnswerTicketyFormValidation>({ defaultValues: { answer: selectedTicket?.answer || "" } });
@@ -63,17 +62,17 @@ const ViewTicketDialog: TViewTicketDialogFC = ({ handleClose, selectedTicket }) 
               وضعیت این تیکت : {getTicketStatusEnum(selectedTicket?.status!)}
             </Typography>
             <Typography variant="caption" component="span">
-              تاریخ ثبت تیکت : <Box component="span" display="inline-block" dir="ltr">{moment(selectedTicket?.createdAt).format(APP_DATE_TIME_FORMAT)}</Box>
+              تاریخ ثبت تیکت : <Box component="span" display="inline-block" dir="ltr">{dateTool.formatDateTime(selectedTicket?.createdAt)}</Box>
             </Typography>
             {selectedTicket?.closeAt && (
               <Typography variant="caption" component="span">
-                تاریخ بسته شدن تیکت : <Box component="span" display="inline-block" dir="ltr">{moment(selectedTicket?.closeAt).format(APP_DATE_TIME_FORMAT)}</Box>
+                تاریخ بسته شدن تیکت : <Box component="span" display="inline-block" dir="ltr">{dateTool.formatDateTime(selectedTicket?.closeAt)}</Box>
               </Typography>
             )}
             {selectedTicket?.answerAt && (
               <Typography variant="caption" component="span">
                 تاریخ ثبت پاسخ :
-                <Box component="span" display="inline-block" dir="ltr"> {moment(selectedTicket?.answerAt).format(APP_DATE_TIME_FORMAT)}</Box>
+                <Box component="span" display="inline-block" dir="ltr"> {dateTool.formatDateTime(selectedTicket?.answerAt)}</Box>
               </Typography>
             )}
             {selectedTicket?.attachments?.length > 0 && (

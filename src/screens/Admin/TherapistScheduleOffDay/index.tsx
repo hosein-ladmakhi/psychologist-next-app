@@ -4,7 +4,6 @@ import Table from "@/components/Table";
 import { TTherapistScheduleOffDayScreenFC } from "./index.type";
 import { therapistScheduleOffDayColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
-import moment from "moment-jalaali";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import FlexBox from "@/components/FlexBox";
@@ -12,9 +11,9 @@ import { Typography } from "@mui/material";
 import Button from "@/components/Button";
 import dynamic from "next/dynamic";
 import { getDate } from "@/utils/getDate";
-import { APP_DATE_FORMAT } from "@/constants";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { deleteDaysOffAction } from "@/app/(admin)/therapists/off-day/[id]/actions";
+import { dateTool } from "@/core/dates";
 
 const AddNewOffDayDialog = dynamic(() => import("./components/AddNewOffDayDialog"));
 
@@ -49,7 +48,7 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
       type: data.schedule.type,
       location: `${data.schedule.location.city} - ${data.schedule.location.address}`,
       room: data.schedule.room,
-      date: moment(data.date).format(APP_DATE_FORMAT),
+      date: dateTool.formatDate(data.date),
       transformedType: getScheduleTypeEnum(data.schedule.type),
     }));
   }, [content]);

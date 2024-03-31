@@ -10,11 +10,11 @@ import RadioGroup from "@/components/RadioGroup";
 import Button from "@/components/Button";
 import { Grid } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import moment from "moment-jalaali";
 import { IAddNewScheduleToTherapistReqBody } from "@/types/therapist.model";
 import { errorNotify, successNotify } from "@/utils/notify";
 import useLocations from "@/hooks/api/useLocations";
 import { addNewScheduleAction } from "@/app/(admin)/therapists/schedules/[therapistId]/[day]/actions";
+import { dateTool } from "@/core/dates";
 
 const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onClose }) => {
   const [pending, handleTransition] = useTransition();
@@ -36,8 +36,8 @@ const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onCl
     const isValidEndTime = typeof data.endTime === typeof undefined;
     const isValidStartTime = typeof data.startTime === typeof undefined;
     if (isValidEndTime || isValidStartTime) {
-      isValidEndTime && setError("endTime", { message: "Enter Your End Time" });
-      isValidStartTime && setError("startTime", { message: "Enter Your Start Time" });
+      isValidEndTime && setError("endTime", { message: "ساعت پایان جلسه رزرو را وارد کنید" });
+      isValidStartTime && setError("startTime", { message: "ساعت شروع جلسه رزرو را وارد کنید" });
       return;
     }
 
@@ -46,8 +46,8 @@ const CreateNewSchedule: TCreateNewScheduleFC = ({ day, dayText, therapist, onCl
         ...data,
         therapist: therapist?.id!,
         day: +day!,
-        endTime: moment(data.endTime).format("HH:mm"),
-        startTime: moment(data.startTime).format("HH:mm"),
+        endTime: dateTool.formatTime(data.endTime),
+        startTime: dateTool.formatTime(data.startTime),
       };
       const res = await addNewScheduleAction(reqBody as IAddNewScheduleToTherapistReqBody);
       if (res) successNotify("آیتم رزرو با موفقیت به چارت رزروی اضافه شد");

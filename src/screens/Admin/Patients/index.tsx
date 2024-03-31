@@ -56,7 +56,7 @@ const PatientsScreen: TPatientsScreenFC = ({ data, totalPage, page, count }) => 
     setShowFilterDialogStatus(true);
   };
 
-  const onChangeFilters = (data: TFilterPatientFormValidation) => onChangeMultipleSearchParams(data);
+  const onChangeFilters = (data: TFilterPatientFormValidation) => onChangeMultipleSearchParams({ ...data, page: 1 });
 
   const onCloseDialog = () => {
     setSelectedPatient(undefined);

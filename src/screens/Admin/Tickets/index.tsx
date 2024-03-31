@@ -4,8 +4,6 @@ import Table from "@/components/Table";
 import { TTicketsScreenFC } from "./index.type";
 import { ticketsColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
-import moment from "moment-jalaali";
-import { APP_DATE_TIME_FORMAT } from "@/constants";
 import SummaryText from "@/components/SummaryText";
 import { TAdditionalTableAction } from "@/types/base.model";
 import { errorNotify, successNotify } from "@/utils/notify";
@@ -13,6 +11,7 @@ import { ETicketStatus, ITicket } from "@/types/ticket.model";
 import ViewTicketDialog from "./components/ViewTicketDialog";
 import { getTicketStatusEnum } from "@/utils/getEnumTransformer";
 import { closeTicketAction, deleteTicketAction } from "@/app/(admin)/tickets/actions";
+import { dateTool } from "@/core/dates";
 
 const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
   const [loading, handleTransition] = useTransition();
@@ -22,11 +21,11 @@ const TicketsScreen: TTicketsScreenFC = ({ count, data, totalPage }) => {
     return data.map((ticket) => ({
       ...ticket,
       transformedPatient: ticket.patient.firstName + " " + ticket.patient.lastName,
-      transformedDate: moment(ticket.createdAt).format(APP_DATE_TIME_FORMAT),
-      transformedClosedDate: ticket?.closeAt ? moment(ticket.closeAt).format(APP_DATE_TIME_FORMAT) : " - ",
+      transformedDate: dateTool.formatDateTime(ticket.createdAt),
+      transformedClosedDate: ticket?.closeAt ? dateTool.formatDateTime(ticket.closeAt) : " - ",
       hasSubTickets: ticket?.childrens?.length > 0 ? "بله" : "خیر",
       transformedTitle: <SummaryText lineClamp={1}>{ticket.title}</SummaryText>,
-      transformedAnswerDate: ticket?.answerAt ? moment(ticket.answerAt).format(APP_DATE_TIME_FORMAT) : " - ",
+      transformedAnswerDate: ticket?.answerAt ? dateTool.formatDateTime(ticket.answerAt) : " - ",
       transformedStatus: getTicketStatusEnum(ticket.status),
     }));
   }, [data]);

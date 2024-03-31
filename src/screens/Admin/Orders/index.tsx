@@ -11,11 +11,10 @@ import { useConfirm } from "material-ui-confirm";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { IFilterOrderFormValidation } from "./components/FilterOrderDialog/index.type";
 import dynamic from "next/dynamic";
-import moment from "moment-jalaali";
-import { APP_DATE_FORMAT } from "@/constants";
 import CreateOrderDialog from "./components/CreateOrderDialog";
 import { getOrderStatusEnum } from "@/utils/getEnumTransformer";
 import { cancelOrderAction } from "@/app/(admin)/orders/actions";
+import { dateTool } from "@/core/dates";
 
 const FilterOrderDialog = dynamic(() => import("./components/FilterOrderDialog"));
 const DoneOrderDialog = dynamic(() => import("./components/DoneOrderDialog"));
@@ -38,7 +37,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page, totalPage }) => {
       therapistFullName: order?.therapist?.firstName + " " + order?.therapist?.lastName,
       patientFullName: order?.patient?.firstName + " " + order?.patient?.lastName,
       time: order?.startHour + " - " + order?.endHour,
-      orderDate: moment(order?.date!).format(APP_DATE_FORMAT),
+      orderDate: dateTool.formatDate(order?.date!),
       transformedStatus: getOrderStatusEnum(order.status),
     }));
   }, [data]);
@@ -94,7 +93,7 @@ const OrdersScreen: TOrdersScreenFC = ({ data, count, page, totalPage }) => {
         setSelectedOrder(data as IOrder);
         setShowDoneOrderDialogStatus(true);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const handleViewDocumentation = (data: Object) => {

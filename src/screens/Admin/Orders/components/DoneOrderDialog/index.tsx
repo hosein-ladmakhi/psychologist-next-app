@@ -6,10 +6,9 @@ import Button from "@/components/Button";
 import { useRef, useTransition } from "react";
 import { errorNotify, successNotify } from "@/utils/notify";
 import { getDate } from "@/utils/getDate";
-import moment from "moment-jalaali";
-import { APP_DATE_FORMAT } from "@/constants";
 import { getOrderStatusEnum, getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { uploadDocumentationAndDoneOrderAction } from "@/app/(admin)/orders/actions";
+import { dateTool } from "@/core/dates";
 
 const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -31,7 +30,7 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
       }
       const formdata = new FormData();
       formdata.append("order", selectedOrder?.id as any);
-      new Array(fileRef?.current?.files!).map((file) => formdata.append("files", file! as any));
+      Array.from(fileRef?.current?.files!).map((file) => formdata.append("files", file! as any));
       const res = await uploadDocumentationAndDoneOrderAction(selectedOrder?.id, formdata);
       if (res) successNotify("داکیومنت این رزرو با موفقیت ثبت شد و تغییر وضعیت این رزرو با موفقیت ذخیره گردید");
       else errorNotify("تغییر وضعیت رزرو با شکست مواجعه شد دوباره تلاش کنید");
@@ -49,7 +48,7 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
           <LinearProgress />
         </Box>
       )}
-      {printDetail("تاریخ رزرو", moment(selectedOrder?.date!).format(APP_DATE_FORMAT))}
+      {printDetail("تاریخ رزرو", dateTool.formatDate(selectedOrder?.date!))}
       {printDetail("روز رزرو", getDate(selectedOrder?.day!))}
       {printDetail("ساعت شروع", selectedOrder?.startHour)}
       {printDetail("ساعت پایان", selectedOrder?.endHour)}

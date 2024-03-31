@@ -10,7 +10,5 @@ export const DATES = {
   "5": "جمعه",
 };
 
-export const APP_DATE_FORMAT = "jYYYY-jMM-jDD";
-export const APP_DATE_TIME_FORMAT = "jYYYY-jMM-jDD HH:mm";
 
 export const DATES_KEY = [6, 7, 1, 2, 3, 4, 5]

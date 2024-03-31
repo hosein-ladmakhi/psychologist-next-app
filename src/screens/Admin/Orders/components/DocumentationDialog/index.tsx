@@ -13,7 +13,7 @@ const DocumentationDialog: TDocumentationDialogFC = ({ onClose, selectedOrder })
   const handleSelectedDocument = (document: IDocumentation) => setSelectedDocument(document);
 
   return (
-    <Modal handleClose={onClose} size="xxxxl" opened title="Docuemtation Of Order">
+    <Modal handleClose={onClose} size="xxxxl" opened title="پرونده سلامت بیمار">
       <Grid container spacing={2}>
         <Grid lg={5} item>
           <Typography mb={2} fontWeight="bold" variant="body1" component="h1">
