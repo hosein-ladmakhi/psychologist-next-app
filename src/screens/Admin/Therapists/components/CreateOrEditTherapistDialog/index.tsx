@@ -81,7 +81,7 @@ const CreateOrEditTherapistDialog: TCreateOrEditTherapistDialogFC = ({ onClose, 
   };
 
   const onSubmit = handleSubmit((data) => {
-    handleCreateOrEditTransition(async () => {
+    handleCreateOrEditTransition(() => {
       if (selectedTherapist) {
         handleEdit(data);
       } else {
