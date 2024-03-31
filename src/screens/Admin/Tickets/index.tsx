@@ -6,7 +6,7 @@ import { ticketsColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
 import SummaryText from "@/components/SummaryText";
 import { TAdditionalTableAction } from "@/types/base.model";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { ETicketStatus, ITicket } from "@/types/ticket.model";
 import ViewTicketDialog from "./components/ViewTicketDialog";
 import { getTicketStatusEnum } from "@/utils/getEnumTransformer";

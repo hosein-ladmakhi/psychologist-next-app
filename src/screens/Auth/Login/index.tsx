@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormValidation } from "./index.constant";
 import { loginAction } from "@/app/(auth)/auth/login/actions";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 
 const LoginScreen: TLoginScreenFC = () => {
   const { control, handleSubmit } = useForm<TLoginFormValidation>({ resolver: zodResolver(loginFormValidation) });

@@ -9,7 +9,7 @@ import { useSearchParams } from "@/hooks/useSearchParams";
 import { TFilterPatientFormValidation } from "./components/FilterPatientDialog/index.type";
 import { TAdditionalTableAction } from "@/types/base.model";
 import { patientsColumn } from "./index.constant";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import dynamic from "next/dynamic";
 import { deletePatientAction } from "@/app/(admin)/patients/actions";
 import EditPasswordDialog from "@/components/EditPasswordDailog";

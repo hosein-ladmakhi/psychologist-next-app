@@ -6,7 +6,7 @@ import { useTransition } from "react";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
 import { Box } from "@mui/material";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import useCities from "@/hooks/api/useCities";
 import { createLocationAction, editLocationAction } from "@/app/(admin)/locations/actions";
 

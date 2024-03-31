@@ -8,13 +8,17 @@ import { IAdmin } from "@/types/admin.model";
 import dynamic from "next/dynamic";
 import { TAdditionalTableAction } from "@/types/base.model";
 import { deleteAdminAction } from "@/app/(admin)/actions";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import FilterAdminsDialog from "@/screens/Admin/Admins/components/FilterAdminsDialog";
 import { useSearchParams } from "@/hooks/useSearchParams";
 
-const EditPasswordDialog = dynamic(() => import("@/components/EditPasswordDailog"));
+const EditPasswordDialog = dynamic(
+  () => import("@/components/EditPasswordDailog")
+);
 
-const CreateOrEditAdminDialog = dynamic(() => import("./components/CreateOrEditAdminDialog"));
+const CreateOrEditAdminDialog = dynamic(
+  () => import("./components/CreateOrEditAdminDialog")
+);
 
 const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
   const [loading, handleTransition] = useTransition();
@@ -53,16 +57,18 @@ const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
   const handleDelete = (data: Object) => {
     handleTransition(() => {
       const admin = data as IAdmin;
-      deleteAdminAction(admin.id).then(res => {
-        console.log("ssss", res);
-        if (res) {
-          successNotify("ادمین با موفقیت حذف گردید");
-        } else {
+      deleteAdminAction(admin.id)
+        .then((res) => {
+          console.log("ssss", res);
+          if (res) {
+            successNotify("ادمین با موفقیت حذف گردید");
+          } else {
+            errorNotify("عملیات ساخت ادمین با شکست مواجعه شد");
+          }
+        })
+        .catch(() => {
           errorNotify("عملیات ساخت ادمین با شکست مواجعه شد");
-        }
-      }).catch(() => {
-        errorNotify("عملیات ساخت ادمین با شکست مواجعه شد");
-      });
+        });
     });
   };
 
@@ -80,7 +86,7 @@ const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
       lastName: undefined,
       phone: undefined,
       isActive: undefined,
-      page: 1
+      page: 1,
     });
   };
 
@@ -88,25 +94,30 @@ const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
     searchParams.onChangeSearchParams("page", page);
   };
 
-
   const additionalActions: TAdditionalTableAction[] = [
     {
       color: "info",
       onClick: handleEditPassword,
-      text: "ویرایش پسورد"
-    }
+      text: "ویرایش پسورد",
+    },
   ];
 
   const transformedData = useMemo(() => {
-    return data.map((element) => ({ ...element, transformedIsActive: element.isActive ? "فعال" : "غیرفعال" }));
+    return data.map((element) => ({
+      ...element,
+      transformedIsActive: element.isActive ? "فعال" : "غیرفعال",
+    }));
   }, [data]);
 
   return (
     <>
       {isUpsertAdminOpen && (
         <Suspense fallback={<></>}>
-          <CreateOrEditAdminDialog handleClose={handleUpsertAdminClose} isOpen={isUpsertAdminOpen}
-            selectedAdmin={selectedAdmin} />
+          <CreateOrEditAdminDialog
+            handleClose={handleUpsertAdminClose}
+            isOpen={isUpsertAdminOpen}
+            selectedAdmin={selectedAdmin}
+          />
         </Suspense>
       )}
       {isFilterAdminOpen && (
@@ -134,7 +145,11 @@ const AdminsScreen: TAdminsScreenFC = ({ data, page, count, totalPage }) => {
 
       {isEditPasswordOpen && selectedAdmin && (
         <Suspense fallback={<></>}>
-          <EditPasswordDialog handleClose={handleCloseEditPassword} id={selectedAdmin!.id} type="admin" />
+          <EditPasswordDialog
+            handleClose={handleCloseEditPassword}
+            id={selectedAdmin!.id}
+            type="admin"
+          />
         </Suspense>
       )}
     </>

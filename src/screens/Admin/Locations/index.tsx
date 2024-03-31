@@ -5,7 +5,7 @@ import { TLocationsScreenFC } from "./index.type";
 import { locationsColumns } from "./index.constant";
 import { Suspense, useState, useTransition } from "react";
 import { ILocation } from "@/types/location.model";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import dynamic from "next/dynamic";
 import { deleteLocationAction } from "@/app/(admin)/locations/actions";

@@ -7,20 +7,32 @@ import { TCategoriesScreenFC } from "./index.type";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { TFilterCategoryFormValidation } from "./components/FilterCategoryDialog/index.type";
 import { ICategory } from "@/types/category.model";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import dynamic from "next/dynamic";
 import { API_URL } from "@/constants";
 import { deleteCategoryAction } from "@/app/(admin)/categories/actions";
 
-const FilterCategoryDialog = dynamic(() => import("./components/FilterCategoryDialog"));
-const CreateOrEditCategoryDialog = dynamic(() => import("./components/CreateOrEditCategoryDialog"));
+const FilterCategoryDialog = dynamic(
+  () => import("./components/FilterCategoryDialog")
+);
+const CreateOrEditCategoryDialog = dynamic(
+  () => import("./components/CreateOrEditCategoryDialog")
+);
 
-const CategoriesScreen: TCategoriesScreenFC = ({ data, totalPage, page, count }) => {
+const CategoriesScreen: TCategoriesScreenFC = ({
+  data,
+  totalPage,
+  page,
+  count,
+}) => {
   const [pending, handleTransition] = useTransition();
-  const [isShowFilterDialog, setShowFilterDialogStatus] = useState<boolean>(false);
-  const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] = useState<boolean>(false);
+  const [isShowFilterDialog, setShowFilterDialogStatus] =
+    useState<boolean>(false);
+  const [isShowCreateOrEditDialog, setShowCreateOrEditDialogStatus] =
+    useState<boolean>(false);
 
-  const { onChangeSearchParams, onChangeMultipleSearchParams } = useSearchParams();
+  const { onChangeSearchParams, onChangeMultipleSearchParams } =
+    useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<ICategory>();
 
   const handleResetFilter = () => {
@@ -52,7 +64,8 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, totalPage, page, count })
     });
   };
 
-  const onChangeFilters = (data: TFilterCategoryFormValidation) => onChangeMultipleSearchParams({ ...data, page: 1 });
+  const onChangeFilters = (data: TFilterCategoryFormValidation) =>
+    onChangeMultipleSearchParams({ ...data, page: 1 });
 
   const handleCreate = () => {
     setShowCreateOrEditDialogStatus(true);
@@ -66,14 +79,31 @@ const CategoriesScreen: TCategoriesScreenFC = ({ data, totalPage, page, count })
   const transformedCategories = useMemo(() => {
     return data.map((d) => ({
       ...d,
-      transformedIcon: d.icon ? <img style={{ height: "100px", width: "100px" }} src={`${API_URL}/upload/${d.icon}`} /> : "No Icon",
+      transformedIcon: d.icon ? (
+        <img
+          style={{ height: "100px", width: "100px" }}
+          src={`${API_URL}/upload/${d.icon}`}
+        />
+      ) : (
+        "No Icon"
+      ),
     }));
   }, [data]);
 
   return (
     <>
-      {isShowFilterDialog && <FilterCategoryDialog onChangeFilters={onChangeFilters} onClose={onCloseDialog} />}
-      {isShowCreateOrEditDialog && <CreateOrEditCategoryDialog onClose={onCloseDialog} selectedCategory={selectedCategory} />}
+      {isShowFilterDialog && (
+        <FilterCategoryDialog
+          onChangeFilters={onChangeFilters}
+          onClose={onCloseDialog}
+        />
+      )}
+      {isShowCreateOrEditDialog && (
+        <CreateOrEditCategoryDialog
+          onClose={onCloseDialog}
+          selectedCategory={selectedCategory}
+        />
+      )}
       <Table
         handleResetFilter={handleResetFilter}
         createButtonLabel="افزودن زمینه تخصصی"

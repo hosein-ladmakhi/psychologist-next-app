@@ -4,8 +4,8 @@ import { Box, Chip, Grid, LinearProgress, Typography } from "@mui/material";
 import FlexBox from "@/components/FlexBox";
 import Button from "@/components/Button";
 import { useRef, useTransition } from "react";
-import { errorNotify, successNotify } from "@/utils/notify";
-import { getDate } from "@/utils/getDate";
+import { errorNotify, successNotify } from "@/core/notification";
+import { getDayOfWeekName } from "@/utils/getDate";
 import { getOrderStatusEnum, getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { uploadDocumentationAndDoneOrderAction } from "@/app/(admin)/orders/actions";
 import { dateTool } from "@/core/dates";
@@ -49,7 +49,7 @@ const DoneOrderDialog: TDoneOrderDialogFC = ({ selectedOrder, onClose }) => {
         </Box>
       )}
       {printDetail("تاریخ رزرو", dateTool.formatDate(selectedOrder?.date!))}
-      {printDetail("روز رزرو", getDate(selectedOrder?.day!))}
+      {printDetail("روز رزرو", getDayOfWeekName(selectedOrder?.day!))}
       {printDetail("ساعت شروع", selectedOrder?.startHour)}
       {printDetail("ساعت پایان", selectedOrder?.endHour)}
       {printDetail("بیار", selectedOrder?.patient?.firstName + " " + selectedOrder?.patient?.lastName)}

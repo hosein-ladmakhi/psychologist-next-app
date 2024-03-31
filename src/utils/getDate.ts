@@ -1,3 +1,3 @@
-import { DATES } from "@/constants";
+import { DAYS_OF_WEEK } from "@/constants";
 
-export const getDate = (key: string | number) => (DATES as any)[`${key}`];
+export const getDayOfWeekName = (key: string | number) => (DAYS_OF_WEEK as any)[`${key}`];

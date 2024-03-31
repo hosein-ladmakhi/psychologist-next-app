@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 import { useCreateOrEditCategoryForm } from "./useForm";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import ImagePicker from "@/components/ImagePicker";
 import { uploadCategoryIcon } from "@/services/category.service";
 import { createNewCategoryAction, editCategoryAction } from "@/app/(admin)/categories/actions";

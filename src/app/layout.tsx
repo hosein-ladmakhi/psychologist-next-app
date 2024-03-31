@@ -1,7 +1,6 @@
 import "./globals.css";
 
 import { FC, PropsWithChildren } from "react";
-import { figtreeFont } from "@/core/fonts/figtree-font";
 import { vazirFont } from "@/core/fonts/vazir-font";
 import { Toaster } from "react-hot-toast";
 import RouteLoadingProvider from "@/providers/RouteLoadingProvider";
@@ -15,7 +14,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
   const session = await getServerSession(authOptions);
   return (
     <html>
-      <body className={`${figtreeFont.className} ${vazirFont.className}`}>
+      <body className={vazirFont.className}>
         <RouteLoadingProvider>
           <LocalizationPickerProvider>
             <NextAuthProvider session={session}>

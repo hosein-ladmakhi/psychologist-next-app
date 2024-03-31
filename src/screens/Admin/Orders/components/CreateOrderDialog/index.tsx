@@ -7,7 +7,7 @@ import { IPatient } from "@/types/patient.model";
 import { getPatientsPageApi } from "@/services/patient.service";
 import { ETherapistScheduleType, ITherapist, ITherapistSchedules } from "@/types/therapist.model";
 import { getSchedulesTherapist, getTherapists } from "@/services/therapist.service";
-import { getDate } from "@/utils/getDate";
+import { getDayOfWeekName } from "@/utils/getDate";
 import { removeDuplicatedSelectKey } from "@/utils/selectOptions";
 import { getReservationCalendarByTherapistAndDay } from "@/services/order.service";
 import TextInput from "@/components/TextInput";
@@ -16,7 +16,7 @@ import { Grid } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createOrderFormValidation } from "./index.constant";
 import { ICreateOrder } from "@/types/order.model";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { createOrderAction } from "@/app/(admin)/orders/actions";
 
@@ -105,7 +105,7 @@ const CreateOrderDialog: TCreateOrderDialogFC = ({ onClose }) => {
 
   const SCHEDULES_DAY_SELECT_OPTIONS = removeDuplicatedSelectKey(
     therapistSchedules.map((schedule) => ({
-      key: getDate(schedule.day),
+      key: getDayOfWeekName(schedule.day),
       value: schedule.day,
     }))
   );

@@ -6,7 +6,7 @@ import { TAdminsPageFC } from "./page.type";
 import { prepareAdminsPageQueryParam } from "./prepare-query";
 
 export const metadata: Metadata = {
-  title: "ادمین ها"
+  title: "لیست ادمین های سایت",
 };
 
 const AdminsPage: TAdminsPageFC = async ({ searchParams }) => {
@@ -14,9 +14,13 @@ const AdminsPage: TAdminsPageFC = async ({ searchParams }) => {
   const data = await getAdmins(prepareAdminsPageQueryParam(searchParams));
 
   return (
-    <AdminsScreen data={data.content} page={currentPage} count={data.count}
-      totalPage={calculateTotalPageTable(data.count)} />
-  )
+    <AdminsScreen
+      data={data.content}
+      page={currentPage}
+      count={data.count}
+      totalPage={calculateTotalPageTable(data.count)}
+    />
+  );
 };
 
 export default AdminsPage;

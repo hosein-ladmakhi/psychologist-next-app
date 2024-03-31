@@ -11,8 +11,8 @@ import DatePicker from "@/components/DatePicker";
 import { IAddNewOffDayReqBody } from "@/types/therapist.model";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useConfirm } from "material-ui-confirm";
-import { errorNotify, successNotify } from "@/utils/notify";
-import { getDate } from "@/utils/getDate";
+import { errorNotify, successNotify } from "@/core/notification";
+import { getDayOfWeekName } from "@/utils/getDate";
 import useTherapistSchedule from "@/hooks/api/useTherapistSchedule";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { addDaysOfAction } from "@/app/(admin)/therapists/off-day/[id]/actions";
@@ -37,7 +37,7 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
   useEffect(() => {
     const date = watch("date");
     if (dateTool.isValidDate(date)) {
-      setValue("day", getDate(dateTool.getWeekDay(date)));
+      setValue("day", getDayOfWeekName(dateTool.getWeekDay(date)));
     } else {
       setValue("day", "Unknown Day");
     }
@@ -51,7 +51,7 @@ const AddNewOffDayDialog: TAddNewOffDayDialogFC = ({ therapist, onClose }) => {
       data = data.filter((element) => element.day === dayNumber);
     }
     return data.map((schedule) => ({
-      key: `${schedule.location.city} ${schedule.location.address} اتاق ${schedule.room} - ( ${getDate(schedule.day)} ${schedule.startHour} - ${schedule.endHour
+      key: `${schedule.location.city} ${schedule.location.address} اتاق ${schedule.room} - ( ${getDayOfWeekName(schedule.day)} ${schedule.startHour} - ${schedule.endHour
         } ) - ${getScheduleTypeEnum(schedule.type)}`,
       value: schedule.id,
     }));

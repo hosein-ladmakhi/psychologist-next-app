@@ -4,13 +4,13 @@ import Table from "@/components/Table";
 import { TTherapistScheduleOffDayScreenFC } from "./index.type";
 import { therapistScheduleOffDayColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import FlexBox from "@/components/FlexBox";
 import { Typography } from "@mui/material";
 import Button from "@/components/Button";
 import dynamic from "next/dynamic";
-import { getDate } from "@/utils/getDate";
+import { getDayOfWeekName } from "@/utils/getDate";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { deleteDaysOffAction } from "@/app/(admin)/therapists/off-day/[id]/actions";
 import { dateTool } from "@/core/dates";
@@ -43,7 +43,7 @@ const TherapistScheduleOffDayScreen: TTherapistScheduleOffDayScreenFC = ({ conte
   const transformedData = useMemo(() => {
     return content.map((data) => ({
       ...data,
-      day: getDate(data.schedule.day),
+      day: getDayOfWeekName(data.schedule.day),
       time: `${data.schedule.startHour}_${data.schedule.endHour}`,
       type: data.schedule.type,
       location: `${data.schedule.location.city} - ${data.schedule.location.address}`,

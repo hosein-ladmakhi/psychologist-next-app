@@ -11,7 +11,7 @@ import Button from "@/components/Button";
 import { Grid } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IAddNewScheduleToTherapistReqBody } from "@/types/therapist.model";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import useLocations from "@/hooks/api/useLocations";
 import { addNewScheduleAction } from "@/app/(admin)/therapists/schedules/[therapistId]/[day]/actions";
 import { dateTool } from "@/core/dates";

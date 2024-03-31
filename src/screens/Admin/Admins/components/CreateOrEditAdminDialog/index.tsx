@@ -8,7 +8,7 @@ import TextInput from "@/components/TextInput";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
 import { Box } from "@mui/material";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { createAdminAction, editAdminAction } from "@/app/(admin)/actions";
 import { useSearchParams } from "@/hooks/useSearchParams";
 

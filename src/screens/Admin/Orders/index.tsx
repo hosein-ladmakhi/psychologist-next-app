@@ -6,7 +6,7 @@ import { ordersColumns } from "./index.constant";
 import { Suspense, useMemo, useState, useTransition } from "react";
 import { TAdditionalTableAction } from "@/types/base.model";
 import { EOrderStatus, IOrder } from "@/types/order.model";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { useConfirm } from "material-ui-confirm";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { IFilterOrderFormValidation } from "./components/FilterOrderDialog/index.type";

@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { editPasswordFormValidation } from "./index.constant";
 import { useTransition } from "react";
 import { updatePasswordAction } from "@/app/(auth)/auth/actions";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 
 const EditPasswordDialog: TEditPasswordDialogFC = ({ type, id, handleClose }) => {
   const {

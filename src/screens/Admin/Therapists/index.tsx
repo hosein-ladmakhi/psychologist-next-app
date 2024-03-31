@@ -8,7 +8,7 @@ import { TAdditionalTableAction } from "@/types/base.model";
 import { useSearchParams } from "@/hooks/useSearchParams";
 import { TFilterTherapistFormValidation } from "./components/FilterTherapistDialog/index.type";
 import { ITherapist } from "@/types/therapist.model";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import FilterTherapistDialog from "./components/FilterTherapistDialog";

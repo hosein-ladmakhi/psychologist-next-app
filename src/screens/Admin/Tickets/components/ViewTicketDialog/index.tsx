@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import FlexBox from "@/components/FlexBox";
 import { useTransition } from "react";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { getAttachmentsAsZipFile } from "@/services/ticket.service";
 import { getTicketStatusEnum } from "@/utils/getEnumTransformer";
 import { answerTicketAction } from "@/app/(admin)/tickets/actions";

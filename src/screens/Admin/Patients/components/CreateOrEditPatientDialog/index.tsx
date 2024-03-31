@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import TextInput from "@/components/TextInput";
 import { useCreateOrEditPatientForm } from "./useForm";
 import Button from "@/components/Button";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import { createNewPatientAction, editPatientAction } from "@/app/(admin)/patients/actions";
 
 const CreateOrEditPatientDialog: TCreateOrEditPatientDialogFC = ({ onClose, selectedPatient }) => {

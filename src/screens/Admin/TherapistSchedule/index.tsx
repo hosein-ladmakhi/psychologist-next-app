@@ -6,10 +6,10 @@ import Table from "@/components/Table";
 import { therapistScheduleColumns } from "./index.constant";
 import { calculateTotalPageTable } from "@/utils/calculateTotalPageTable";
 import { Suspense, useMemo, useState, useTransition } from "react";
-import { errorNotify, successNotify } from "@/utils/notify";
+import { errorNotify, successNotify } from "@/core/notification";
 import FlexBox from "@/components/FlexBox";
 import dynamic from "next/dynamic";
-import { getDate } from "@/utils/getDate";
+import { getDayOfWeekName } from "@/utils/getDate";
 import { getScheduleTypeEnum } from "@/utils/getEnumTransformer";
 import { deleteScheduleByIdAction } from "@/app/(admin)/therapists/schedules/[therapistId]/[day]/actions";
 
@@ -19,7 +19,7 @@ const TherapistScheduleByTherapistIdScreen: TTherapistScheduleByTherapistIdScree
   const [pending, handleTransition] = useTransition();
   const [isShowCreateScheduleDialog, setShowCreateScheduleDialogStatus] = useState<boolean>(false);
 
-  const selectedDayText = getDate(selectedDay!);
+  const selectedDayText = getDayOfWeekName(selectedDay!);
 
   const transformedSchedule = useMemo(() => {
     return schedulesCount === 0

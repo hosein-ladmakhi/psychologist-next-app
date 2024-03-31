@@ -9,8 +9,9 @@ import { signOut } from "next-auth/react";
 import FlexBox from "../FlexBox";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useRouter } from "next/navigation";
+import { APP_HEADER_MENU_ITEMS } from "@/constants";
 
-const AppHeader: TAppHeaderFC = ({ menuItems }) => {
+const AppHeader: TAppHeaderFC = () => {
   const user = useAuthenticatedUser();
   const router = useRouter()
 
@@ -28,7 +29,7 @@ const AppHeader: TAppHeaderFC = ({ menuItems }) => {
               {user?.firstName} {user?.lastName}
             </Typography>
           </Link>
-          {menuItems.map((item) => (
+          {APP_HEADER_MENU_ITEMS.map((item) => (
             <Link className="link" href={item.href} key={item.href}>
               {item.label}
             </Link>
